@@ -908,7 +908,467 @@ echo $a;  //xiekunze.github.io</code></pre>
 <td>反斜杠</td>
 </tr>
 </tbody></table>
+<h4 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h4><p>strlen — 取得字符串长度传度的函数</p>
+<pre><code>$str = &quot;xiekunze.github.io&quot;;
+echo strlen($str); //18</code></pre>
+<p>mb_strlen — 根据字符编码获取长度</p>
+<pre><code>$str = &quot;xiekunze.github.io&quot;;
+echo mb_strlen($str,&quot;utf-8&quot;);  //18</code></pre>
+<p>trim — 截去字符串首尾的内容              (rtrim从右侧删除、ltrim从左侧删除)</p>
+<pre><code>$str = &quot; xiekunze.github.io &quot;;
+echo strlen($str);  //20
+echo strlen(trim($str));  //18</code></pre>
+<p>strtolower — 字母转为小写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot; xiekunze.github.io &quot;;</span><br><span class="line">echo strtolower($str); &#x2F;&#x2F;xiekunze.github.io</span><br></pre></td></tr></table></figure>
 
+<p>strtoupper — 字母转大写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot; xiekunze.github.io &quot;;</span><br><span class="line">echo strtoupper($str); &#x2F;&#x2F;XIEKUNZE.GITHUB.IO</span><br></pre></td></tr></table></figure>
+
+<p>ucfirst — 将字符串的首字母转换为大写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; ucfirst($str);</span><br><span class="line">echo $str; &#x2F;&#x2F;Xiekunze.github.io</span><br></pre></td></tr></table></figure>
+
+<p>ucwords — 将字符串中每个单词的首字母转换为大写(可传参数,不传参数的话,默认以空格为边界)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; ucwords($str,&#39;.&#39;);</span><br><span class="line">echo $str; &#x2F;&#x2F;Xiekunze.Github.Io</span><br></pre></td></tr></table></figure>
+
+<p>md5 — 计算字符串的 MD5 散列值，以 32 字符十六进制数字形式返回散列值<font color="red">(*不是很懂后面用到)</font></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; md5($str);  </span><br><span class="line">echo $str; &#x2F;&#x2F;046033951caa1c1016340691dbb3cb3d</span><br></pre></td></tr></table></figure>
+
+<p>explode — 使用一个字符串分割另一个字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; explode(&#39;.&#39;,$str);</span><br><span class="line">echo $str[1];  &#x2F;&#x2F;github</span><br><span class="line">echo $str[2];  &#x2F;&#x2F;io</span><br></pre></td></tr></table></figure>
+
+<p>implode — 将一个一维数组的值转化为字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; explode(&#39;.&#39;,$str);</span><br><span class="line">$str &#x3D; implode(&#39;.&#39;,$str);</span><br><span class="line">echo $str; &#x2F;&#x2F;xiekunze.github.io</span><br></pre></td></tr></table></figure>
+
+<p>substr — 返回字符串的子串(三个参数:1.操作的字符串；2.开始的索引；3.取多少个)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; substr($str,9,6);</span><br><span class="line">echo $str;  &#x2F;&#x2F;github</span><br></pre></td></tr></table></figure>
+
+<p>mb_substr — 获取部分字符串 (多了个参数,用来指定什么编码格式)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; mb_substr($str,9,6,&#39;utf-8&#39;);</span><br><span class="line">echo $str;  &#x2F;&#x2F;github</span><br></pre></td></tr></table></figure>
+
+<p>strstr — 查找字符串的首次出现 (用来截取字符串)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; strstr($str,&#39;g&#39;);</span><br><span class="line">echo $str;  &#x2F;&#x2F;github.io</span><br></pre></td></tr></table></figure>
+
+<p>strrchr — 查找指定字符在字符串中的最后一次出现 (用来截取字符串)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; strrchr($str,&#39;.&#39;);</span><br><span class="line">echo $str;  &#x2F;&#x2F;.io </span><br></pre></td></tr></table></figure>
+
+<p>strpos — 查找字符串首次出现的位置，如果没找到，将返回 <strong>FALSE</strong>，找到了返回索引值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; strpos($str,&#39;u&#39;);</span><br><span class="line">echo $str;  &#x2F;&#x2F;4</span><br></pre></td></tr></table></figure>
+
+<p>strrpos — 计算指定字符串在目标字符串中最后一次出现的位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; strrpos($str,&#39;u&#39;);</span><br><span class="line">echo $str;  &#x2F;&#x2F;13</span><br></pre></td></tr></table></figure>
+
+<p>str_replace — 子字符串替换(三个参数,1.将谁换；2.换成谁；3.操作那个字符串)        </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;xiekunze.github.io&quot;;</span><br><span class="line">$str &#x3D; str_replace(&#39;xiekunze&#39;,&#39;xielitao&#39;,$str);</span><br><span class="line">echo $str;  &#x2F;&#x2F;xielitao.github.io</span><br></pre></td></tr></table></figure>
+
+<h3 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h3><p>NULL数据类型只有一个值NULL。</p>
+<ol>
+<li>变量未被赋予任何值</li>
+<li>变量被赋值为NULL</li>
+<li>被unset()函数处理后的变量</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\$a;</span><br><span class="line">echo \$a; &#x2F;&#x2F;null</span><br><span class="line">$c &#x3D; null;</span><br><span class="line">echo $c;  &#x2F;&#x2F;null</span><br><span class="line">$b &#x3D; 15;</span><br><span class="line">unset($b); </span><br><span class="line">echo $b;  &#x2F;&#x2F;null</span><br></pre></td></tr></table></figure>
+
+<h3 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h3><p>检查类型<strong>getType()</strong></p>
+<pre><code>$a = 12;
+$b = gettype($a);
+echo $b; //integer</code></pre>
+<p>检测是否为布尔型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; true;</span><br><span class="line">$b &#x3D; is_bool($a);</span><br><span class="line">echo $b; &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p>检测是否为整型    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; 10;</span><br><span class="line">$b &#x3D; is_int($a);</span><br><span class="line">echo $b; &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p>检测是否为浮点数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; 10.11;</span><br><span class="line">$b &#x3D; is_float($a);</span><br><span class="line">echo $b; &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p>检测是否为字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; &#39;aa&#39;;</span><br><span class="line">$b &#x3D; is_string($a);</span><br><span class="line">echo $b; &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p>检测是否为NULL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; null;</span><br><span class="line">$b &#x3D; is_null($a);</span><br><span class="line">echo $b; &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>自动转换</p>
+<p>PHP类型根据值，自动转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$num1 &#x3D; &#39;1&#39;;</span><br><span class="line">$num2 &#x3D; &#39;2&#39;;</span><br><span class="line">echo $num1 + $num2;&#x2F;&#x2F;3 # 字符串转为数字相加</span><br></pre></td></tr></table></figure>
+
+<p>强制转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">settype($var,&#39;type&#39;); # type类型为integer、double、string、array 与 object</span><br><span class="line"></span><br><span class="line">$var &#x3D; &#39;123&#39;; </span><br><span class="line"></span><br><span class="line">settype($var,’integer’);</span><br><span class="line">var_dump($var); 就会变成int类型</span><br><span class="line"></span><br><span class="line">intval() $var &#x3D; &#39;123&#39;; </span><br><span class="line">var_dump(intval($var));</span><br><span class="line"></span><br><span class="line">floatval() $var &#x3D; &#39;1.23&#39;;</span><br><span class="line">var_dump(floatval($var));</span><br><span class="line"></span><br><span class="line">strval() $var &#x3D; 123;</span><br><span class="line">var_dump(strval($var));</span><br></pre></td></tr></table></figure>
+
+<h2 id="常量使用"><a href="#常量使用" class="headerlink" title="常量使用"></a>常量使用</h2><p>常量是一个简单值的标识符（名字）。常量默认为大小写敏感。按照惯例常量标识符总是大写的。</p>
+<p><strong>常量特性</strong></p>
+<ul>
+<li>常量前面没有美元符号（$）</li>
+<li>常量只能用define() 函数定义，而不能通过赋值语句</li>
+<li>常量一旦定义就不能被重新定义或者取消定义</li>
+<li>常量的值用来定义 整型，浮点，字符串，布尔值，数组（PHP7新增）</li>
+<li>常量可以不用理会变量范围的可以在任何位置访问</li>
+</ul>
+<p><strong>声明常量</strong></p>
+<p>常量可以使用 <code>const</code> 和 <code>define</code> 定义。</p>
+<ul>
+<li>const 是语言结构，在编译时要比define快</li>
+<li>define 可以设置第三个参数为true，来定义不区分大小写的常量</li>
+<li>类文件中定义常量也使用const，所以const统一易读</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">define(&#39;a&#39;,15);</span><br><span class="line">echo a;  &#x2F;&#x2F;15</span><br><span class="line">const B &#x3D; 15;</span><br><span class="line">echo B;  &#x2F;&#x2F;15</span><br></pre></td></tr></table></figure>
+
+<p><strong>常量检测</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">define(&#39;a&#39;,15);</span><br><span class="line">$b &#x3D; defined(&#39;a&#39;);</span><br><span class="line">echo $b;  &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p><strong>系统常量</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__DIR__			文件所在目录</span><br><span class="line">__FILE__		文件路径</span><br><span class="line">__LINE__		程序代码行号</span><br><span class="line">PHP_VERSION 	显示PHP版本</span><br><span class="line">PHP_OS   		显示服务器的操作系统版本</span><br><span class="line">TRUE			boolean值真(true)支持小写常量</span><br><span class="line">FALSE 			boolean值假(false)支持小写常量</span><br><span class="line">__FUNCTION__	函数名称</span><br><span class="line">__METHOD__		方法名称</span><br><span class="line">__CLASS__		类名称</span><br></pre></td></tr></table></figure>
+
+<p>使用函数 <code>get_defined_constants(true)</code> 可以获取当前可使用的所有常量。</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><h3 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h3><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$a+$b</td>
+<td>加法 $a和$b的和</td>
+</tr>
+<tr>
+<td>$a-$b</td>
+<td>减法 $a和$b的差</td>
+</tr>
+<tr>
+<td>$a*$b</td>
+<td>乘法 $a和$b的积</td>
+</tr>
+<tr>
+<td>$a/$b</td>
+<td>除法 $a除以$b的商</td>
+</tr>
+<tr>
+<td>$a%$b</td>
+<td>取模 $a除以$b后的余</td>
+</tr>
+<tr>
+<td>++$a</td>
+<td>前加 $a 的值先加一，然后进行操作</td>
+</tr>
+<tr>
+<td>$a++</td>
+<td>后加 $a 的值先进行操作，后加一</td>
+</tr>
+<tr>
+<td>–$a</td>
+<td>前减 $a 的值先减一，然后进行操作</td>
+</tr>
+<tr>
+<td>$a–</td>
+<td>后减 $a 的值先进行操作，后减一</td>
+</tr>
+</tbody></table>
+<h3 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h3><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>=</td>
+<td>右边值赋值给左边变量</td>
+</tr>
+<tr>
+<td>+=</td>
+<td>左边值加上右边值赋值给左边变量</td>
+</tr>
+<tr>
+<td>-=</td>
+<td>左边值减掉右边值赋值给左边变量</td>
+</tr>
+<tr>
+<td>*=</td>
+<td>左边值乘以右边值赋值给左边变量</td>
+</tr>
+<tr>
+<td>/=</td>
+<td>左边值除以右边值赋值给左边变量</td>
+</tr>
+<tr>
+<td>.=</td>
+<td>左边字符串连接到右边变量后面</td>
+</tr>
+<tr>
+<td>%=</td>
+<td>左边值对右边值取余数后赋值给左边变量</td>
+</tr>
+</tbody></table>
+<h3 id="字符串运算符"><a href="#字符串运算符" class="headerlink" title="字符串运算符"></a>字符串运算符</h3><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.</td>
+<td>它返回其左右参数连接后的字符串</td>
+</tr>
+<tr>
+<td>.=</td>
+<td>左边字符串连接到右边变量后面</td>
+</tr>
+</tbody></table>
+<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$a==$b</code></td>
+<td>等于 TRUE，如果$a等于$b</td>
+</tr>
+<tr>
+<td><code>$a===$b</code></td>
+<td>全等于 TRUE，如果$a等于$b，并且类型也相同</td>
+</tr>
+<tr>
+<td><code>$a!=$b</code></td>
+<td>不等 TRUE，如果$a不等于$b</td>
+</tr>
+<tr>
+<td><code>$a&lt;&gt;$b</code></td>
+<td>不等 TRUE，如果$a不等于$b</td>
+</tr>
+<tr>
+<td><code>$a!==$b</code></td>
+<td>非全等 TRUE，如果$a不等于$b，或者类型不同</td>
+</tr>
+<tr>
+<td><code>$a&lt;$b</code></td>
+<td>小于 TRUE，如果$a严格小于$b</td>
+</tr>
+<tr>
+<td><code>$a&gt;$b</code></td>
+<td>大于 TRUE，如果$a严格$b</td>
+</tr>
+<tr>
+<td><code>$a&lt;=$b</code></td>
+<td>小于等于 TRUE，如果 $a 小于或者等于$b</td>
+</tr>
+<tr>
+<td><code>$a&gt;=$b</code></td>
+<td>大于等于 TRUE，如果 $a 大于或者等于$b</td>
+</tr>
+</tbody></table>
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$a and $b</td>
+<td>逻辑与 TRUE，如果 $a 与 $b 都为 TRUE</td>
+</tr>
+<tr>
+<td>$a or $b</td>
+<td>逻辑或 TRUE，如果 $a 或 $b 任一为TRUE</td>
+</tr>
+<tr>
+<td>!$a</td>
+<td>逻辑非 TRUE，如果 $a 不为 TRUE</td>
+</tr>
+<tr>
+<td>$a &amp;&amp; $b</td>
+<td>逻辑与 TRUE，如果 $a 与 $b 都为TRUE</td>
+</tr>
+<tr>
+<td>`$a</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>and与&amp;&amp; 、or与||是同一逻辑运算符的两种写法，但优先级不同。</p>
+<p>这四个符号的优先允许从高到低是：&amp;&amp;、||、AND、OR。</p>
+<h3 id="三元表达式"><a href="#三元表达式" class="headerlink" title="三元表达式"></a>三元表达式</h3><p>变量=(表达式)？值1:值2; 当表达式的返回值为true时，$变量被赋予值1，否则被赋予值2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo true?&#39;aa&#39;:&#39;bb&#39;; &#x2F;&#x2F;&#39;aa&#39;</span><br></pre></td></tr></table></figure>
+
+<p><strong>?? 与 ?:</strong></p>
+<p>PHP 7 新增加的 NULL 合并运算符（??）是用于执行isset()检测的三元运算的快捷方式。 ?: 只判断 true 或 false ，而 ?? 判断变量存在并且值不为null<br>如果??前面是符合变量存在并且值不为null,则返回本身,否则返回??后面的数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;$a &#x3D; null;</span><br><span class="line">$a &#x3D; 0;</span><br><span class="line">echo $a??&#39;aa&#39;; &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+
+<h3 id="屏蔽错误"><a href="#屏蔽错误" class="headerlink" title="屏蔽错误"></a>屏蔽错误</h3><p>@ 运算符用于屏蔽表达式警告错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(20&#x2F;0); &#x2F;&#x2F;Warning: Division by zero in E:\PHP\55.php on line 2</span><br><span class="line">@(20&#x2F;0);  &#x2F;&#x2F;无视错误</span><br></pre></td></tr></table></figure>
+
+<h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><h3 id="if-else-elseif"><a href="#if-else-elseif" class="headerlink" title="if/else/elseif"></a>if/else/elseif</h3><p>当条件表达式的值为真（true）时，PHP将执行语句组，相反条件表达式的值为假（false）时，PHP将不执行语句组，忽略语句组执行下面的语句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1.第一次方式</span><br><span class="line">$a &#x3D; 15;</span><br><span class="line">if($a &lt; 10)&#123;</span><br><span class="line">    echo &#39;a&#39;;</span><br><span class="line">&#125;elseif ($a &lt; 15)&#123;</span><br><span class="line">    echo &#39;b&#39;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &#39;c&#39;;  &#x2F;&#x2F;c</span><br><span class="line">&#125;</span><br><span class="line">2.第二次方式</span><br><span class="line">$a &#x3D; 15;</span><br><span class="line">if($a &lt; 10) :</span><br><span class="line">    echo &#39;a&#39;;</span><br><span class="line">elseif ($a &lt; 15) :</span><br><span class="line">    echo &#39;b&#39;;</span><br><span class="line">else :</span><br><span class="line">    echo &#39;c&#39;;  &#x2F;&#x2F;c</span><br><span class="line">endif;</span><br></pre></td></tr></table></figure>
+
+<h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><p>switch设置多个执行代码块，break指令终止向下执行，default为上面条件都不满足时执行的默认代码块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">1.第一种方式</span><br><span class="line">$a &#x3D; 25;</span><br><span class="line">switch ($a)&#123;</span><br><span class="line">    case 5 : echo &#39;a&#39;;</span><br><span class="line">    break;</span><br><span class="line">    case 10 : echo &#39;b&#39;;</span><br><span class="line">    break;</span><br><span class="line">    case 15 : echo &#39;c&#39;; </span><br><span class="line">    break;</span><br><span class="line">    default : echo &#39;d&#39;; &#x2F;&#x2F;d</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br><span class="line">2.第二种方式</span><br><span class="line">$a &#x3D; 25;</span><br><span class="line">switch ($a) :</span><br><span class="line">    case 5 : echo &#39;a&#39;;</span><br><span class="line">    break;</span><br><span class="line">    case 10 : echo &#39;b&#39;;</span><br><span class="line">    break;</span><br><span class="line">    case 15 : echo &#39;c&#39;;</span><br><span class="line">    break;</span><br><span class="line">    default : echo &#39;d&#39;; &#x2F;&#x2F;d</span><br><span class="line">    break;</span><br><span class="line">endswitch;</span><br></pre></td></tr></table></figure>
+
+<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p>当while循环语句中表达式（循环控制语句）的结果为真时，程序将反复执行同一段程序：循环体（ while中的语句或语句序列），直到满足一定的条件（表达式的结果为假时）后才停止执行该段程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$num &#x3D; 10;</span><br><span class="line">while ($num&gt;0) &#123;</span><br><span class="line">    echo($num--).&#39;&lt;br&#x2F;&gt;&#39;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;也可以使用以下写法</span><br><span class="line">$num &#x3D; 10;</span><br><span class="line">while ($num&gt;0):</span><br><span class="line">    echo($num--).&#39;&lt;br&#x2F;&gt;&#39;;</span><br><span class="line">endwhile;</span><br></pre></td></tr></table></figure>
+
+<h3 id="do…while"><a href="#do…while" class="headerlink" title="do…while"></a>do…while</h3><p>与while的差别是条件后判断。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$num &#x3D; 10;</span><br><span class="line">do &#123;</span><br><span class="line">    echo($num--).&#39;&lt;hr&#x2F;&gt;&#39;;</span><br><span class="line">&#125; while ($num&gt;0);</span><br></pre></td></tr></table></figure>
+
+<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for(表达式1;表达式2;表达式3)&#123;</span><br><span class="line">	语句或语句序列;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 表达式1为循环初始条件；</span><br><span class="line">&#x2F;&#x2F; 表达式2为循环控制条件；</span><br><span class="line">&#x2F;&#x2F; 表达式3为控制变量递增；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for($i &#x3D; 0;$i &lt; 10;$i++)&#123;</span><br><span class="line">    echo $i.&quot;&lt;hr&#x2F;&gt;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">for($i &#x3D; 0;$i &lt; 10;$i++):</span><br><span class="line">    echo $i.&quot;&lt;hr&#x2F;&gt;&quot;;</span><br><span class="line">endfor;</span><br></pre></td></tr></table></figure>
+
+<h3 id="break-与-continue"><a href="#break-与-continue" class="headerlink" title="break 与 continue"></a>break 与 continue</h3><p>**break **</p>
+<p>我们之前在 switch 条件判断中已经使用过 break 关键字，它会使得程序流程离开 switch 本体中的语句，如果 break 使用在 for、while 或 do-while 循环结构中时，将会使程序离开该层循环</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">do &#123;</span><br><span class="line">    if (!isset($num)) &#123;</span><br><span class="line">        $num&#x3D;10;</span><br><span class="line">    &#125;</span><br><span class="line">    if ($num&#x3D;&#x3D;0) &#123;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    echo($num--).&#39;&lt;hr&#x2F;&gt;&#39;;</span><br><span class="line">&#125; while (true);</span><br></pre></td></tr></table></figure>
+
+<p>break 在多层循环嵌套使用时，可以指定跳转出层数。        </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$num&#x3D;0;</span><br><span class="line">while (true):</span><br><span class="line">    $num++;</span><br><span class="line">    switch ($num) :</span><br><span class="line">        case $num%2&#x3D;&#x3D;0:</span><br><span class="line">            echo $num.&quot;&lt;hr&#x2F;&gt;&quot;;</span><br><span class="line">            break;</span><br><span class="line">        case $num%15&#x3D;&#x3D;0:</span><br><span class="line">            echo $num.&quot;&lt;hr&#x2F;&gt;&quot;;</span><br><span class="line">            break 2; &#x2F;&#x2F;指定第二层跳出来</span><br><span class="line">    endswitch;</span><br><span class="line">endwhile;</span><br></pre></td></tr></table></figure>
+
+<p><strong>continue</strong></p>
+<p>continue 的作用与 break 有点类似，continue 若使用在 for、while 或 do-while循环结构中，当程序执行至 continue 时，之后的语句将直接被略过，而直接执行下一次的循环动作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for ($num&#x3D;10;$num&gt;0;$num--) &#123;</span><br><span class="line">    if(($num%2))continue;</span><br><span class="line">    echo $num.&#39;&lt;hr&#x2F;&gt;&#39;;</span><br><span class="line">&#125;  &#x2F;&#x2F;2 4 6 8 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件引入"><a href="#文件引入" class="headerlink" title="文件引入"></a>文件引入</h2><p><strong>include &amp; require</strong></p>
+<p>使用include和require 将文件导入，就像把该文件粘贴到使用函数的地方。</p>
+<p>include( )与require ( )区别在于错误处理方式，当引入产生错误时include( )产生一个警告而require( )则导致一个致命错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &#39;13.html&#39;;</span><br><span class="line">echo &#39;aa&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 @ 屏蔽incluce加载警告错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (!@include &#39;a.php&#39;) &#123;</span><br><span class="line">    echo &#39;文件不存在&#39;;  &#x2F;&#x2F;文件不存在</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>require 加载失败时将终止程序执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require &#39;aa.html&#39;;</span><br><span class="line">echo &#39;&lt;hr&#x2F;&gt;&#39;;</span><br><span class="line">echo &#39;aaa&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>include_once和require_once</strong></p>
+<p>与include( )语句及require( )区别是如果文件已经加载过，则不会重复加载文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;include &#39;13.html&#39;; &#x2F;&#x2F;加载两个</span><br><span class="line">&#x2F;&#x2F;include &#39;13.html&#39;;</span><br><span class="line"></span><br><span class="line">require_once &#39;aa.html&#39;;</span><br><span class="line">require_once &#39;aa.html&#39;;  &#x2F;&#x2F;只加载一个</span><br></pre></td></tr></table></figure>
+
+<h3 id="UNIX时间戳"><a href="#UNIX时间戳" class="headerlink" title="UNIX时间戳"></a>UNIX时间戳</h3><p>PHP的时间戳开始于1970年1月1日零点，默认为10位整数数值。</p>
+<h4 id="time"><a href="#time" class="headerlink" title="time"></a>time</h4><p>返回当前Unix 时间戳秒数，1毫秒等于一千分之一秒。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo time();</span><br></pre></td></tr></table></figure>
+
+<h4 id="microtime"><a href="#microtime" class="headerlink" title="microtime"></a>microtime</h4><p>返回当前 Unix 时间戳和微秒数。1微秒等于一百万分之一秒。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">list($usec, $sec) = explode(&quot; &quot;, microtime());</span><br><span class="line">echo $sec.&#x27;:&#x27;.$usec;</span><br></pre></td></tr></table></figure>
+
+<p>设置参数为TRUE返回浮点数</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo microtime(true);</span><br></pre></td></tr></table></figure>
+
+<h4 id="脚本执行时间"><a href="#脚本执行时间" class="headerlink" title="脚本执行时间"></a>脚本执行时间</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function runtime($start=null, $end=null)</span><br><span class="line">&#123;</span><br><span class="line">    static $cache=[];</span><br><span class="line">    if (is_null($start)) &#123;</span><br><span class="line">        return $cache;</span><br><span class="line">    &#125; elseif (is_null($end)) &#123;</span><br><span class="line">        return $cache[$start] = microtime(true);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $end = $cache[$end]??microtime(true);</span><br><span class="line">        return $end-$cache[$start];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//record</span><br><span class="line">runtime(&#x27;for&#x27;);</span><br><span class="line">for ($i=0;$i&lt;20000000;$i++):</span><br><span class="line">    $i++;</span><br><span class="line">endfor;</span><br><span class="line"></span><br><span class="line">//record</span><br><span class="line">runtime(&#x27;while&#x27;);</span><br><span class="line">$n=0;</span><br><span class="line">while ($n&lt;20000000):</span><br><span class="line">    $n++;</span><br><span class="line">endwhile;</span><br><span class="line"></span><br><span class="line">echo runtime(&#x27;for&#x27;, true);</span><br><span class="line">echo &#x27;&lt;hr/&gt;&#x27;;</span><br><span class="line">echo runtime(&#x27;while&#x27;, true);</span><br></pre></td></tr></table></figure>
+
+<h4 id="date"><a href="#date" class="headerlink" title="date"></a>date</h4><p>格式化一个本地时间／日期</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo date(&#x27;Y-m-d h:i:s&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>通过第二个参数设置处理的时间</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo date(&#x27;Y-m-d&#x27;, time()-3600*24*100);</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Y</td>
+<td>4 位数字完整表示的年份</td>
+<td>例如：<em>1999</em> 或 <em>2003</em></td>
+</tr>
+<tr>
+<td>y</td>
+<td>2 位数字表示的年份</td>
+<td>例如：<em>99</em> 或 <em>03</em></td>
+</tr>
+<tr>
+<td>m</td>
+<td>数字表示的月份，有前导零</td>
+<td><em>01</em> 到 <em>12</em></td>
+</tr>
+<tr>
+<td>n</td>
+<td>数字表示的月份，没有前导零</td>
+<td><em>1</em> 到 <em>12</em></td>
+</tr>
+<tr>
+<td>d</td>
+<td>月份中的第几天，有前导零的 2 位数字</td>
+<td><em>01</em> 到 <em>31</em></td>
+</tr>
+<tr>
+<td>j</td>
+<td>月份中的第几天，没有前导零</td>
+<td>1 到 31</td>
+</tr>
+<tr>
+<td>H</td>
+<td>小时，24 小时格式，有前导零</td>
+<td><em>00</em> 到 <em>23</em></td>
+</tr>
+<tr>
+<td>h</td>
+<td>小时，12 小时格式，有前导零</td>
+<td>01 到 12</td>
+</tr>
+<tr>
+<td>i</td>
+<td>有前导零的分钟数</td>
+<td>00 到 59</td>
+</tr>
+<tr>
+<td>s</td>
+<td>秒数，有前导零</td>
+<td>00 到 59</td>
+</tr>
+</tbody></table>
+<h4 id="getdate"><a href="#getdate" class="headerlink" title="getdate"></a>getdate</h4><p>取得日期／时间信息</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print_r(getdate(strtotime(&quot;+1 day&quot;))); //获取1天后的时间数据</span><br></pre></td></tr></table></figure>
+
+<h4 id="strtotime"><a href="#strtotime" class="headerlink" title="strtotime"></a>strtotime</h4><p>将任何字符串的日期时间描述解析为 Unix 时间戳</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// ISO格式时间转为时间戳</span><br><span class="line">echo strtotime(&#x27;2022-1-20 03:22:12&#x27;);</span><br><span class="line">echo &#x27;&lt;br/&gt;&#x27;;</span><br><span class="line">echo date(&quot;Y-m-d h:i:s&quot;, 1547954532);</span><br><span class="line"></span><br><span class="line">//当前时间戳</span><br><span class="line">echo strtotime(&#x27;NOW&#x27;);</span><br><span class="line">echo &#x27;&lt;br/&gt;&#x27;;</span><br><span class="line">echo date(&quot;Y-m-d H:i:s&quot;, strtotime(&#x27;NOW&#x27;));</span><br></pre></td></tr></table></figure>
+
+<p><strong>时间计算</strong></p>
+<p>可以获取计算后的时间<a target="_blank" rel="noopener" href="http://php.net/manual/zh/datetime.formats.relative.php">格式参数</a></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//1年加1天后的时间戳</span><br><span class="line">echo strtotime(&#x27;+1 day +1 year&#x27;);</span><br><span class="line">echo &#x27;&lt;br/&gt;&#x27;;</span><br><span class="line">echo date(&quot;Y-m-d H:i:s&quot;, strtotime(&#x27;+1 day +1 year&#x27;));</span><br><span class="line"></span><br><span class="line">//下周五</span><br><span class="line">echo date(&quot;Y-m-d H:i:s&quot;, strtotime(&#x27;next friday&#x27;));</span><br></pre></td></tr></table></figure>
+
+<h3 id="对象操作"><a href="#对象操作" class="headerlink" title="对象操作"></a>对象操作</h3><p>PHP提供了面向对象的操作日期时间的方式，<a target="_blank" rel="noopener" href="https://carbon.nesbot.com/docs/">Carbon</a> 就是基于PHP内置对象的开源产品，功能丰富使用简单，具体Carbon课程请登录 <a target="_blank" rel="noopener" href="https://houdunren.gitee.io/www.houdunren.com">后盾人</a> 查看学习。</p>
+<p><strong>简单使用</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//定义时区，当然也可以使用date_default_timezone_set函数的</span><br><span class="line">$prc = new DateTimeZone(&#x27;PRC&#x27;);</span><br><span class="line">$dateTime = new DateTime();</span><br><span class="line">$dateTime-&gt;setTimezone($prc);</span><br><span class="line">echo $dateTime-&gt;format(&#x27;Y-m-d H:i:s&#x27;);</span><br><span class="line"></span><br><span class="line">//直接设置时间</span><br><span class="line">$dateTime = new DateTime(&#x27;2025-2-12 3:22:12&#x27;);</span><br><span class="line">echo $dateTime-&gt;format(&#x27;Y-m-d H:i:s&#x27;);</span><br><span class="line">//输出时间戳</span><br><span class="line">echo $dateTime-&gt;format(&#x27;U&#x27;);</span><br><span class="line"></span><br><span class="line">//重新时期与时间</span><br><span class="line">$dateTime-&gt;setDate(2019, 10, 1);</span><br><span class="line">$dateTime-&gt;setTime(10, 22, 12);</span><br><span class="line">echo &#x27;&lt;br/&gt;&#x27;;</span><br><span class="line">echo $dateTime-&gt;format(&#x27;Y-m-d H:i:s&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>根据时间戳生成时期</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$dateTime = new DateTime();</span><br><span class="line">$dateTime-&gt;setTimestamp(time());</span><br><span class="line">echo $dateTime-&gt;format(&#x27;Y-m-d H:i:s&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建不规则时间</strong></p>
+<p>根据给定的格式解析日期时间字符串，用于对不规则日期时间格式处理。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$dateTime = DateTime::createFromFormat(&#x27;Y/m-d His&#x27;, &#x27;2020/12-13 081253&#x27;);</span><br><span class="line">echo $dateTime-&gt;format(&#x27;Y-m-d H:i:s&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取时间差</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$dateTime1 = new DateTime();</span><br><span class="line">$dateTime2 = new DateTime(&#x27;2019-9-2&#x27;);</span><br><span class="line">$interval = $dateTime1-&gt;diff($dateTime2);</span><br><span class="line">$format = &#x27;距离生日还有 &lt;span style=&quot;color:red&quot;&gt;%m个月%d天%h小时%i分钟%s秒&lt;/span&gt; &lt;br/&gt;共%R%a天&#x27;;</span><br><span class="line">echo $interval-&gt;format($format);</span><br></pre></td></tr></table></figure>
+
+<p>说明 %R 显示+或-表示大于或小于，%a相差天数。</p>
+<p><strong>添加时间</strong></p>
+<p>格式以字母P开始后面跟着一个周期指示器。如果包含时间元素则以字母T开始。比如 <code>P2DT3H</code>表示间隔2天3小时。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$date = new DateTime();</span><br><span class="line">$interval = new DateInterval(&#x27;P2DT2H5M&#x27;);</span><br><span class="line">echo $date-&gt;format(&#x27;Y-m-d H:i&#x27;).&quot;&lt;br/&gt;&quot;;</span><br><span class="line"></span><br><span class="line">//增加时间</span><br><span class="line">$date-&gt;add($interval);</span><br><span class="line">echo $date-&gt;format(&#x27;Y-m-d H:i&#x27;);</span><br><span class="line"></span><br><span class="line">//减少时间</span><br><span class="line">echo &quot;&lt;br/&gt;&quot;;</span><br><span class="line">echo (new DateTime())-&gt;sub($interval)-&gt;format(&#x27;Y-m-d H:i&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h2><p>PHP提供了丰富的数学操作函数，下面我们介绍常用的函数使用，其他函数使用请<a target="_blank" rel="noopener" href="http://php.net/manual/zh/ref.math.php">手册</a>。</p>
+<h3 id="ceil"><a href="#ceil" class="headerlink" title="ceil"></a>ceil</h3><p>进一法取整</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo ceil(10.2); //输出11</span><br></pre></td></tr></table></figure>
+
+<h3 id="floor"><a href="#floor" class="headerlink" title="floor"></a>floor</h3><p>向下取整</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo floor(10.2); //输出10</span><br></pre></td></tr></table></figure>
+
+<h3 id="max"><a href="#max" class="headerlink" title="max"></a>max</h3><p>找出最大值</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo max(1, 3); //返回3</span><br></pre></td></tr></table></figure>
+
+<h3 id="min"><a href="#min" class="headerlink" title="min"></a>min</h3><p>找出最小值。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo min(1, 3);//返回1</span><br></pre></td></tr></table></figure>
+
+<p>下面是获取页码的逻辑，并对用户参数进行了验证处理，防止出现负数与超过总页码100的数值。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo  min(100, max(1, $_GET[&#x27;page&#x27;]??1));</span><br></pre></td></tr></table></figure>
+
+<h3 id="round"><a href="#round" class="headerlink" title="round"></a>round</h3><p>对浮点数进行四舍五入处理。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo round(12.567, 2);</span><br></pre></td></tr></table></figure>
+
+<h3 id="mt-rand"><a href="#mt-rand" class="headerlink" title="mt_rand"></a>mt_rand</h3><p>生成更好的随机数，下面是生成验证码随机数示例。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function code(int $len=5):string</span><br><span class="line">&#123;</span><br><span class="line">    $str = &#x27;abcdefghknm12345678&#x27;;</span><br><span class="line">    $code = &#x27;&#x27;;</span><br><span class="line">    for ($i=0;$i&lt;$len;$i++) &#123;</span><br><span class="line">        $index = mt_rand(0, strlen($str)-1);</span><br><span class="line">        $code.=strtoupper($str[$index]);</span><br><span class="line">    &#125;</span><br><span class="line">    return $code;</span><br><span class="line">&#125;</span><br><span class="line">echo code(5);</span><br></pre></td></tr></table></figure>
       
 
       
@@ -921,7 +1381,7 @@ echo $a;  //xiekunze.github.io</code></pre>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PHP</a>
         		</li>
       		
 		</ul>
@@ -6157,6 +6617,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
@@ -6165,19 +6629,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">markdown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -6201,11 +6657,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
+                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -6213,11 +6669,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
