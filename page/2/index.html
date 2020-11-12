@@ -1645,7 +1645,331 @@ echo $b; //integer</code></pre>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; include &#39;database.php&#39;;</span><br><span class="line">$b &#x3D; serialize($a);</span><br><span class="line">&#x2F;&#x2F;echo $b;</span><br><span class="line">&#x2F;&#x2F;a:2:&#123;s:8:&quot;database&quot;;a:4:&#123;s:4:&quot;host&quot;;s:9:&quot;localhost&quot;;s:4:&quot;port&quot;;i:3306;s:4:&quot;user&quot;;s:4:&quot;root&quot;;s:8:&quot;password&quot;;s:0:&quot;&quot;;&#125;s:3:&quot;app&quot;;a:2:&#123;s:4:&quot;name&quot;;s:12:&quot;向军大叔&quot;;s:3:&quot;url&quot;;s:20:&quot;http:&#x2F;&#x2F;houdunren.com&quot;;&#125;&#125;</span><br><span class="line">$c &#x3D; unserialize($b);</span><br><span class="line">print_r($c);</span><br><span class="line">&#x2F;&#x2F;Array ( [database] &#x3D;&gt; Array ( [host] &#x3D;&gt; localhost [port] &#x3D;&gt; 3306 [user] &#x3D;&gt; root [password] &#x3D;&gt; ) [app] &#x3D;&gt; Array ( [name] &#x3D;&gt; 向军大叔 [url] &#x3D;&gt; http:&#x2F;&#x2F;houdunren.com ) )</span><br></pre></td></tr></table></figure>
 
-<h1 id="Day4"><a href="#Day4" class="headerlink" title="Day4"></a>Day4</h1>
+<h1 id="Day4"><a href="#Day4" class="headerlink" title="Day4"></a>Day4</h1><h2 id="正则表达式-preg"><a href="#正则表达式-preg" class="headerlink" title="正则表达式 (preg)"></a>正则表达式 (preg)</h2><p>正则表达式被用来检索或替换那些符合某个模式的文本内容。 许多程序设计语言都支持利用正则表达式进行字符串操作。例如：JavaScript、PHP、ASP、JAVA、Perl、C#、.NET、ColdFusion、Python、Visual Basic、MYSQL、LINUX、VI编辑器等等语言都支持正则表达式。</p>
+<p>简单来说正则表达式就是完成字符串的增、删、改、查。</p>
+<h2 id="定界符"><a href="#定界符" class="headerlink" title="定界符"></a>定界符</h2><p>正则表达式语句需要由分隔符（定界符）闭合包裹，分隔符可以使任意非字母数字, 非反斜线, 非空白字符</p>
+<p>经常使用的分隔符是正斜线(/), hash符号(#) 以及取反符号(~)。</p>
+<p>建议使用//做为定界符,因为与js一致。</p>
+<p>/#   可以避免转义字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;xiekunze&#x2F;&#39;,&#39;xiekunze.github.io&#39;);</span><br><span class="line">echo $a;  &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><p>元字符是正则表达式中的最小元素，只代表单一（一个）字符。下面是元字符列表</p>
+<table>
+<thead>
+<tr>
+<th>元字符</th>
+<th>说明</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\d</td>
+<td>匹配任意一个数字</td>
+<td>[0-9]</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>与除了数字以外的任何一个字符匹配</td>
+<td>[^0-9]</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>与任意一个英文字母,数字或下划线匹配</td>
+<td>[a-zA-Z_0-9]</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>除了字母,数字或下划线外与任何字符匹配</td>
+<td>[^a-zA-Z_0-9]</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>与任意一个空白字符匹配</td>
+<td>[\n\f\r\t\v]</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>与除了空白符外任意一个字符匹配</td>
+<td>[^\n\f\r\t\v]</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>换行字符</td>
+<td></td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;\d&#x2F;&#39;,12);</span><br><span class="line">echo $a.&#39;&lt;br&#x2F;&gt;&#39;;  &#x2F;&#x2F;1</span><br><span class="line">$b &#x3D; preg_match(&#39;&#x2F;\D&#x2F;&#39;,&#39;1&#39;);</span><br><span class="line">echo $b.&#39;&lt;br&#x2F;&gt;&#39;;  &#x2F;&#x2F;0</span><br><span class="line">$w &#x3D; preg_match(&#39;&#x2F;\w&#x2F;&#39;,&#39;@&#39;);</span><br><span class="line">echo $w.&#39;&lt;br&gt;&#39;;   &#x2F;&#x2F;0</span><br><span class="line">$W &#x3D; preg_match(&quot;&#x2F;\W&#x2F;&quot;,&quot;@&quot;);</span><br><span class="line">echo $W.&#39;&lt;br&gt;&#39;;   &#x2F;&#x2F;1</span><br><span class="line">$s &#x3D; preg_match(&#39;&#x2F;\s&#x2F;&#39;,&#39; &#39;);</span><br><span class="line">echo $s.&#39;&lt;br&gt;&#39;;   &#x2F;&#x2F;1</span><br><span class="line">$S &#x3D; preg_match(&#39;&#x2F;\S&#x2F;&#39;,&#39;&#39;);</span><br><span class="line">echo $S.&#39;&lt;br&gt;&#39;;   &#x2F;&#x2F;0</span><br><span class="line">$n &#x3D; preg_match(&#39;&#x2F;\n&#x2F;&#39;,&#39;\n&#39;);</span><br><span class="line">echo $n.&#39;&lt;br&gt;&#39;;   &#x2F;&#x2F;0</span><br><span class="line">$t &#x3D; preg_match(&#39;&#x2F;\t&#x2F;&#39;,&#39;\t&#39;);</span><br><span class="line">echo $t.&#39;&lt;br&gt;&#39;;   &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+
+<h2 id="原子表"><a href="#原子表" class="headerlink" title="原子表"></a>原子表</h2><p>在一组字符中匹配某个元字符，在正则表达式中通过元字符表来完成，就是放到方括号中。</p>
+<table>
+<thead>
+<tr>
+<th>原子表</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[]</td>
+<td>只匹配其中的一个原子</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>只匹配”除了”其中字符的任意一个原子</td>
+</tr>
+<tr>
+<td>[0-9]</td>
+<td>匹配0-9任何一个数字</td>
+</tr>
+<tr>
+<td>[a-z]</td>
+<td>匹配小写a-z任何一个字母</td>
+</tr>
+<tr>
+<td>[A-Z]</td>
+<td>匹配大写A-Z任何一个字母</td>
+</tr>
+<tr>
+<td>.</td>
+<td>点在正则中表示除换行符外的任意字符</td>
+</tr>
+</tbody></table>
+<p>只要出现<code>abc</code>其中任一一个就算匹配成功([abc])\</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;[abc]&#x2F;&#39;,&#39;c&#39;);</span><br><span class="line">echo $a; &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p>匹配除了 <code>abc</code>外的任何字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;[^abc]&#x2F;&#39;,&#39;c&#39;);</span><br><span class="line">echo $a; &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+
+<p>匹配0-9anda-z以外的字符都是不行的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;[0-9a-z]&#x2F;&#39;,&#39;J&#39;);</span><br><span class="line">echo $a; &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+<p>用. 匹配字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;.&#x2F;&#39;,&#39;J&#39;);</span><br><span class="line">echo $a; &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+
+<p>下面是通过原子表拆分字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; &#39;xie#kun&amp;aa&amp;on#&#39;;</span><br><span class="line">$b &#x3D; preg_split(&#39;&#x2F;[#&amp;]&#x2F;&#39;,$a);</span><br><span class="line">print_r($b); &#x2F;&#x2F;Array ( [0] &#x3D;&gt; xie [1] &#x3D;&gt; kun [2] &#x3D;&gt; aa [3] &#x3D;&gt; on [4] &#x3D;&gt; )</span><br></pre></td></tr></table></figure>
+
+<h2 id="原子组"><a href="#原子组" class="headerlink" title="原子组"></a>原子组</h2><ul>
+<li>如果一次要匹配多个元子，可以通过元子组完成</li>
+<li>原子组与原子表的差别在于原子组一次匹配多个元子，而原子表则是匹配成功表中的一个元字符就可以</li>
+<li>元字符组用（）表示</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; preg_match(&#39;&#x2F;(12)&#x2F;&#39;,&#39;123&#39;);&#x2F;&#x2F;两个必须同时出现,缺一不可</span><br><span class="line">echo $a; &#x2F;&#x2F;1 </span><br></pre></td></tr></table></figure>
+
+<p>例:下面是使用正则表达式将<code>houdunwang</code> 字符中的 <code>houdun</code> 描红。</p>
+<p>(  \1可以取到$preg中的的()中的值,   \0可以取到$preg中完整的值    \n代表n个括号)       只要出现正则表达式,就可以用\n来获取当前的表达式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;官网www.houdunwang.com 论坛http:&#x2F;&#x2F;bbs.houdunwang.com，我在网名叫houdun&quot;;</span><br><span class="line">$preg &#x3D; &quot;&#x2F;(houdun)wang&#x2F;is&quot;;</span><br><span class="line">$newStr&#x3D; preg_replace($preg, &#39;&lt;span style&#x3D;&quot;color:#f00&quot;&gt;\1&lt;&#x2F;span&gt;wang&#39;, $str);</span><br><span class="line">echo $newStr; &#x2F;&#x2F;官网www.houdunwang.com 论坛http:&#x2F;&#x2F;bbs.houdunwang.com，我在网名叫houdun</span><br></pre></td></tr></table></figure>
+
+<h3 id="分组别名"><a href="#分组别名" class="headerlink" title="分组别名"></a>分组别名</h3><p>有时要为匹配到的结果使用字符串命名（别名），而不是使用默认的数字索引，使用<code>(?&lt;hd&gt;)</code>形式可以实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#39;&#x2F;(?&lt;hd&gt;\d+)&#x2F;&#39;, &#39;houdunren2010&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; 2010 [hd] &#x3D;&gt; 2010 [1] &#x3D;&gt; 2010 )</span><br></pre></td></tr></table></figure>
+
+<p>也可以写成引号的形式，但要注意引号的嵌套问题(双引号不用转义,单引号需要转义字符)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#39;&#x2F;(?\&#39;hd\&#39;\d+)&#x2F;&#39;, &#39;houdunren2010&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; 2010 [hd] &#x3D;&gt; 2010 [1] &#x3D;&gt; 2010 )</span><br></pre></td></tr></table></figure>
+
+<h3 id="不记录分组"><a href="#不记录分组" class="headerlink" title="不记录分组"></a>不记录分组</h3><p>如果希望分组匹配，但结果中不保存分组结果时使用 <code>(?:exp)</code>，下例中的结果中将不包括分组数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#39;&#x2F;(?:\d+)&#x2F;&#39;, &#39;houdunren2010&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; 2010 )</span><br></pre></td></tr></table></figure>
+
+<h2 id="断言匹配-相当于去截取"><a href="#断言匹配-相当于去截取" class="headerlink" title="断言匹配(相当于去截取)"></a>断言匹配(相当于去截取)</h2><p>断言匹配的内容不会保存到结果中，是对内容前后位置的限制操作。</p>
+<h3 id="正向先行断言"><a href="#正向先行断言" class="headerlink" title="正向先行断言"></a>正向先行断言</h3><p>匹配指定内容前面的内容时使用 <code>(?=exp)</code>，下面是匹配数字2前面的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&quot;&#x2F;.*(?&#x3D;2)&#x2F;&quot;, &#39;houdunren2010&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; houdunren )</span><br></pre></td></tr></table></figure>
+
+<h3 id="正向后行断言"><a href="#正向后行断言" class="headerlink" title="正向后行断言"></a>正向后行断言</h3><p>匹配指定内容后面的内容时使用 <code>(?&lt;=exp)</code>，下面是匹配数字2前面的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&quot;&#x2F;(?&lt;&#x3D;2).*&#x2F;&quot;, &#39;houdunren2010&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; 010 )</span><br></pre></td></tr></table></figure>
+
+<h3 id="负向先行断言"><a href="#负向先行断言" class="headerlink" title="负向先行断言"></a><strong>负向先行断言</strong></h3><p>使用<code>(?!exp)</code>匹配后面不能是指定内容，下面匹配后面不是#的四位数值(取#前面的四位)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match_all(&quot;&#x2F;\d&#123;4&#125;(?!#)&#x2F;&quot;, &#39;2030# 2022年&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( [0] &#x3D;&gt; 2022 ) )</span><br></pre></td></tr></table></figure>
+
+<h3 id="负向后行断言"><a href="#负向后行断言" class="headerlink" title="负向后行断言"></a>负向后行断言</h3><p>负向先行断言 指使用<code>(?&lt;!exp)</code>匹配前面不能是指定内容，下面匹配前面不是#的四位数值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">preg_match_all(&quot;&#x2F;(?&lt;!#)\d&#123;4&#125;&#x2F;&quot;, &#39;#2030 2022年&#39;, $match);</span><br><span class="line">print_r($match);</span><br><span class="line"></span><br><span class="line">#匹配结果</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( [0] &#x3D;&gt; 2022 ) )</span><br></pre></td></tr></table></figure>
+
+<h2 id="边界匹配"><a href="#边界匹配" class="headerlink" title="边界匹配"></a>边界匹配</h2><p>如果想匹配字符的边界，边界包括空格、标点符号、换行等，可以使用正则表达式的匹配字符边界修饰符如下。(一旦规定必须一模一样)</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>匹配字符串的开始</td>
+</tr>
+<tr>
+<td>$</td>
+<td>匹配字符串的结束，忽略换行符</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; &quot;&#x2F;^xiekunze.github.io$&#x2F;&quot;;</span><br><span class="line">$b &#x3D; preg_match($a,&#39;xiekunze.github.io&#39;);</span><br><span class="line">echo $b;  &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<h2 id="选择修释"><a href="#选择修释" class="headerlink" title="选择修释"></a>选择修释</h2><p>| 这个符号带表选择修释符，也就是 | 左右两侧有一个匹配到就可以。</p>
+<p>下面是通过选择修释符将域名修改为 <code>xxx</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a &#x3D; &quot;xiekunze.github.io与xielitao.github.io&quot;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;(xiekunze|xielitao)&#x2F;&#39;;</span><br><span class="line">echo preg_replace($preg,&#39;xxx&#39;,$a); &#x2F;&#x2F;xxx.github.io与xxx.github.io</span><br></pre></td></tr></table></figure>
+
+<p>匹配域名后缀</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;来了，老弟！有问题就上 houdunren.com 或 houdunwang.com 我们在那里等你&#39;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;(houdunren|houdunwang)\.com&#x2F;&#39;;</span><br><span class="line">$replace &#x3D; &#39;&lt;a href&#x3D;&quot;http:&#x2F;&#x2F;www.\1.com&quot;&gt;\1.com&lt;&#x2F;a&gt;&#39;;</span><br><span class="line">echo preg_replace($preg, $replace, $str);</span><br><span class="line">&#x2F;&#x2F;来了，老弟！有问题就上 houdunren.com 或 houdunwang.com 我们在那里等你</span><br></pre></td></tr></table></figure>
+
+<h2 id="重复匹配"><a href="#重复匹配" class="headerlink" title="重复匹配"></a>重复匹配</h2><p>如果要重复匹配一些内容时我们要使用重复匹配修饰符，包括以下几种。</p>
+<p>因为正则最小单位是元字符，而我们很少只匹配一个元字符如a、b所以基本上重复匹配在每条正则语句中都是必用到的内容</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>重复零次或更多次</td>
+</tr>
+<tr>
+<td>+</td>
+<td>重复一次或更多次</td>
+</tr>
+<tr>
+<td>?</td>
+<td>重复零次或一次</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>重复n次</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>重复n次或更多次</td>
+</tr>
+<tr>
+<td>{n,m}</td>
+<td>重复n到m次</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var_dump(preg_match(&#39;&#x2F;^.*$&#x2F;&#39;, &#39;&#39;)); &#x2F;&#x2F;* 零个及空字符串也是可以的</span><br><span class="line">var_dump(preg_match(&#39;&#x2F;^[0-9]+$&#x2F;&#39;, &#39;1976&#39;)); &#x2F;&#x2F; 返回真</span><br><span class="line">var_dump(preg_match(&#39;&#x2F;^9?$&#x2F;&#39;, &#39;99&#39;)); &#x2F;&#x2F; 返回假</span><br><span class="line">var_dump(preg_match(&#39;&#x2F;^9&#123;2&#125;$&#x2F;&#39;, &#39;99&#39;)); &#x2F;&#x2F; 返回真</span><br><span class="line">var_dump(preg_match(&#39;&#x2F;^[0-9]&#123;2,&#125;$&#x2F;&#39;, &#39;123&#39;)); &#x2F;&#x2F;返回真</span><br><span class="line">var_dump(preg_match(&#39;&#x2F;^[0-9]&#123;2,3&#125;$&#x2F;&#39;, &#39;1234&#39;)); &#x2F;&#x2F; 返回假，只能2~3位</span><br></pre></td></tr></table></figure>
+
+<p>下面匹配名操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$web &#x3D; &#39;sina.com&#39;;</span><br><span class="line">var_dump(preg_match(&#39;&#x2F;^[a-z-0-9-]+\.(com|net|com\.cn|org|cn)$&#x2F;&#39;, $web)); &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p>下面是把 <code>h1</code>标签内容加上超链接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &lt;&lt;&lt;html</span><br><span class="line">&lt;h1&gt;hello houdunren&lt;&#x2F;h1&gt;</span><br><span class="line">html;</span><br><span class="line">echo preg_replace(&#39;&#x2F;&lt;h1&gt;(.+)&lt;\&#x2F;h1&gt;&#x2F;&#39;, &#39;&lt;a href&#x3D;&quot;http:&#x2F;&#x2F;www.houdunren.com&quot;&gt;\1&lt;&#x2F;a&gt;&#39;, $str);</span><br></pre></td></tr></table></figure>
+
+<h2 id="禁止贪婪-加个？相当于取范围的最小值-对单个操作比较好"><a href="#禁止贪婪-加个？相当于取范围的最小值-对单个操作比较好" class="headerlink" title="禁止贪婪(加个？相当于取范围的最小值(对单个操作比较好))"></a>禁止贪婪(加个？相当于取范围的最小值(对单个操作比较好))</h2><p>正则表达式在进行重复匹配时，默认是贪婪匹配模式，也就是说会尽量匹配更多内容，但是有的时候我们并不希望他匹配更多内容，这时可以通过?进行修饰来禁止重复匹配。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*?</td>
+<td>重复任意次，但尽可能少重复</td>
+</tr>
+<tr>
+<td>+?</td>
+<td>重复1次或更多次，但尽可能少重复</td>
+</tr>
+<tr>
+<td>??</td>
+<td>重复0次或1次，但尽可能少重复</td>
+</tr>
+<tr>
+<td>{n,m}?</td>
+<td>重复n到m次，但尽可能少重复</td>
+</tr>
+<tr>
+<td>{n,}?</td>
+<td>重复n次以上，但尽可能少重复</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;123456&#39;;</span><br><span class="line">preg_match(&#39;&#x2F;\d+?&#x2F;&#39;,$str,$matches);</span><br><span class="line">print_r($matches); &#x2F;&#x2F;Array ( [0] &#x3D;&gt; 1 )</span><br></pre></td></tr></table></figure>
+
+<p>因为增加了 <code>?</code> 所以只匹配数字1</p>
+<p>下面是使用禁止贪婪符替换将h1标签内容倾斜处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;&lt;h1&gt;你好&lt;&#x2F;h1&gt;&lt;h1&gt;向军大叔&lt;&#x2F;h1&gt;&quot;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;&lt;h1&gt;(.*?)&lt;\&#x2F;h1&gt;&#x2F;&#39;;</span><br><span class="line">$replace &#x3D; &#39;&lt;h1&gt;&lt;em&gt;\1&lt;&#x2F;em&gt;&lt;&#x2F;h1&gt;&#39;;</span><br><span class="line">echo preg_replace($preg,$replace,$str); &#x2F;&#x2F;你好  向军大叔</span><br></pre></td></tr></table></figure>
+
+<p>下面是替换h1-h6标签内容，就不需要使用禁止贪婪符了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &quot;&lt;h1&gt;你好&lt;&#x2F;h1&gt;&lt;h2&gt;向军大叔&lt;&#x2F;h2&gt;&quot;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;&lt;h([1-6])&gt;(.*)&lt;\&#x2F;h\1&gt;&#x2F;&#39;;</span><br><span class="line">$replace &#x3D; &#39;&lt;h\1&gt;&lt;em&gt;\2&lt;&#x2F;em&gt;&lt;&#x2F;h\1&gt;&#39;;</span><br><span class="line">echo preg_replace($preg,$replace,$str);  &#x2F;&#x2F;你好 向军大叔</span><br></pre></td></tr></table></figure>
+
+<h2 id="模式修正"><a href="#模式修正" class="headerlink" title="模式修正"></a>模式修正</h2><p>正则表达式在执行时会按他们的默认执行方式进行，但有时候默认的处理方式总不能满足我们的需求，所以可以使用模式修正符更改默认方式。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>i</td>
+<td>不区分大小写字母的匹配</td>
+</tr>
+<tr>
+<td>s</td>
+<td>将字符串视为单行，换行符做普通字符看待，使“.” 匹 配任何字符</td>
+</tr>
+<tr>
+<td>x</td>
+<td>忽略空白及#符号，根据此特性可以添加正则注释</td>
+</tr>
+<tr>
+<td>m</td>
+<td>^与$符匹配按行匹配</td>
+</tr>
+<tr>
+<td>A</td>
+<td>强制从字符串开始匹配（多行时默认以每行开始设置）</td>
+</tr>
+<tr>
+<td>D</td>
+<td>以$结尾时不允许后面有换行（使用\m时无效）</td>
+</tr>
+<tr>
+<td>u</td>
+<td>匹配内容按utf-8处理，可以用来匹配utf-8的中文字符</td>
+</tr>
+</tbody></table>
+<p> \i修正符不匹分大小示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;https:&#x2F;&#x2F;www.HoudunREN.com 后盾人&#39;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;https:\&#x2F;\&#x2F;www.houdunren.com&#x2F;i&#39;;</span><br><span class="line">$replace&#x3D; &#39;&lt;a href&#x3D;&quot;\0&quot;&gt;\0&lt;&#x2F;a&gt;&#39;;</span><br><span class="line">echo preg_replace($preg,$replace,$str);</span><br></pre></td></tr></table></figure>
+
+<p>\s 将字符串示为单行操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;xiekunze.</span><br><span class="line">github.io&#39;;</span><br><span class="line">$preg &#x3D; &#39;#(&lt;h1&gt;)(.*?)(&lt;&#x2F;h1&gt;)#s&#39;;</span><br><span class="line">preg_match_all($preg,$str,$matches);</span><br><span class="line">&#x2F;&#x2F;print_r($matches);</span><br><span class="line"></span><br><span class="line">$replace &#x3D; &#39;\1&lt;span style&#x3D;&quot;color:red&quot;&gt;\2\3&lt;&#x2F;span&gt;&#39;;</span><br><span class="line">echo preg_replace($preg,$replace,$str); &#x2F;&#x2F;xiekunze. github.io</span><br></pre></td></tr></table></figure>
+
+<p><code>\m</code> 使用 ^ 与 $ 按单行操作文本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &lt;&lt;&lt;php</span><br><span class="line">#1 2022-02-12</span><br><span class="line">后盾人</span><br><span class="line">@#100</span><br><span class="line">雅虎网</span><br><span class="line">#2 2033-09-11</span><br><span class="line">向军大叔</span><br><span class="line">php;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;^#\d+.*[\r|\n]$&#x2F;m&#39;;</span><br><span class="line">preg_match_all($preg, $str, $matches);</span><br><span class="line">print_r($matches);</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( [0] &#x3D;&gt; #1 2022-02-12 [1] &#x3D;&gt; #2 2033-09-11 ) )</span><br></pre></td></tr></table></figure>
+
+<p>\x字符忽略空白和添加正则注释</p>
+<p>1.添加注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$str&#x3D;&#39;houdunren.com&#39;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;^h</span><br><span class="line">   # 这是匹配以 h 开始的内容</span><br><span class="line">&#x2F;x&#39;;</span><br><span class="line">echo preg_replace($preg,&#39;&#39;,$str);</span><br></pre></td></tr></table></figure>
+
+<p>2.当设置了\x后<code>#</code> 会被忽略，如果正则中使用#需要转义处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$str&#x3D;&lt;&lt;&lt;php</span><br><span class="line">#1</span><br><span class="line">后盾人#1</span><br><span class="line">#2</span><br><span class="line">向军大叔#2</span><br><span class="line">php;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;^</span><br><span class="line">\#\d  #匹配以数字开始</span><br><span class="line">+.* $ #后跟任何字符</span><br><span class="line">&#x2F;mx&#39;;</span><br><span class="line">echo preg_replace($preg,&#39;&#39;,$str); &#x2F;&#x2F;后盾人#1 向军大叔#2</span><br></pre></td></tr></table></figure>
+
+<p>\U 与?功能相似意禁止贪婪匹配(一般isU一套带走)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &lt;&lt;&lt;php</span><br><span class="line">&lt;h1&gt;后盾人&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;h1&gt;向军大叔&lt;&#x2F;h1&gt;</span><br><span class="line">php;</span><br><span class="line">$preg &#x3D; &#39;#&lt;h1&gt;.*&lt;&#x2F;h1&gt;#sU&#39;;</span><br><span class="line">preg_match_all($preg,$str,$matches);</span><br><span class="line">print_r($matches); </span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( [0] &#x3D;&gt;</span><br><span class="line">&#x2F;&#x2F;后盾人</span><br><span class="line">&#x2F;&#x2F;[1] &#x3D;&gt;</span><br><span class="line">&#x2F;&#x2F;向军大叔</span><br><span class="line">&#x2F;&#x2F;) )</span><br></pre></td></tr></table></figure>
+
+<p>\A 与 ^限定符使用效果相似，必须以目标字符串开始。下面是验证邮箱例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;2300071698@qq.com&#39;;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;\w+@[\w\.]+&#x2F;A&#39;;</span><br><span class="line">preg_match_all($preg,$str,$matches);</span><br><span class="line">print_r($matches); &#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( [0] &#x3D;&gt; 2300071698@qq.com ) )</span><br></pre></td></tr></table></figure>
+
+<p>\D 修正符使用不允许以换行结束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &lt;&lt;&lt;php</span><br><span class="line">3a\n</span><br><span class="line">php;</span><br><span class="line">$preg &#x3D; &#39;&#x2F;\d+a$&#x2F;D&#39;;</span><br><span class="line">preg_match_all($preg,$str,$matches);</span><br><span class="line">print_r($matches);  &#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( ) )</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用函数-2"><a href="#常用函数-2" class="headerlink" title="常用函数"></a>常用函数</h2><h3 id="preg-match-可无第三个参数"><a href="#preg-match-可无第三个参数" class="headerlink" title="preg_match (可无第三个参数)"></a>preg_match (可无第三个参数)</h3><p>获取第一个匹配的内容 (匹配成功并且以数组的形式返回)（匹配不成功数组以空的形式返回）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str&#x3D; &#39;1@2@3&#39;;</span><br><span class="line">preg_match(&#39;&#x2F;\d+&#x2F;&#39;,$str,$matches);</span><br><span class="line">print_r($matches);  &#x2F;&#x2F;Array ( [0] &#x3D;&gt; 1 )</span><br></pre></td></tr></table></figure>
+
+<h3 id="preg-match-all-可无第三个参数"><a href="#preg-match-all-可无第三个参数" class="headerlink" title="preg_match_all  (可无第三个参数)"></a>preg_match_all  (可无第三个参数)</h3><p>获取所有匹配的内容 (匹配成功并且以数组的形式返回)（匹配不成功数组以空的形式返回）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str&#x3D; &#39;1@2@3&#39;;</span><br><span class="line">preg_match_all(&#39;&#x2F;\d+&#x2F;&#39;,$str,$matches);</span><br><span class="line">print_r($matches);  &#x2F;&#x2F;Array ( [0] &#x3D;&gt; Array ( [0] &#x3D;&gt; 1 [1] &#x3D;&gt; 2 [2] &#x3D;&gt; 3 ) )</span><br></pre></td></tr></table></figure>
+
+<h3 id="preg-split"><a href="#preg-split" class="headerlink" title="preg_split"></a>preg_split</h3><p>通过正则表达式拆分字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str&#x3D; &#39;1@2@3&#39;;</span><br><span class="line">$a &#x3D; preg_split(&#39;&#x2F;@&#x2F;&#39;,$str);</span><br><span class="line">print_r($a);  &#x2F;&#x2F;Array ( [0] &#x3D;&gt; 1 [1] &#x3D;&gt; 2 [2] &#x3D;&gt; 3 )</span><br></pre></td></tr></table></figure>
+
+<h3 id="preg-replace"><a href="#preg-replace" class="headerlink" title="preg_replace"></a>preg_replace</h3><p>三个参数: 1.将谁替换;    2.换成什么样； 3.在谁里面换</p>
+<p>通过正则表达式替换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$str&#x3D; &#39;1@2@3&#39;;</span><br><span class="line">$a &#x3D; preg_replace(&#39;&#x2F;@&#x2F;&#39;,&quot;#&quot;,$str);</span><br><span class="line">print_r($a);  &#x2F;&#x2F;1#2#3</span><br></pre></td></tr></table></figure>
+
+<h3 id="preg-replace-callback"><a href="#preg-replace-callback" class="headerlink" title="preg_replace_callback"></a>preg_replace_callback</h3><p>使用回调函数进行替换操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;1@2@3&#39;;</span><br><span class="line">echo preg_replace_callback(&#39;&#x2F;\d+&#x2F;&#39;,function ($matches) &#123;</span><br><span class="line">    return $matches[0]+100;</span><br><span class="line">&#125;, $str);  &#x2F;&#x2F;101@102@103</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h1>
       
 
       
@@ -6792,11 +7116,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -6820,11 +7144,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color3">手册</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">手册</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -6840,11 +7164,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
