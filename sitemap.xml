@@ -242,6 +242,13 @@
 
   
   <url>
+    <loc>https://xiekunze.github.io/tags/HTML/</loc>
+    <lastmod>2020-11-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xiekunze.github.io/tags/css/</loc>
     <lastmod>2020-11-14</lastmod>
     <changefreq>daily</changefreq>
@@ -256,7 +263,7 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/HTML/</loc>
+    <loc>https://xiekunze.github.io/tags/git/</loc>
     <lastmod>2020-11-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -264,13 +271,6 @@
   
   <url>
     <loc>https://xiekunze.github.io/tags/markdown/</loc>
-    <lastmod>2020-11-14</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://xiekunze.github.io/tags/git/</loc>
     <lastmod>2020-11-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
