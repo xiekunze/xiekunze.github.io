@@ -16,7 +16,7 @@
 <meta property="og:description" content="Day1(2020.11.7)基础知识PHP是什么?PHP(PHP: Hypertext Preprocessor，超文本预处理器的缩写)，是一种被广泛应用的开放源代码的、基于服务器端的用于产生动态网页的、可嵌入HTML中的脚本程序语言，尤其适合 WEB 开发。 当客户端向服务器的程序提出请求时，web服务器根据请求响应对应的页面，当页面中含有php脚本时，服务器会交给PHP解释器进行解释执行，将">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-24T15:29:08.000Z">
-<meta property="article:modified_time" content="2020-11-12T05:25:40.265Z">
+<meta property="article:modified_time" content="2020-11-14T10:18:56.863Z">
 <meta property="article:author" content="XieKunZe">
 <meta property="article:tag" content="PHP">
 <meta name="twitter:card" content="summary">
@@ -1499,7 +1499,192 @@ echo $b; //integer</code></pre>
 <h3 id="preg-replace-callback"><a href="#preg-replace-callback" class="headerlink" title="preg_replace_callback"></a>preg_replace_callback</h3><p>使用回调函数进行替换操作</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str &#x3D; &#39;1@2@3&#39;;</span><br><span class="line">echo preg_replace_callback(&#39;&#x2F;\d+&#x2F;&#39;,function ($matches) &#123;</span><br><span class="line">    return $matches[0]+100;</span><br><span class="line">&#125;, $str);  &#x2F;&#x2F;101@102@103</span><br></pre></td></tr></table></figure>
 
-<h1 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h1>
+<h1 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h1><h2 id="文件与目录"><a href="#文件与目录" class="headerlink" title="文件与目录(*)"></a>文件与目录(*)</h2><h2 id="基础函数"><a href="#基础函数" class="headerlink" title="基础函数"></a>基础函数</h2><h3 id="disk-total-space"><a href="#disk-total-space" class="headerlink" title="disk_total_space"></a>disk_total_space</h3><p>本函数返回的是该目录所在的磁盘分区的总大小，因此在给出同一个磁盘分区的不同目录作为参数所得到的结果完全相同。</p>
+<h3 id="disk-free-space"><a href="#disk-free-space" class="headerlink" title="disk_free_space"></a>disk_free_space</h3><p>参数是一个目录的字符串。该函数将根据相应的文件系统或磁盘分区返回可用的字节数。</p>
+<h3 id="自动添加单位"><a href="#自动添加单位" class="headerlink" title="自动添加单位"></a>自动添加单位</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * 获取有单位的大小</span><br><span class="line"> * @param int $total 大小单位字节</span><br><span class="line"> * @return string|null</span><br><span class="line"> *&#x2F;</span><br><span class="line">function space_total(int $total): ?string</span><br><span class="line">&#123;</span><br><span class="line">    $config &#x3D; [3 &#x3D;&gt; &#39;GB&#39;, 2 &#x3D;&gt; &#39;MB&#39;, 1 &#x3D;&gt; &#39;KB&#39;];</span><br><span class="line">    foreach ($config as $num &#x3D;&gt; $unit) &#123;</span><br><span class="line">        if ($total &gt; pow(1024, $num)) &#123;</span><br><span class="line">            return round($total &#x2F; pow(1024, $num)) . $unit;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return &#39;0KB&#39;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo space_total(disk_total_space(&#39;.&#39;));  &#x2F;&#x2F;293GB</span><br></pre></td></tr></table></figure>
+
+<h3 id="filesize"><a href="#filesize" class="headerlink" title="filesize"></a>filesize</h3><p>取得指定文件的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$filename &#x3D; &#39;11.jpg&#39;;</span><br><span class="line">echo $filename.&#39;: &#39;.filesize($filename).&#39; bytes&#39;; &#x2F;&#x2F;11.jpg: 24516 bytes</span><br></pre></td></tr></table></figure>
+
+<h3 id="fopen"><a href="#fopen" class="headerlink" title="fopen"></a>fopen</h3><p>打开文件或者 URL(远程文件)。如果打开的是URL需要保证PHP.INI配置项<code>allow_url_fopen</code> 开启。</p>
+<p>在操作二进制文件时如果没有指定 <em>‘b’</em> 标记，可能会碰到一些奇怪的问题，包括坏掉的图片文件以及关于 <em>\r\n</em> 字符的奇怪问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$filename &#x3D; &#39;11.txt&#39;;</span><br><span class="line">echo fopen($filename,&#39;r&#39;);  &#x2F;&#x2F;Resource id #3</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>mode</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>‘r’</em></td>
+<td>只读方式打开，将文件指针指向文件头。</td>
+</tr>
+<tr>
+<td><em>‘r+’</em></td>
+<td>读写方式打开，将文件指针指向文件头。</td>
+</tr>
+<tr>
+<td><em>‘w’</em></td>
+<td>写入方式打开，将文件指针指向文件头并将文件大小截为零。如果文件不存在则尝试创建之。</td>
+</tr>
+<tr>
+<td><em>‘w+’</em></td>
+<td>读写方式打开，将文件指针指向文件头并将文件大小截为零。如果文件不存在则尝试创建之。</td>
+</tr>
+<tr>
+<td><em>‘a’</em></td>
+<td>写入方式打开，将文件指针指向文件末尾。如果文件不存在则尝试创建之。</td>
+</tr>
+<tr>
+<td><em>‘a+’</em></td>
+<td>读写方式打开，将文件指针指向文件末尾。如果文件不存在则尝试创建之。</td>
+</tr>
+<tr>
+<td><em>‘x’</em></td>
+<td>创建并以写入方式打开，将文件指针指向文件头。如果文件已存在，则 <strong>fopen()</strong> 调用失败并返回 <strong>FALSE</strong>，并生成一条 <strong>E_WARNING</strong> 级别的错误信息。如果文件不存在则尝试创建之。</td>
+</tr>
+<tr>
+<td><em>‘x+’</em></td>
+<td>创建并以读写方式打开，其他的行为和 <em>‘x’</em> 一样。</td>
+</tr>
+</tbody></table>
+<h3 id="fread-文件内容"><a href="#fread-文件内容" class="headerlink" title="fread(文件内容)"></a>fread(文件内容)</h3><p>返回所读取的字符串， 或者在失败时返回 <strong>FALSE</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$filename &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$handle &#x3D; fopen($filename,&#39;r&#39;);</span><br><span class="line">echo fread($handle,2);  &#x2F;&#x2F;&#39;x</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo fread($handle,filesize($filename));  &#x2F;&#x2F;iekunze.github.io&#39;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fseek"><a href="#fseek" class="headerlink" title="fseek"></a>fseek</h3><p>在文件指针中定位，注意移动到 EOF 之后的位置不算错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$filename &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$handle &#x3D; fopen($filename,&#39;r&#39;);</span><br><span class="line">echo fread($handle,2);  &#x2F;&#x2F;&#39;x</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo fread($handle,filesize($filename));  &#x2F;&#x2F;iekunze.github.io&#39;</span><br><span class="line">fseek($handle,0);</span><br><span class="line">echo fread($handle,filesize($filename));  &#x2F;&#x2F;&#39;xiekunze.github.io&#39;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fwrite"><a href="#fwrite" class="headerlink" title="fwrite"></a>fwrite</h3><p>写入文件，返回写入的字符数，出现错误时则返回 <strong>FALSE</strong> 。</p>
+<p>在区分二进制文件和文本文件的系统上（如 Windows） 打开文件时，<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.fopen.php">fopen()</a> 函数的 mode 参数要加上 ‘b’。</p>
+<p>打开的文件必须是 r+(读写模式)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$filename &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$handle &#x3D; fopen($filename,&#39;r+b&#39;);</span><br><span class="line">fseek($handle,0);</span><br><span class="line">fwrite($handle,&#39;d&#39;);</span><br><span class="line">echo fread($handle,filesize($filename));  &#x2F;&#x2F;iekunze.github.io&#39;d</span><br></pre></td></tr></table></figure>
+
+<h3 id="fclose"><a href="#fclose" class="headerlink" title="fclose"></a>fclose</h3><p>fclose — 关闭一个已打开的文件指针</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$filename &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$handle &#x3D; fopen($filename,&#39;r+b&#39;);</span><br><span class="line">fseek($handle,0);</span><br><span class="line">fwrite($handle,&#39;d&#39;);</span><br><span class="line">echo fread($handle,filesize($filename));  &#x2F;&#x2F;iekunze.github.io&#39;d</span><br><span class="line">fclose($handle); </span><br></pre></td></tr></table></figure>
+
+<p>读取二进制等信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">header(&#39;Content-type:image&#x2F;jpg&#39;);  &#x2F;&#x2F;开启编码格式</span><br><span class="line">$a &#x3D; fopen(&#39;11.jpg&#39;,&#39;rb&#39;); &#x2F;&#x2F;设置rb</span><br><span class="line">$b &#x3D; fread($a,9999);</span><br><span class="line">echo $b;  &#x2F;&#x2F;图片</span><br></pre></td></tr></table></figure>
+
+<h3 id="feof"><a href="#feof" class="headerlink" title="feof"></a>feof</h3><p>测试文件指针是否到了文件结束的位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*11.txt:</span><br><span class="line">xiekunze.github.io</span><br><span class="line">xielitao</span><br><span class="line">kkk*&#x2F;</span><br><span class="line">$b &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$o &#x3D; fopen($b,&#39;rb&#39;);</span><br><span class="line">&#x2F;&#x2F;$a &#x3D; fgetc($o);</span><br><span class="line">&#x2F;&#x2F;echo $a.&#39;&lt;br&gt;&#39;;  &#x2F;&#x2F;x</span><br><span class="line">while (!feof($o))&#123;</span><br><span class="line">&#x2F;&#x2F;    echo fread($o,1);  &#x2F;&#x2F;xiekunze.github.io xielitao kkk</span><br><span class="line">    echo fgetc($o);  &#x2F;&#x2F;xiekunze.github.io xielitao kkk</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fgetc"><a href="#fgetc" class="headerlink" title="fgetc"></a>fgetc</h3><p>读取一个字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*11.txt:</span><br><span class="line">xiekunze.github.io</span><br><span class="line">xielitao</span><br><span class="line">kkk*&#x2F;</span><br><span class="line">$b &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$o &#x3D; fopen($b,&#39;rb&#39;);</span><br><span class="line">&#x2F;&#x2F;$a &#x3D; fgetc($o);</span><br><span class="line">&#x2F;&#x2F;echo $a.&#39;&lt;br&gt;&#39;;  &#x2F;&#x2F;x</span><br><span class="line">while (!feof($o))&#123;</span><br><span class="line">&#x2F;&#x2F;    echo fread($o,1);  &#x2F;&#x2F;xiekunze.github.io xielitao kkk</span><br><span class="line">    echo fgetc($o);  &#x2F;&#x2F;xiekunze.github.io xielitao kkk</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fgets"><a href="#fgets" class="headerlink" title="fgets"></a>fgets</h3><p>读取一行内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*11.txt:</span><br><span class="line">xiekunze.github.io</span><br><span class="line">xielitao</span><br><span class="line">kkk*&#x2F;</span><br><span class="line">$b &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$o &#x3D; fopen($b,&#39;rb&#39;);</span><br><span class="line">echo fgets($o);  &#x2F;&#x2F;xiekunze.github.io</span><br></pre></td></tr></table></figure>
+
+<h3 id="fgetss-7-3以上已弃用"><a href="#fgetss-7-3以上已弃用" class="headerlink" title="fgetss(7.3以上已弃用)"></a>fgetss(7.3以上已弃用)</h3><p>从文件指针中读取一行并过滤掉 HTML 标记。</p>
+<p>参数分别表示：资源对象、读取数量、允许标签</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;xj.html&#39;,&#39;rb&#39;);</span><br><span class="line">while(!feof($handle))&#123;</span><br><span class="line">    echo fgetss($handle,20,&#39;&lt;h1&gt;&lt;title&gt;&#39;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fgetcsv-让文件的字符串变成数组"><a href="#fgetcsv-让文件的字符串变成数组" class="headerlink" title="fgetcsv(让文件的字符串变成数组)"></a>fgetcsv(让文件的字符串变成数组)</h3><p>从文件指针中读入一行并解析 txt 字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">$users &#x3D; fgetcsv($handle,0,&#39;,&#39;);</span><br><span class="line">print_r($users);  &#x2F;&#x2F;Array ( [0] &#x3D;&gt; xiekunze.github.io [1] &#x3D;&gt; aa [2] &#x3D;&gt; vv [3] &#x3D;&gt; cc )</span><br></pre></td></tr></table></figure>
+
+<h3 id="readfile"><a href="#readfile" class="headerlink" title="readfile"></a>readfile</h3><p>读取文件所有内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">header(&#39;content-type:image&#x2F;png&#39;);</span><br><span class="line">readfile(&#39;11.jpg&#39;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="flock-不喜欢被人动手脚-也可以用数据库-权限控制"><a href="#flock-不喜欢被人动手脚-也可以用数据库-权限控制" class="headerlink" title="flock(不喜欢被人动手脚,也可以用数据库(权限控制))"></a>flock(不喜欢被人动手脚,也可以用数据库(权限控制))</h3><p>锁定文件操作，如果使用<code>flock</code> 锁定文件，必须保证在所有使用文件地方执行 <code>flock</code> 才有意义。如果过早的系统因为不支持锁定操作，函数执行将没有效果如FAT系统。</p>
+<table>
+<thead>
+<tr>
+<th>锁定方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LOCK_SH</strong></td>
+<td>取得共享锁定（读取的程序）</td>
+</tr>
+<tr>
+<td><strong>LOCK_EX</strong></td>
+<td>取得独占锁定（写入的程序)</td>
+</tr>
+<tr>
+<td><strong>LOCK_UN</strong></td>
+<td>释放锁定（无论共享或独占）</td>
+</tr>
+<tr>
+<td><strong>LOCK_NB</strong></td>
+<td>无法建立锁定时，此操作可不被阻断，马上返回进程。通常与LOCK_SH或LOCK_EX 做OR(|）组合使用。（Windows 系统上还不支持）</td>
+</tr>
+</tbody></table>
+<h4 id="读锁"><a href="#读锁" class="headerlink" title="读锁"></a>读锁</h4><p>1.php 文件内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">$stat &#x3D; flock($handle,LOCK_SH);</span><br><span class="line">sleep(5);</span><br><span class="line">echo fgetss($handle);</span><br><span class="line">flock($handle,LOCK_UN);</span><br></pre></td></tr></table></figure>
+
+<p>2.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;, &#39;rb&#39;);</span><br><span class="line">$stat &#x3D; flock($handle, LOCK_SH);</span><br><span class="line">echo fgetss($handle);</span><br><span class="line">flock($handle, LOCK_UN);</span><br></pre></td></tr></table></figure>
+
+<p>读锁不能写入文件可以读取文件，并不会阻塞。</p>
+<h4 id="写锁"><a href="#写锁" class="headerlink" title="写锁"></a>写锁</h4><p>1.php 文件内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">$stat &#x3D; flock($handle,LOCK_EX);</span><br><span class="line">sleep(2);</span><br><span class="line">echo fgetss($handle);</span><br><span class="line">flock($handle,LOCK_UN);</span><br></pre></td></tr></table></figure>
+
+<p>2.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">$stat &#x3D; flock($handle,LOCK_SH);</span><br><span class="line">echo fgetss($handle);</span><br><span class="line">flock($handle,LOCK_UN);</span><br></pre></td></tr></table></figure>
+
+<p>写锁为独占，所以读取文件也会阻塞，前一个文件执行完后才可以执行第二个。</p>
+<h4 id="防止阻塞-不是很懂"><a href="#防止阻塞-不是很懂" class="headerlink" title="防止阻塞(不是很懂)"></a>防止阻塞(不是很懂)</h4><p>1.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;,&#39;ab&#39;);</span><br><span class="line">$stat &#x3D; flock($handle,LOCK_EX);</span><br><span class="line">sleep(5);</span><br><span class="line">echo fgetss($handle);</span><br><span class="line">flock($handle,LOCK_UN);</span><br></pre></td></tr></table></figure>
+
+<p>2.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$handle &#x3D; fopen(&#39;11.txt&#39;,&#39;ab&#39;);</span><br><span class="line">$stat &#x3D; flock($handle,LOCK_SH | LOCK_NB,$wouldblock);</span><br><span class="line">if($stat)&#123;</span><br><span class="line">    $d &#x3D; fwrite($handle,&#39;aoxiangjun.com&#39;);</span><br><span class="line">    echo fgetss($handle);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &#39;file is locked&#39;;</span><br><span class="line">&#125;</span><br><span class="line">flock($handle,LOCK_UN);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用LOCK_NB当文件被其他请求锁定时，脚本继续向下执行，锁定失败。</li>
+<li>阻塞时 $wouldblock 亦是为真</li>
+</ul>
+<h3 id="is-writable"><a href="#is-writable" class="headerlink" title="is_writable"></a>is_writable</h3><p>判断给定的文件名是否可写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;E:\PHP\11.jpg&#39;;</span><br><span class="line">$a &#x3D; fopen(&#39;E:\PHP\day5.php\11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">var_dump(is_writable($a)); &#x2F;&#x2F;bool(false)</span><br></pre></td></tr></table></figure>
+
+<h3 id="is-readable"><a href="#is-readable" class="headerlink" title="is_readable"></a>is_readable</h3><p>判断给定文件名是否可读</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;E:\PHP\11.jpg&#39;;</span><br><span class="line">$a &#x3D; fopen(&#39;E:\PHP\day5.php\11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">var_dump(is_readable($a)); &#x2F;&#x2F;bool(false)</span><br></pre></td></tr></table></figure>
+
+<h3 id="file-exists"><a href="#file-exists" class="headerlink" title="file_exists"></a>file_exists</h3><p>检查文件或目录是否存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;E:\PHP\11.jpg&#39;;</span><br><span class="line">$a &#x3D; fopen(&#39;E:\PHP\day5.php\11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">var_dump(file_exists($a)); &#x2F;&#x2F;bool(false)</span><br></pre></td></tr></table></figure>
+
+<h3 id="is-file"><a href="#is-file" class="headerlink" title="is_file"></a>is_file</h3><p>判断给定文件名是否为一个正常的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;E:\PHP\11.jpg&#39;;</span><br><span class="line">$a &#x3D; fopen(&#39;E:\PHP\day5.php\11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">var_dump(is_file($a)); &#x2F;&#x2F;bool(false)</span><br></pre></td></tr></table></figure>
+
+<h3 id="is-dir"><a href="#is-dir" class="headerlink" title="is_dir"></a>is_dir</h3><p>判断给定文件名是否是一个目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;E:\PHP\11.jpg&#39;;</span><br><span class="line">$a &#x3D; fopen(&#39;E:\PHP\day5.php\11.txt&#39;,&#39;rb&#39;);</span><br><span class="line">var_dump(is_dir($b)); &#x2F;&#x2F;bool(false)</span><br></pre></td></tr></table></figure>
+
+<h3 id="file-put-contents"><a href="#file-put-contents" class="headerlink" title="file_put_contents(**)"></a>file_put_contents(**)</h3><p>将一个字符串写入文件。(无第三个参数的话,会自动对里面的内容进行覆盖)</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参数一</td>
+<td>文件名</td>
+</tr>
+<tr>
+<td>参数二</td>
+<td>写入的字符串</td>
+</tr>
+<tr>
+<td>参数三</td>
+<td>FILE_APPEND：如果文件 <code>filename</code> 已经存在，追加数据而不是覆盖。 LOCK_EX：在写入时获得一个独占锁。</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$a &#x3D; file_put_contents($b,&#39;aaaaaa&#39;,FILE_APPEND);</span><br><span class="line">echo $a;  &#x2F;&#x2F;6     返回你每次添加的长度</span><br><span class="line">$c &#x3D; fopen($b,&#39;rb&#39;);</span><br><span class="line">echo fread($c,99);   &#x2F;&#x2F;6XIEKUNZEaaaaaa</span><br></pre></td></tr></table></figure>
+
+<h3 id="file-get-content"><a href="#file-get-content" class="headerlink" title="file_get_content"></a>file_get_content</h3><p>将整个文件读入一个字符串，如果打开远程文件需要开启php.ini中的 <code>allow_url_fopen</code> 选项。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$b &#x3D; &#39;11.txt&#39;;</span><br><span class="line">$a &#x3D; file_put_contents($b,&#39;aaaaaa&#39;,FILE_APPEND);</span><br><span class="line">echo file_get_contents($b);  &#x2F;&#x2F;XIEKUNZEaaaaaaaaaaaa</span><br></pre></td></tr></table></figure>
+
+<h3 id="filemtime（-）"><a href="#filemtime（-）" class="headerlink" title="filemtime（*）"></a>filemtime（*）</h3><p>本函数返回文件中的数据块上次被写入的时间，也就是说，文件的内容上次被修改的时间。</p>
+<p>下面是缓存文件的操作代码，实际开发中的缓存控制还要注意很多细节，下面是核心思路代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;缓存文件存在并且没有过期时使用缓存文件</span><br><span class="line">if (is_file(&#39;1.cache.php&#39;) &amp;&amp; filemtime(&#39;1.cache.php&#39;) &gt; (time() - 10)) &#123;</span><br><span class="line">    include &#39;1.cache.php&#39;;</span><br><span class="line">    echo &#39;aaa&#39;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    &#x2F;&#x2F;开启缓存区并保存解析数据到缓存文件</span><br><span class="line">    ob_start();</span><br><span class="line">    include &#39;1.blade.php&#39;;</span><br><span class="line">    $content &#x3D; ob_get_clean();</span><br><span class="line">    echo $content;</span><br><span class="line">    file_put_contents(&#39;1.cache.php&#39;, $content);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;xiekunze.github.io</span><br><span class="line">&#x2F;&#x2F;aaa</span><br></pre></td></tr></table></figure>
+
+<p>1.cache.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h2 style&#x3D;&quot;color: crimson&quot;&gt;xiekunze.github.io&lt;&#x2F;h2&gt;</span><br></pre></td></tr></table></figure>
+
+<p>1.blade.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#39;1.cache.php&#39;;</span><br><span class="line">$b &#x3D; &lt;&lt;&lt;d</span><br><span class="line">&lt;h2 style&#x3D;&quot;color: crimson&quot;&gt;$a&lt;&#x2F;h2&gt;</span><br><span class="line">d;</span><br><span class="line">echo $b;</span><br></pre></td></tr></table></figure>
       
 
       
@@ -1766,19 +1951,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1794,11 +1979,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">手册</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color3">手册</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1814,11 +1999,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
