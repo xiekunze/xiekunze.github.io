@@ -148,6 +148,657 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2048小游戏" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/xiekunze.github.io/2020/10/19/2048%E5%B0%8F%E6%B8%B8%E6%88%8F/">网页版2048</a>
+    </h1>
+  
+
+        
+        <a href="/xiekunze.github.io/2020/10/19/2048%E5%B0%8F%E6%B8%B8%E6%88%8F/" class="archive-article-date">
+  	<time datetime="2020-10-19T11:36:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="在此之前可以先了解一下jQuery"><a href="#在此之前可以先了解一下jQuery" class="headerlink" title="在此之前可以先了解一下jQuery"></a>在此之前可以先了解一下jQuery</h2><p><a target="_blank" rel="noopener" href="https://www.runoob.com/jquery/jquery-tutorial.html">https://www.runoob.com/jquery/jquery-tutorial.html</a></p>
+<p>这一篇文章需要jq代码,所以需要提前导入jq</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot;
+src=&quot;http://libs.baidu.com/jquery/1.9.0/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<h2 id="body下"><a href="#body下" class="headerlink" title="body下"></a>body下</h2><pre><code>&lt;header&gt;
+    &lt;h1&gt;2048&lt;/h1&gt;       
+    &lt;a href=&quot;#&quot; id=&quot;newgamebutton&quot;&gt;New Game&lt;/a&gt;
+    &lt;p&gt;
+        score:&lt;span id=&quot;score&quot;&gt;0&lt;/span&gt;
+    &lt;/p &gt;
+&lt;/header&gt;
+&lt;div id=&quot;grid-container&quot;&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-0-0&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-0-1&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-0-2&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-0-3&quot;&gt;&lt;/div&gt;
+
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-1-0&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-1-1&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-1-2&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-1-3&quot;&gt;&lt;/div&gt;
+
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-2-0&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-2-1&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-2-2&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-2-3&quot;&gt;&lt;/div&gt;
+
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-3-0&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-3-1&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-3-2&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grid-cell&quot; id=&quot;grid-cell-3-3&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;gameover&quot;&gt;
+ GAME OVER
+&lt;/div&gt;</code></pre>
+<h2 id="style下"><a href="#style下" class="headerlink" title="style下"></a>style下</h2><pre><code>    @CHARSET &quot;UTF-8&quot;;   /*识别中国字*/
+    *&#123;    /*初始化网页默认样式*/
+    padding: 0;
+    margin: 0;
+    &#125;
+
+    header&#123;    
+        display:block;  /*开启块元素*/
+        margin:0 auto;  /*水平居中显示*/
+        width:500px; /*宽度为500px*/
+        text-align:center;  /*文字居中*/
+    &#125;
+
+    header h1&#123;   /*对2048进行设置*/
+            font-family:Arial, Helvetica, sans-serif; /*字体*/
+            font-size:60px;  /*文字大小*/
+            font-weight:bold; /*字体加粗*/
+            margin-top: 20px; /*垂直向上隔20px*/
+            margin-bottom: 20px;    /*垂直向下隔20px*/
+    &#125;
+
+    header #newgamebutton&#123;  /*对a元素的按钮进行设置*/
+                width:100px;   /*宽度为100px*/
+                padding:10px;  /*内边距上下左右为10px*/
+                background:#8f7a66;  /*背景颜色*/
+                font-family:Arial, Helvetica, sans-serif; /*字体颜色
+                */
+                color:white;  /*字体颜色*/
+                border-radius: 10px;  /*边框边角*/
+                text-decoration:none; /*去掉下划线*/
+    &#125;
+
+    header #newgamebutton:hover&#123;   /*对a的按钮设置一个移动效果*/
+        background:#9f8b77;  /*改变颜色*/
+    &#125;
+
+    header p&#123;   /*对score:3008进行设置*/
+        font-family:Arial, Helvetica, sans-serif;  /*字体*/
+        font-size:25px;  /*字体大小*/
+        margin:20px auto; /*水平居中*/
+    &#125;
+
+    #grid-container&#123;     /*  对整个4*4的表格进行设置  */
+        width:460px;   /*宽度为460*/
+        height:460px;  /*高度为460*/
+        padding:20px;  /*内边距上下左右为20px*/
+        margin:40px auto;  /*外边距上下为40px 水平居中*/
+        background:#bbada0; /*背景颜色*/
+        border-radius:10px;  /*边框边角*/
+        position:relative;  /*开启相对定位*/
+    &#125;
+
+    .grid-cell&#123;   /*对4*4里面的小表格进行设置*/
+        width: 100px;  /*宽度为100px*/
+        height: 100px;  /*高度为100px*/
+        border-radius:6px;  /*边框边角*/
+        background:#ccc0b3; /*背景颜色*/
+        position:absolute;  /*开启绝对定位*/
+    &#125;
+
+    .number-cell&#123;   /*创建4*4里面的小表格进行替换原来的4*4表格*/
+            width:100px;   /*宽度为100px*/
+            height:100px;  /*高度为100px*/
+            border-radius:6px;  /*边框边角*/
+            line-height:100px;  /*行高为100px  行与高一致的话可达到居中
+            的效果*/
+            font:  Arial, Helvetica, sans-serif;  /*字体*/
+            font-size:50px;  /*字体大小*/
+            font-weight:bold;  /*字体加粗*/
+            text-align:  center;  /*文字居中*/
+            position:absolute;  /*开启绝对定位*/
+    &#125;
+    #gameover&#123;  /*游戏结束时显示*/
+        background-color:black;  
+        color: white;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size:60px;
+        position: absolute;
+        top:45%;
+        left:42%;
+        width:250px;
+        text-align:center;
+        display: none;  /*隐藏起来*/
+    &#125;</code></pre>
+<h2 id="script下"><a href="#script下" class="headerlink" title="script下"></a>script下</h2><h3 id="main下的-js-代码"><a href="#main下的-js-代码" class="headerlink" title="main下的 js 代码"></a>main下的 js 代码</h3><pre><code>var board = new Array();
+var added = new Array();
+var score = 0;
+var top = 240;
+$(document).ready(function(e)&#123;
+newgame();
+&#125;);
+
+function newgame()&#123;
+    //初始化棋盘格
+init();
+//在随机两个各自声称的数字
+generateOneNumber();
+generateOneNumber();
+&#125;
+
+function init()&#123;
+    score=0;
+    document.getElementById(&quot;score&quot;).innerHTML=score;
+    $(&quot;#gameover&quot;).css(&#39;display&#39;,&#39;none&#39;);
+    for(var i = 0;i&lt;4;i++)&#123;
+        for(var j = 0;j&lt;4;j++)&#123;
+            var gridCell = $(&quot;#grid-cell-&quot;+i+&quot;-&quot;+j);
+            gridCell.css(&quot;top&quot;,getPosTop(i,j));
+            gridCell.css(&quot;left&quot;,getPosLeft(i,j));
+        &#125;
+    &#125;
+
+for(var i = 0; i&lt;4;i++)&#123;//初始化格子数组
+    board[i] = new Array();
+    for(var j = 0;j&lt;4;j++)&#123;
+        board[i][j] = 0;
+    &#125;
+&#125;
+
+for(var i = 0; i&lt;4;i++)&#123;//初始化判定合并的数组
+    added[i] = new Array();
+    for(var j = 0;j&lt;4;j++)&#123;
+        added[i][j] = 0;
+    &#125;
+&#125;
+
+updateBoardView();//通知前端对board二位数组进行设定。
+
+&#125;
+
+function updateBoardView()&#123;//更新数组的前端样式
+$(&quot;.number-cell&quot;).remove();
+for(var i = 0;i&lt;4;i++)&#123;
+    for ( var j = 0; j &lt; 4; j++) &#123;
+        $(&quot;#grid-container&quot;).append(&#39;&lt;div class=&quot;number-cell&quot; id=&quot;number-cell-&#39;+i+&#39;-&#39;+j+&#39;&quot;&gt;&lt;/div&gt;&#39;);
+        var theNumberCell = $(&#39;#number-cell-&#39;+i+&#39;-&#39;+j);
+        if(board[i][j] == 0)&#123;
+            theNumberCell.css(&#39;width&#39;,&#39;0px&#39;);
+            theNumberCell.css(&#39;height&#39;,&#39;0px&#39;);
+            theNumberCell.css(&#39;top&#39;,getPosTop(i,j));
+            theNumberCell.css(&#39;left&#39;,getPosLeft(i,j));
+        &#125;else&#123;
+            theNumberCell.css(&#39;width&#39;,&#39;100px&#39;);
+            theNumberCell.css(&#39;hegiht&#39;,&#39;100px&#39;);
+            theNumberCell.css(&#39;top&#39;,getPosTop(i,j));
+            theNumberCell.css(&#39;left&#39;,getPosLeft(i,j));
+            //NumberCell覆盖
+            theNumberCell.css(&#39;background-color&#39;,getNumberBackgroundColor(board[i][j]));//返回背景色
+            theNumberCell.css(&#39;color&#39;,getNumberColor(board[i][j]));//返回前景色
+            theNumberCell.text(board[i][j]);
+        &#125;
+    &#125;
+&#125;
+&#125;
+function generateOneNumber()&#123;//生成随机的格子
+if (nospace(board)) 
+    return false;
+
+//随机一个位置
+var randx = parseInt(Math.floor(Math.random()*4));
+var randy = parseInt(Math.floor(Math.random()*4));
+while(true)&#123;
+    if (board[randx][randy] == 0) 
+        break;
+    randx = parseInt(Math.floor(Math.random()*4));  
+    randy = parseInt(Math.floor(Math.random()*4));
+&#125;
+//随机一个数字
+var randNumber = Math.random()&lt;0.5 ? 2 : 4; //50%的几率
+//在随机位置显示随机数字
+board[randx][randy] = randNumber;
+showNumberWithAnimation(randx,randy,randNumber);
+return true;
+&#125;
+//事件响应循环
+$(document).keydown(function(event)&#123;   //绑定键盘事件
+switch (event.keyCode) &#123;
+case 37://left
+    if(moveLeft())&#123;
+        //setTimeout(&quot;generateOneNumber()&quot;,210);
+        getScore();
+        generateOneNumber();//每次新增一个数字就可能出现游戏结束
+        setTimeout(&quot;isgameover()&quot;,400);//400毫秒 //调整数字出现的速度
+    &#125;
+    break;
+case 38://up
+    if(moveUp())&#123;
+     getScore();
+        generateOneNumber();//每次新增一个数字就可能出现游戏结束
+        setTimeout(&quot;isgameover()&quot;,400);
+    &#125;
+    break;
+case 39://right
+    if(moveRight())&#123;
+     getScore();
+        generateOneNumber();//每次新增一个数字就可能出现游戏结束
+        setTimeout(&quot;isgameover()&quot;,400);
+    &#125;
+    break;
+case 40://down
+    if(moveDown())&#123;
+     getScore();
+        generateOneNumber();//每次新增一个数字就可能出现游戏结束
+        setTimeout(&quot;isgameover()&quot;,400);
+    &#125;
+    break;
+
+&#125;
+&#125;);
+
+function isgameover()&#123;
+if(nospace(board)&amp;&amp;nomove(board))
+    gameover();
+&#125;
+
+function gameover()&#123;
+$(&quot;#gameover&quot;).css(&#39;display&#39;,&#39;block&#39;);   //游戏结束(意味着空格被填满)
+&#125;
+function isaddedArray()&#123;//将判断能否合并的数组值置为0
+for(var i = 0;i&lt;4;i++)&#123;
+    for(var j = 0;j&lt;4;j++)&#123;
+     added[i][j] = 0;
+        &#125;
+    &#125;
+&#125;
+function moveLeft()&#123;//更多地细节信息
+    //判断格子是否能够向左移动
+    if( !canMoveLeft(board))  
+        return false;
+    isaddedArray();  //初始化数字为0
+    //真正的moveLeft函数//标准
+for(var i = 0;i&lt;4;i++)
+    for(var j = 1;j&lt;4;j++)&#123;//第一列的数字不可能向左移动
+        if(board[i][j] !=0)&#123;
+            //(i,j)左侧的元素
+            for(var k = 0;k&lt;j;k++)&#123;
+                //落脚位置的是否为空 &amp;&amp; 中间(在你当前位置的前面是否都是0)没有障碍物
+                if(board[i][k] == 0 &amp;&amp; noBlockHorizontal(i , k, j, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,i,k);
+                    board[i][k] = board[i][j];
+                    board[i][j] = 0;
+                    continue;
+                &#125;
+                //落脚位置的数字和本来的数字相等 &amp;&amp; 中间没有障碍物
+                else if(board[i][k] == board[i][j] &amp;&amp; noBlockHorizontal(i , k, j, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,i,k);
+                    //add
+                    if(added[i][k]!=0)&#123;//目标落脚点是否完成过合并
+                      board[i][k+1] = board[i][j];
+                      board[i][j] = 0;
+                    &#125;
+                    else&#123;
+                     board[i][k] += board[i][j];
+                     board[i][j] = 0;
+                     added[i][k] = 1;
+                     score +=board[i][k];
+                    &#125;
+                    continue;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+setTimeout(&quot;updateBoardView()&quot;,200);  //影响方块的移动速度
+return true;
+&#125;
+
+    function moveRight()&#123;//更多地细节信息
+        //判断格子是否能够向右移动
+        if( !canMoveRight(board))
+            return false;
+            isaddedArray();
+    //真正的moveRight函数//标准
+for(var i = 0;i&lt;4;i++)
+    for(var j = 2;j&gt;=0;j--)&#123;//最后一列的数字不可能向右移动
+        if(board[i][j] !=0)&#123;
+            //(i,j)右侧的元素
+            for(var k = 3;k&gt;j;k--)&#123;
+                //落脚位置的是否为空 &amp;&amp; 中间没有障碍物
+                if(board[i][k] == 0 &amp;&amp; noBlockHorizontal(i , j, k, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,i,k);
+                    board[i][k] = board[i][j];
+                    board[i][j] = 0;
+                    continue;
+                &#125;
+                //落脚位置的数字和本来的数字相等 &amp;&amp; 中间没有障碍物
+                else if(board[i][k] == board[i][j] &amp;&amp; noBlockHorizontal(i , j, k, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,i,k);
+                    //add
+                     if(added[i][k]!=0)&#123;
+                      board[i][k-1] = board[i][j];
+                      board[i][j] = 0;
+                    &#125;
+                    else&#123;
+                     board[i][k] += board[i][j];
+                     board[i][j] = 0;
+                     added[i][k] = 1;
+                     score +=board[i][k];
+                    &#125;
+                    continue;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+setTimeout(&quot;updateBoardView()&quot;,200);
+return true;
+&#125;
+
+function moveUp()&#123;//更多地细节信息
+    //判断格子是否能够向上移动
+    if( !canMoveUp(board))
+        return false;
+        isaddedArray();
+    //真正的moveUp函数//标准
+for(var j = 0;j&lt;4;j++)
+    for(var i = 1;i&lt;4;i++)&#123;//第一行的数字不可能向上移动
+        if(board[i][j] !=0)&#123;
+            //(i,j)上面的元素
+            for(var k = 0;k&lt;i;k++)&#123;
+                //落脚位置的是否为空 &amp;&amp; 中间没有障碍物
+                if(board[k][j] == 0 &amp;&amp; noBlockVertical(j , k, i, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,k,j);
+                    board[k][j] = board[i][j];
+                    board[i][j] = 0;
+                    continue;
+                &#125;
+                //落脚位置的数字和本来的数字相等 &amp;&amp; 中间没有障碍物
+                else if(board[k][j] == board[i][j] &amp;&amp; noBlockVertical(j , k, i, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,k,j);
+                    //add
+                    if(added[k][j]!=0)&#123;
+                     board[k+1][j] = board[i][j];
+                     board[i][j] = 0;
+                    &#125;
+                    else&#123;
+                     board[k][j] += board[i][j];
+                     board[i][j] = 0;
+                     added[k][j] = 1;
+                     score +=board[k][j];
+                    &#125;
+                    continue;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+setTimeout(&quot;updateBoardView()&quot;,200);
+return true;
+&#125;
+
+function moveDown()&#123;//更多地细节信息
+    //判断格子是否能够向下移动
+    if( !canMoveDown(board))
+    return false;
+isaddedArray();
+//真正的moveDown函数//标准
+for(var j = 0;j&lt;4;j++)
+    for(var i = 2;i&gt;=0;i--)&#123;//最后一行的数字不可能向下移动
+        if(board[i][j] !=0)&#123;
+            //(i,j)上面的元素
+            for(var k = 3;k&gt;i;k--)&#123;
+                //落脚位置的是否为空 &amp;&amp; 中间没有障碍物
+                if(board[k][j] == 0 &amp;&amp; noBlockVertical(j , i, k, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,k,j);
+                    board[k][j] = board[i][j];
+                    board[i][j] = 0;
+                    continue;
+                &#125;
+                //落脚位置的数字和本来的数字相等 &amp;&amp; 中间没有障碍物
+                else if(board[k][j] == board[i][j] &amp;&amp; noBlockVertical(j , i, k, board))&#123;
+                    //move
+                    showMoveAnimation(i, j,k,j);
+                    //add
+                    if(added[k][j]!=0)&#123;
+                     board[k-1][j] = board[i][j];
+                     board[i][j] = 0;
+                    &#125;
+                    else&#123;
+                     board[k][j] += board[i][j];
+                     board[i][j] = 0;
+                     added[k][j] = 1;
+                     score +=board[k][j];
+                    &#125;
+                    continue;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+setTimeout(&quot;updateBoardView()&quot;,200);
+return true;
+&#125;</code></pre>
+<h3 id="showanimation下的js代码"><a href="#showanimation下的js代码" class="headerlink" title="showanimation下的js代码"></a>showanimation下的js代码</h3><pre><code>function showNumberWithAnimation(i, j, randNumber) &#123;//实现随机数字的样式变动
+
+var numberCell = $(&#39;#number-cell-&#39; + i + &#39;-&#39; + j);
+numberCell.css(&quot;background-color&quot;, getNumberBackgroundColor(randNumber));
+numberCell.css(&quot;color&quot;, getNumberColor(randNumber));
+numberCell.text(randNumber);
+
+numberCell.animate(&#123;
+    width : &quot;100px&quot;,
+    height : &quot;100px&quot;,
+    top : getPosTop(i, j),
+    left : getPosLeft(i, j)
+&#125;, 50);
+&#125;
+function showMoveAnimation(fromx, fromy, tox, toy)&#123;//实现移动格子的样式变动
+//移动的效果变化  从from(当前位置) ——&gt; to(到达的位置)
+var numberCell = $(&#39;#number-cell-&#39;+fromx +&#39;-&#39;+fromy);
+numberCell.animate(&#123;top:getPosTop(tox,toy),
+left:getPosLeft(tox,toy)&#125;,170);  //速度
+&#125;</code></pre>
+<h3 id="support下的js代码"><a href="#support下的js代码" class="headerlink" title="support下的js代码"></a>support下的js代码</h3><pre><code>function getPosTop(i, j) &#123;  //每个小方块的位置
+return 20 + i * 120;
+&#125;
+function getPosLeft(i, j) &#123;  //每个小方块的位置
+return 20 + j * 120;
+&#125;
+function getNumberBackgroundColor(number) &#123;  //对得到的数字进行颜色的调整
+switch (number) &#123;
+case 2:
+    return &quot;#eee4da&quot;;
+    break;
+case 4:
+    return &quot;#eee4da&quot;;
+    break;
+case 8:
+    return &quot;#f26179&quot;;
+    break;
+case 16:
+    return &quot;#f59563&quot;;
+    break;
+case 32:
+    return &quot;#f67c5f&quot;;
+    break;
+case 64:
+    return &quot;#f65e36&quot;;
+    break;
+case 128:
+    return &quot;#edcf72&quot;;
+    break;
+case 256:
+    return &quot;#edcc61&quot;;
+    break;
+case 512:
+    return &quot;#9c0&quot;;
+    break;
+case 1024:
+    return &quot;#3365a5&quot;;
+    break;
+case 2048:
+    return &quot;#09c&quot;;
+    break;
+case 4096:
+    return &quot;#a6bc&quot;;
+    break;
+case 8192:
+    return &quot;#93c&quot;;
+    break;
+&#125;
+return &quot;black&quot;;
+&#125;
+function getNumberColor(number) &#123;
+if (number &lt;= 4)&#123;    //对初始化的数字颜色的变化
+    return &quot;#776e65&quot;;
+&#125;
+return &quot;white&quot;;   
+&#125;
+function getScore()&#123;
+document.getElementById(&quot;score&quot;).innerHTML=score;
+&#125;
+
+//在随机生成数字的时候判断16宫格中是否还有空间
+    function nospace(board) &#123;
+    for ( var i = 0; i &lt; 4; i++) 
+        for ( var j = 0; j &lt; 4; j++) 
+            if (board[i][j] == 0)
+                return false;
+    return true;
+&#125;
+
+//实现功能判断
+    function canMoveLeft( board )&#123; 
+    for(var i = 0;i&lt;4;i++)
+        for(var j = 0;j&lt;4;j++)
+            if( board[i][j] !=0 &amp;&amp; j != 0)
+                if( board[i][j-1] == 0 || board[i][j-1] == board[i][j])
+                    return true;
+    return false;
+    &#125;
+function canMoveRight( board )&#123;
+for(var i = 0;i&lt;4;i++)
+    for(var j = 0;j&lt;4;j++)
+        if( board[i][j] !=0 &amp;&amp; j != 3)
+            if( board[i][j+1] == 0 || board[i][j+1] == board[i][j])
+                return true;               
+return false;
+&#125;
+
+function canMoveUp( board )&#123;
+for(var i = 0;i&lt;4;i++)
+    for(var j = 0;j&lt;4;j++)
+        if( board[i][j] !=0 &amp;&amp; i != 0)
+            if( board[i-1][j] == 0 || board[i-1][j] == board[i][j])
+                return true;   
+return false;
+&#125;
+
+function canMoveDown( board )&#123;
+for(var i = 0;i&lt;4;i++)
+    for(var j = 0;j&lt;4;j++)
+        if( board[i][j] !=0 &amp;&amp; i != 3)
+            if( board[i+1][j] == 0 || board[i+1][j] == board[i][j])
+                return true;
+return false;
+&#125;
+
+//判断水平方向是否有障碍物
+    function noBlockHorizontal(row, col1, col2, board)&#123;
+    for(var i = col1 + 1; i&lt;col2; i++)
+        if(board[row][i]!=0)
+            return false;
+    return true;
+&#125;
+
+//判断竖直方向是否有障碍物
+    function noBlockVertical(col, row1, row2, board)&#123;
+    for(var i = row1 + 1; i&lt;row2; i++)
+        if(board[i][col]!=0)
+            return false;
+    return true;
+&#125;
+
+//最后收尾
+    function nomove(board)&#123;
+    if(canMoveLeft(board)|| canMoveRight(board)||canMoveUp(board)||canMoveDown(board))
+        return false;
+    return true;
+&#125;</code></pre>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">js小游戏</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/xiekunze.github.io/2020/10/19/2048%E5%B0%8F%E6%B8%B8%E6%88%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-学习手册" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -644,10 +1295,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
              
@@ -656,15 +1303,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color3">手册</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">手册</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -680,11 +1335,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
