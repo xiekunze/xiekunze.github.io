@@ -11,7 +11,7 @@
   <url>
     <loc>https://xiekunze.github.io/2020/10/24/php%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6/</loc>
     
-    <lastmod>2020-11-15</lastmod>
+    <lastmod>2020-11-16</lastmod>
     
   </url>
   
@@ -249,6 +249,13 @@
 
   
   <url>
+    <loc>https://xiekunze.github.io/tags/HTML/</loc>
+    <lastmod>2020-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xiekunze.github.io/tags/css/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
@@ -263,14 +270,14 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/HTML/</loc>
+    <loc>https://xiekunze.github.io/tags/git/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/git/</loc>
+    <loc>https://xiekunze.github.io/tags/markdown/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -291,13 +298,6 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/markdown/</loc>
-    <lastmod>2020-11-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://xiekunze.github.io/tags/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
@@ -305,7 +305,7 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E6%89%8B%E5%86%8C/</loc>
+    <loc>https://xiekunze.github.io/tags/PHP/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -319,7 +319,7 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/PHP/</loc>
+    <loc>https://xiekunze.github.io/tags/%E6%89%8B%E5%86%8C/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
