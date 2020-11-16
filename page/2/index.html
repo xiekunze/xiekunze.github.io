@@ -2915,7 +2915,50 @@ echo $b; //integer</code></pre>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setcookie(&#39;xiekunze&#39;,&#39;aaaaa&#39;,0,&#39;&#x2F;&#39;,&#39;&#39;,false,true);</span><br></pre></td></tr></table></figure>
 
 <h2 id="SESSION"><a href="#SESSION" class="headerlink" title="SESSION"></a>SESSION</h2><p>session是服务器会话状态，可用于记录访问用户后台会话数据。</p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><h4 id="开启会话"><a href="#开启会话" class="headerlink" title="开启会话"></a>开启会话</h4><p>必须要开启 SESSION 才可以使用，有两种方法可以开启会话。</p>
+<ol>
+<li>使用脚本开启会话，要保证在使用会话的所有脚本中执行。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br></pre></td></tr></table></figure>
 
+<ol start="2">
+<li>通过修改php.ini配置项 <code>session.auto_start</code>，自动开启会话（不建议使用）</li>
+</ol>
+<h4 id="会话变量"><a href="#会话变量" class="headerlink" title="会话变量"></a>会话变量</h4><p>使用超全局数组 <code>$_SESSION</code> 来使用会话变量。</p>
+<p>设置变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br><span class="line">$_SESSION[&#39;name&#39;] &#x3D; &#39;xiekunze.github.io&#39;;</span><br><span class="line">print_r($_SESSION);  &#x2F;&#x2F;Array ( [name] &#x3D;&gt; xiekunze.github.io )</span><br></pre></td></tr></table></figure>
+
+<p>删除变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br><span class="line">$_SESSION[&#39;name&#39;] &#x3D; &#39;xiekunze.github.io&#39;;</span><br><span class="line">&#x2F;&#x2F;print_r($_SESSION);  &#x2F;&#x2F;Array ( [name] &#x3D;&gt; xiekunze.github.io )</span><br><span class="line">unset($_SESSION[&#39;name&#39;]);</span><br><span class="line">print_r($_SESSION[&#39;name&#39;]);  &#x2F;&#x2F;Notice: Undefined index: name in E:\PHP\day7.php on line 6</span><br></pre></td></tr></table></figure>
+
+<p>删除所有变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.</span><br><span class="line">session_start();</span><br><span class="line">$_SESSION[&#39;name&#39;] &#x3D; &#39;xiekunze.github.io&#39;;</span><br><span class="line">$_SESSION[&#39;age&#39;] &#x3D; 15;</span><br><span class="line">$_SESSION &#x3D; [];</span><br><span class="line">print_r($_SESSION); &#x2F;&#x2F;Array ( )</span><br><span class="line">2.</span><br><span class="line">session_start();</span><br><span class="line">$_SESSION[&#39;name&#39;] &#x3D; &#39;xiekunze.github.io&#39;;</span><br><span class="line">$_SESSION[&#39;age&#39;] &#x3D; 15;</span><br><span class="line">session_destroy();</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用函数-所有的设置都得在session开启之前设置好"><a href="#常用函数-所有的设置都得在session开启之前设置好" class="headerlink" title="常用函数(所有的设置都得在session开启之前设置好)"></a>常用函数(所有的设置都得在session开启之前设置好)</h3><h4 id="session-save-path-有多个站点的话-会加快访问速度"><a href="#session-save-path-有多个站点的话-会加快访问速度" class="headerlink" title="session_save_path(有多个站点的话,会加快访问速度)"></a>session_save_path(有多个站点的话,会加快访问速度)</h4><p>设置服务器会话数据储存目录，必须在session_start前使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session_start();  &#x2F;&#x2F;查看当前的路径</span><br><span class="line">echo session_save_path();  &#x2F;&#x2F;c:&#x2F;wamp64&#x2F;tmp</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session_save_path(&#39;xiekunze&#39;);</span><br><span class="line">session_start();   &#x2F;&#x2F;xiekunze&#x2F;  sess_clsd0252g2ppr76lp4jv97d8i7</span><br></pre></td></tr></table></figure>
+
+<h4 id="session-name"><a href="#session-name" class="headerlink" title="session_name"></a>session_name</h4><p>获取或设置会话COOKIE名称，如果设置会话名称则需要在session_id前调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">session_save_path(&#39;xiekunze&#39;);</span><br><span class="line">session_name(&#39;name&#39;);  &#x2F;&#x2F;Name : name</span><br><span class="line">session_start();   &#x2F;&#x2F;sess_clsd0252g2ppr76lp4jv97d8i7</span><br><span class="line">$_SESSION[&#39;age&#39;] &#x3D; 15;</span><br></pre></td></tr></table></figure>
+
+<h4 id="session-id"><a href="#session-id" class="headerlink" title="session_id"></a>session_id</h4><p>通过 <code>session_id</code> 函数来获取/设置当前会话 ID。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">session_save_path(&#39;xiekunze&#39;);</span><br><span class="line">session_name(&#39;name&#39;);  &#x2F;&#x2F;Name : name</span><br><span class="line">session_start();   &#x2F;&#x2F;sess_clsd0252g2ppr76lp4jv97d8i7</span><br><span class="line">$_SESSION[&#39;age&#39;] &#x3D; 15;</span><br><span class="line">echo session_id();   &#x2F;&#x2F;value : buvesj2h6eiiqajlan1p2pngi9</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">session_save_path(&#39;xiekunze&#39;);</span><br><span class="line">session_name(&#39;name&#39;);  &#x2F;&#x2F;Name : name</span><br><span class="line">session_start();   &#x2F;&#x2F;sess_clsd0252g2ppr76lp4jv97d8i7</span><br><span class="line">session_id(&#39;xiekunze&#39;);  &#x2F;&#x2F;xiekunze</span><br><span class="line">$_SESSION[&#39;age&#39;] &#x3D; 15;</span><br><span class="line">echo session_id();   &#x2F;&#x2F;value : xiekunze</span><br></pre></td></tr></table></figure>
+
+<h3 id="垃圾回收-通过phpinfo-去查找配置文件得到路径再查找下面的内容"><a href="#垃圾回收-通过phpinfo-去查找配置文件得到路径再查找下面的内容" class="headerlink" title="垃圾回收(通过phpinfo()去查找配置文件得到路径再查找下面的内容)"></a>垃圾回收(通过phpinfo()去查找配置文件得到路径再查找下面的内容)</h3><h4 id="session-gc-probability"><a href="#session-gc-probability" class="headerlink" title="session.gc_probability"></a>session.gc_probability</h4><p>session清除无效session的基率。</p>
+<h4 id="session-gc-divisor"><a href="#session-gc-divisor" class="headerlink" title="session.gc_divisor"></a>session.gc_divisor</h4><p>启动垃圾回收程序的概率。概率计算公式为：session.gc_probability/session.gc_divisor，如果网站访问量大建议将概率降低如 1/1000~5000。</p>
+<h4 id="session-gc-maxlifetime"><a href="#session-gc-maxlifetime" class="headerlink" title="session.gc_maxlifetime"></a>session.gc_maxlifetime</h4><p>session文件过期时间，超过这个时间没有使用的session将视为垃圾，将在下次垃圾回收时删除。</p>
+<img src="/xiekunze.github.io/2020/10/24/php%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6/117.png">
+
+<h3 id="自定义驱动-理解原理"><a href="#自定义驱动-理解原理" class="headerlink" title="自定义驱动(理解原理)"></a>自定义驱动(理解原理)</h3><p>自定义SESSION处理驱动可以让我们更灵活的管理SESSION，并更好的服务我们网站业务。(后盾人例子)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class FileHandle implements SessionHandlerInterface</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;写入目录</span><br><span class="line">    protected $path &#x3D; &#39;session&#39;;</span><br><span class="line">    &#x2F;&#x2F;过期时间</span><br><span class="line">    protected $maxlifetime &#x3D; 1440;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 构建函数</span><br><span class="line">     *</span><br><span class="line">     * @param string $path 保存目录</span><br><span class="line">     * @param integer $maxlifetime 过期时间</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function __construct(string $path &#x3D; &#39;session&#39;, int $maxlifetime &#x3D; 1440)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;path &#x3D; realpath($path);</span><br><span class="line">        $this-&gt;maxlifetime &#x3D; $maxlifetime;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 关闭</span><br><span class="line">     *</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function close()</span><br><span class="line">    &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 销毁</span><br><span class="line">     *</span><br><span class="line">     * @param [type] $session_id</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function destroy($session_id)</span><br><span class="line">    &#123;</span><br><span class="line">        return (bool)@unlink($this-&gt;path . &#39;&#x2F;&#39; . $session_id);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 垃圾回收</span><br><span class="line">     *</span><br><span class="line">     * @param [type] $maxlifetime</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function gc($maxlifetime)</span><br><span class="line">    &#123;</span><br><span class="line">        foreach (glob($this-&gt;path . &#39;&#x2F;*&#39;) as $file) &#123;</span><br><span class="line">            if (filemtime($file) + $this-&gt;maxlifetime &lt; time()) &#123;</span><br><span class="line">                @unlink($file);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 开启</span><br><span class="line">     *</span><br><span class="line">     * @param [type] $save_path</span><br><span class="line">     * @param [type] $session_name</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function open($save_path,  $session_name)</span><br><span class="line">    &#123;</span><br><span class="line">        is_dir($this-&gt;path) or mkdir($this-&gt;path, 0755, true);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 读取会话数据</span><br><span class="line">     *</span><br><span class="line">     * @param [type] $session_id</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function read($session_id)</span><br><span class="line">    &#123;</span><br><span class="line">        return file_get_contents($this-&gt;path . &#39;&#x2F;&#39; . $session_id);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 写入会话</span><br><span class="line">     *</span><br><span class="line">     * @param [type] $session_id</span><br><span class="line">     * @param [type] $session_data</span><br><span class="line">     * @return void</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public function write($session_id,  $session_data)</span><br><span class="line">    &#123;</span><br><span class="line">        return (bool)file_put_contents($this-&gt;path . &#39;&#x2F;&#39; . $session_id, $session_data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">include &#39;day7.php&#39;;</span><br><span class="line">&#x2F;&#x2F;声明会话引擎</span><br><span class="line">session_set_save_handler(new FileHandle);</span><br><span class="line">session_start();</span><br><span class="line">$_SESSION[&#39;web&#39;] &#x3D; &#39;houdunren.com&#39;;</span><br><span class="line">$_SESSION[&#39;cms&#39;] &#x3D; &#39;hdcms.com&#39;;</span><br><span class="line"></span><br><span class="line">print_r($_SESSION);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day8"><a href="#Day8" class="headerlink" title="Day8"></a>Day8</h1>
       
 
       
@@ -3287,15 +3330,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3319,7 +3362,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">手册</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3327,11 +3370,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
+                <a href="javascript:void(0)" class="js-tag color3">手册</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3339,15 +3378,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
