@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://xiekunze.github.io/2020/11/16/%E5%85%B3%E4%BA%8E%E7%94%B5%E8%84%91%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <loc>https://xiekunze.github.io/2020/10/24/php%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6/</loc>
     
     <lastmod>2020-11-16</lastmod>
     
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/2020/10/24/php%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6/</loc>
+    <loc>https://xiekunze.github.io/2020/11/16/%E5%85%B3%E4%BA%8E%E7%94%B5%E8%84%91%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
     
     <lastmod>2020-11-16</lastmod>
     
@@ -249,14 +249,14 @@
 
   
   <url>
-    <loc>https://xiekunze.github.io/tags/HTML/</loc>
+    <loc>https://xiekunze.github.io/tags/css/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/css/</loc>
+    <loc>https://xiekunze.github.io/tags/HTML/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -305,6 +305,13 @@
   </url>
   
   <url>
+    <loc>https://xiekunze.github.io/tags/%E6%89%8B%E5%86%8C/</loc>
+    <lastmod>2020-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xiekunze.github.io/tags/PHP/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
@@ -313,13 +320,6 @@
   
   <url>
     <loc>https://xiekunze.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
-    <lastmod>2020-11-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://xiekunze.github.io/tags/%E6%89%8B%E5%86%8C/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -347,14 +347,14 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</loc>
+    <loc>https://xiekunze.github.io/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/</loc>
+    <loc>https://xiekunze.github.io/tags/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
