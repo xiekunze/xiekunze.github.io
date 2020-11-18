@@ -312,6 +312,13 @@
   </url>
   
   <url>
+    <loc>https://xiekunze.github.io/tags/%E6%89%8B%E5%86%8C/</loc>
+    <lastmod>2020-11-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xiekunze.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
@@ -319,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E6%89%8B%E5%86%8C/</loc>
+    <loc>https://xiekunze.github.io/tags/js%E5%B0%8F%E6%B8%B8%E6%88%8F/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -334,13 +341,6 @@
   
   <url>
     <loc>https://xiekunze.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2020-11-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://xiekunze.github.io/tags/js%E5%B0%8F%E6%B8%B8%E6%88%8F/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
