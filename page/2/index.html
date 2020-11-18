@@ -3138,6 +3138,8 @@ echo $b; //integer</code></pre>
 <li>imageCreateFrombmp(filename/url)</li>
 <li>返回一个资源类型</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;header(&#39;content-type:image&#x2F;jpeg&#39;);</span><br><span class="line">$a &#x3D; imagecreatefromjpeg(&#39;dd.jpg&#39;)  ;</span><br><span class="line">&#x2F;&#x2F;var_dump($a);</span><br><span class="line">$b &#x3D; imagecreatefromgif(&#39;preloader.gif&#39;);</span><br><span class="line">echo imagesx($b);  &#x2F;&#x2F;20</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo imagesy($b);  &#x2F;&#x2F;20</span><br></pre></td></tr></table></figure>
+
 <h3 id="获得信息"><a href="#获得信息" class="headerlink" title="获得信息"></a>获得信息</h3><p>imagesx(img_resource)</p>
 <ul>
 <li>取得图像宽度</li>
@@ -3150,14 +3152,18 @@ echo $b; //integer</code></pre>
 <ul>
 <li>array getimagesize ( string $filename [, array &amp;$imageinfo ] )</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;header(&#39;content-type:image&#x2F;jpeg&#39;);</span><br><span class="line">$c &#x3D; getimagesize(&#39;dd.jpg&#39;);</span><br><span class="line">第三个参数:1.gif 2.jpg 3.png </span><br><span class="line">print_r($c);</span><br><span class="line">&#x2F;&#x2F;Array ( [0] &#x3D;&gt; 730 [1] &#x3D;&gt; 730 [2] &#x3D;&gt; 2 [3] &#x3D;&gt; width&#x3D;&quot;730&quot; height&#x3D;&quot;730&quot; [bits] &#x3D;&gt; 8 [channels] &#x3D;&gt; 3 [mime] &#x3D;&gt; image&#x2F;jpeg )</span><br></pre></td></tr></table></figure>
+
 <h3 id="图像复制"><a href="#图像复制" class="headerlink" title="图像复制"></a>图像复制</h3><p>拷贝图像的一部分</p>
 <ul>
 <li>bool imagecopy ( resource $dst_im , resource $src_im , int $dst_x , int $dst_y , int $src_x , int $src_y , int $src_w , int $src_h )</li>
 </ul>
-<p>拷贝并合并图像的一部分</p>
+<p>拷贝并合并图像的一部分(透明度)</p>
 <ul>
 <li>bool imagecopymerge ( resource $dst_im , resource $src_im , int $dst_x , int $dst_y , int $src_x , int $src_y , int $src_w , int $src_h , int $pct )</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">header(&#39;content-type:image&#x2F;jpeg&#39;);</span><br><span class="line">$a &#x3D; imagecreatefromjpeg(&#39;dd.jpg&#39;);</span><br><span class="line">$icon &#x3D; imagecreatefromgif(&#39;preloader.gif&#39;);</span><br><span class="line">imagecopy($a,$icon,100,100,0,0,imagesx($icon),imagesy($icon));</span><br><span class="line">imagecopymerge($a,$icon,100,100,0,0,imagesx($icon),imagesy($icon),50);</span><br><span class="line">imagejpeg($a);</span><br></pre></td></tr></table></figure>
+
 <h3 id="图片缩放"><a href="#图片缩放" class="headerlink" title="图片缩放"></a>图片缩放</h3><p>拷贝部分图像并调整大小</p>
 <ul>
 <li>bool imagecopyresampled ( resource $dst_image , resource $src_image , int $dst_x , int $dst_y , int $src_x , int $src_y , int $dst_w , int $dst_h , int $src_w , int $src_h )</li>
@@ -3175,7 +3181,13 @@ echo $b; //integer</code></pre>
 <p>a.php</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line">if($_POST[&#39;text1&#39;] &#x3D;&#x3D; $_SESSION[&#39;code&#39;])&#123;</span><br><span class="line">    echo &#39;ok&#39;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &#39;error&#39;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="水印类"><a href="#水印类" class="headerlink" title="水印类"></a>水印类</h2><p>调用方式</p>
+<h2 id="水印类-不是很懂"><a href="#水印类-不是很懂" class="headerlink" title="水印类(不是很懂)"></a>水印类(不是很懂)</h2><p>调用方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include &quot;22.php&quot;;</span><br><span class="line">$water &#x3D; new Water(&quot;11.jpg&quot;);</span><br><span class="line">$water-&gt;make(&#39;dd.jpg&#39;, &#39;24.png&#39;, 0);</span><br></pre></td></tr></table></figure>
+
+<p>主函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Water</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;水印资源</span><br><span class="line">    protected $water;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;水印图片</span><br><span class="line">    public function __construct(string $water)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;water &#x3D; $water;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;入口方法</span><br><span class="line">    public function make(string $image, string $filename &#x3D; null, int $pos &#x3D; 9)</span><br><span class="line">    &#123;</span><br><span class="line">        $res &#x3D; $this-&gt;resource($image);</span><br><span class="line">        $water &#x3D; $this-&gt;resource($this-&gt;water);</span><br><span class="line">        $postion &#x3D; $this-&gt;position($res, $water, $pos);</span><br><span class="line">        imagecopy($res, $water, $postion[&#39;x&#39;], $postion[&#39;y&#39;], 0, 0, imagesx($water), imagesy($water));</span><br><span class="line">        $this-&gt;showAction($image)($res, $filename ?: $image);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;获取资源对象</span><br><span class="line">    protected function resource($image)</span><br><span class="line">    &#123;</span><br><span class="line">        $info &#x3D; getimagesize($image);</span><br><span class="line">        $function &#x3D; [1 &#x3D;&gt; &#39;imagecreatefromgif&#39;, 2 &#x3D;&gt; &#39;imagecreatefromjpeg&#39;, 3 &#x3D;&gt; &#39;imagecreatefrompng&#39;];</span><br><span class="line">        $call &#x3D; $function[$info[2]];</span><br><span class="line">        return $call($image);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;根据类型输出图片</span><br><span class="line">    protected function showAction(string $image)</span><br><span class="line">    &#123;</span><br><span class="line">        $info &#x3D; getimagesize($image);</span><br><span class="line">        $function &#x3D; [1 &#x3D;&gt; &#39;imagegif&#39;, 2 &#x3D;&gt; &#39;imagejpeg&#39;, 3 &#x3D;&gt; &#39;imagepng&#39;];</span><br><span class="line">        return $function[$info[2]];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;位置</span><br><span class="line">    protected function position($des, $res, int $pos)</span><br><span class="line">    &#123;</span><br><span class="line">        $info &#x3D; [&#39;x&#39; &#x3D;&gt; 0, &#39;y&#39; &#x3D;&gt; 0];</span><br><span class="line">        switch ($pos) &#123;</span><br><span class="line">            case 1:</span><br><span class="line">                break;</span><br><span class="line">            case 2:</span><br><span class="line">                $info[&#39;x&#39;] &#x3D; (imagesx($des) - imagesx($res)) &#x2F; 2;</span><br><span class="line">                break;</span><br><span class="line">            case 3:</span><br><span class="line">                $info[&#39;x&#39;] &#x3D; (imagesx($des) - imagesx($res));</span><br><span class="line">                break;</span><br><span class="line">            case 4:</span><br><span class="line">                $info[&#39;y&#39;] &#x3D; (imagesy($des) - imagesy($res)) &#x2F; 2;</span><br><span class="line">                break;</span><br><span class="line">            case 5:</span><br><span class="line">                $info[&#39;x&#39;] &#x3D; (imagesx($des) - imagesx($res)) &#x2F; 2;</span><br><span class="line">                $info[&#39;y&#39;] &#x3D; (imagesy($des) - imagesy($res)) &#x2F; 2;</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">        return $info;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="缩略图"><a href="#缩略图" class="headerlink" title="缩略图"></a>缩略图</h2><p>调用方式</p>
 
       
 
@@ -3596,19 +3608,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
