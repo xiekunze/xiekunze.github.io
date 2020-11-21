@@ -249,6 +249,13 @@
 
   
   <url>
+    <loc>https://xiekunze.github.io/tags/css/</loc>
+    <lastmod>2020-11-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xiekunze.github.io/tags/HTML/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
@@ -263,7 +270,7 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/css/</loc>
+    <loc>https://xiekunze.github.io/tags/git/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -271,13 +278,6 @@
   
   <url>
     <loc>https://xiekunze.github.io/tags/markdown/</loc>
-    <lastmod>2020-11-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://xiekunze.github.io/tags/git/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -305,14 +305,14 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/PHP/</loc>
+    <loc>https://xiekunze.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <loc>https://xiekunze.github.io/tags/PHP/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -347,14 +347,14 @@
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/</loc>
+    <loc>https://xiekunze.github.io/tags/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://xiekunze.github.io/tags/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</loc>
+    <loc>https://xiekunze.github.io/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/</loc>
     <lastmod>2020-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
