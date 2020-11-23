@@ -148,6 +148,216 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-markdown" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/xiekunze.github.io/2020/10/24/markdown/">markdown语法</a>
+    </h1>
+  
+
+        
+        <a href="/xiekunze.github.io/2020/10/24/markdown/" class="archive-article-date">
+  	<time datetime="2020-10-24T08:10:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文使用的markdown语法编译器为Typora</p>
+<p>(每次操作最好前后都有换行隔开,避免有时候语法不生效)</p>
+<p>下载地址:<a target="_blank" rel="noopener" href="https://www.typora.io/">Typora</a></p>
+<h2 id="1标题"><a href="#1标题" class="headerlink" title="1标题"></a>1标题</h2><p>#一级标题</p>
+<p>##二级标题</p>
+<p>###三级标题</p>
+<p>####四级标题</p>
+<p>#####五级标题</p>
+<p>######六级标题</p>
+<h2 id="2字体"><a href="#2字体" class="headerlink" title="2字体"></a>2字体</h2><p>可以使用粗体,斜体,字体大小,颜色,字体风格！</p>
+<p>可以从HTML中学语法！<a target="_blank" rel="noopener" href="https://www.runoob.com/">菜鸟教程</a></p>
+<p><b>加粗</b></p>
+<p><i>斜体</i></p>
+<p><font color="red">红色字体</font></p>
+<p><font face="黑体">黑体风格</font></p>
+<p><font size="20">字体大小</font></p>
+<pre><code>&lt;b&gt;加粗&lt;/b&gt;
+
+&lt;i&gt;斜体&lt;/i&gt;
+
+&lt;font color= &quot;red&quot;&gt;红色字体&lt;/font&gt;
+
+&lt;font face=&quot;黑体&quot;&gt;黑体风格&lt;/font&gt;
+
+&lt;font size=&quot;20&quot;&gt;字体大小&lt;/font&gt;</code></pre>
+<h2 id="3各种线"><a href="#3各种线" class="headerlink" title="3各种线"></a>3各种线</h2><p>(1)三种分割线</p>
+<pre><code>---
+
++++
+
+***</code></pre>
+<p>(2)删除线</p>
+<pre><code>~~ddddd~~</code></pre>
+<h2 id="4列表"><a href="#4列表" class="headerlink" title="4列表"></a>4列表</h2><p>(1)无序列表( + - * 开头加完后要有一个空格后面再承接上内容)<br>        * 55<br>        * 22<br>        + 55<br>        + 55<br>        - 99<br>        - 99</p>
+<ul>
+<li>55</li>
+<li>22</li>
+</ul>
+<ul>
+<li>55</li>
+<li>55</li>
+</ul>
+<ul>
+<li>99</li>
+<li>99</li>
+</ul>
+<p>(2)有序列表(可以使用数字加上.再用空格来表达)</p>
+<pre><code>1. 55
+2. 88
+3. 77</code></pre>
+<p>1.55<br>2.88<br>3.77</p>
+<h2 id="5链接"><a href="#5链接" class="headerlink" title="5链接"></a>5链接</h2><pre><code>可以使用a标签进行链接 
+可以使用[链接文字](aaaa)
+可以使用&lt;aaaa&gt;</code></pre>
+<p><a href="http://xiekunze.github.io/">啊</a><br><a href="http://xiekunze.github.io/">啊啊</a><br><a href="http://xiekunze.github.io/">http://xiekunze.github.io/</a></p>
+<h2 id="6图片"><a href="#6图片" class="headerlink" title="6图片"></a>6图片</h2><pre><code>(1)可以使用&lt;img src=&quot;HTML5与js实现拖拽\folder.png&quot; alt=&quot;显示不出图片时显示&quot;  /&gt;
+(2)![本地图片](HTML5与js实现拖拽\folder.png)</code></pre>
+<img src="/xiekunze.github.io/2020/10/24/markdown/folder.png" alt="ddd" style="zoom:80%;">
+
+<h2 id="7表格-两种格式"><a href="#7表格-两种格式" class="headerlink" title="7表格(两种格式)"></a>7表格(两种格式)</h2><pre><code>(1)
+
+| 表头   | 表头   | 表头   |
+| ------ | ------ | ------ |
+| 单元格 | 单元格 | 单元格 |
+| 单元格 | 单元格 | 单元格 |
+
+我们可以设置对齐方式：
+:-表示左对齐
+-:表示右对齐
+:-:表示中间对齐
+
+(2)
+
+&lt;table&gt;
+&lt;tr&gt;&lt;th&gt;表头&lt;/th&gt;&lt;th&gt;表头&lt;/th&gt;&lt;th&gt;表头&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;单元格&lt;/td&gt;&lt;td&gt;单元格&lt;/td&gt;&lt;td&gt;单元格&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;单元格&lt;/td&gt;&lt;td&gt;单元格&lt;/td&gt;&lt;td&gt;单元格&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th align="center">表头</th>
+<th align="right">表头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单元格</td>
+<td align="center">单元格</td>
+<td align="right">单元格</td>
+</tr>
+<tr>
+<td>单元格</td>
+<td align="center">单元格</td>
+<td align="right">单元格</td>
+</tr>
+</tbody></table>
+<table>
+<tr><th>表头</th><th>表头</th><th>表头</th></tr>
+<tr><td>单元格</td><td>单元格</td><td>单元格</td></tr>
+<tr><td>单元格</td><td>单元格</td><td>单元格</td></tr>
+</table>
+
+
+<h2 id="8-背景颜色"><a href="#8-背景颜色" class="headerlink" title="8.背景颜色"></a>8.背景颜色</h2><p>(1)用 body 这种标签,因为本身 这里不支持,所以放弃使用这种方法!</p>
+<p>(2)用td标签可以实现这种效果！</p>
+<pre><code>&lt;table&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;red&quot;&gt;
+ddddd
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+<p>例:</p>
+<table>
+<tr>
+<td bgcolor="red">
+ddddd
+</td>
+</tr>
+</table>
+
+<h2 id="9-文本居中"><a href="#9-文本居中" class="headerlink" title="9.文本居中"></a>9.文本居中</h2><pre><code>&lt;center&gt;ddddddddddddddddd&lt;/center&gt;
+&lt;div&gt;dddddddddddddddddd&lt;/div&gt;</code></pre>
+<center>ddddddddddddddddd</center>
+
+<div align="center">ddddddddddddddddd</div>
+
+<h2 id="10-空格"><a href="#10-空格" class="headerlink" title="10.空格"></a>10.空格</h2><pre><code>&amp;ensp;&amp;ensp;&amp;ensp;哒哒哒哒哒哒
+&amp;nbsp;&amp;nbsp;&amp;nbsp;哒哒哒哒哒哒
+&amp;emsp;&amp;emsp;&amp;emsp;哒哒哒哒哒哒</code></pre>
+<p>&ensp;&ensp;&ensp;哒哒哒哒哒哒<br>&nbsp;&nbsp;&nbsp;哒哒哒哒哒哒<br>&emsp;&emsp;&emsp;哒哒哒哒哒哒</p>
+<h2 id="11-代码块"><a href="#11-代码块" class="headerlink" title="11.代码块"></a>11.代码块</h2><p>用```…```包含起来</p>
+<p>例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dddddddddddddddd</span><br><span class="line">ddd</span><br><span class="line">ddddd</span><br></pre></td></tr></table></figure>
+
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">markdown</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/xiekunze.github.io/2020/10/24/markdown/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-js学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -5814,80 +6024,6 @@ ondrop();&lt;br /&gt;
 
 
   
-    <article id="post-理财篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/xiekunze.github.io/2020/10/20/%E7%90%86%E8%B4%A2%E7%AF%87/">基金(个人看法)</a>
-    </h1>
-  
-
-        
-        <a href="/xiekunze.github.io/2020/10/20/%E7%90%86%E8%B4%A2%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2020-10-20T06:23:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>短线买C类（建议）<br>长线买A类（手续费问题）<br>在无底仓时，建仓：看基金当天的估值，还有历史净值。处于低估值时买入。（于当天估值参考在2:50左右买入）择日便可看到涨跌。<br>买入金额：预计本金1000便建仓100预留900补仓。（以此类推往后+0）<br>清仓：看基金当天的估值，处于高涨时卖出？（于当天估值参考在2:50左右卖出）当天的涨跌有关系。择日则无关！<br>   卖出金额：注意留看本基金的手续费问题！参考手续费问题卖出。（建议满7天再卖出）作T式卖出（把未满7天的留着）<br>星期六日什么都不用看！（ 无为T日则不用理）<br>补仓：看基金当天的估值，处于大跌时可加钱。（可以平摊份额导致小涨也可以提高收益）<br>算费公式：<br>1.净值<br>基金资产净值总额=基金资产总额-基金负债总额<br>2.份额<br>投资资金/买卖有效净值（买卖实质上是在买卖份额）<br>净收益 = 份额 * 最新净值 - 份额 * 最新净值 * 3.手续费<br>基金持有时间 = 赎回确认日—申购确认日<br>一般的开放式基金赎回的流程为：T日卖出→ T+1确认<br>赎回确认日=（当天三点前卖出）T+1<br>（当天三点后卖出）T+2<br>（节假日也有算在里面。）<br>看业绩走势图！（买入与卖出都要+1天（因为还不是确认日））</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">理财篇</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/xiekunze.github.io/2020/10/20/%E7%90%86%E8%B4%A2%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/xiekunze.github.io/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/xiekunze.github.io/">1</a><a class="page-number" href="/xiekunze.github.io/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/xiekunze.github.io/page/4/">4</a><a class="extend next" rel="next" href="/xiekunze.github.io/page/4/">Next &amp;raquo;</a>
@@ -5997,6 +6133,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
@@ -6005,15 +6145,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -6029,6 +6169,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
@@ -6037,7 +6181,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -6045,19 +6189,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
