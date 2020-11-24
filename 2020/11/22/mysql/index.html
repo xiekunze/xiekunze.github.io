@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/11.png">
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/12.png">
 <meta property="article:published_time" content="2020-11-22T03:57:05.000Z">
-<meta property="article:modified_time" content="2020-11-23T11:36:02.705Z">
+<meta property="article:modified_time" content="2020-11-24T11:58:31.942Z">
 <meta property="article:author" content="XieKunZe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -391,12 +391,14 @@
 <li>字符集为 utf8 ，如果不设置将继承数据库字符集</li>
 </ul>
 <p><strong>添加测试数据</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO cc (name , age ) VALUES (&#39;xkz&#39;,15);</span><br><span class="line">INSERT INTO cc (name) VALUES (&#39;xkz&#39;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO cc (name , age ) VALUES (&#39;xkz&#39;,15),(&#39;xlt&#39;,20);</span><br><span class="line">INSERT INTO cc (name) VALUES (&#39;xkz&#39;);</span><br></pre></td></tr></table></figure>
 
 <p>因为 age 设置为null 所以第二个记录没有设置值时使用默认的null值。</p>
 <h3 id="复制数据"><a href="#复制数据" class="headerlink" title="复制数据"></a>复制数据</h3><p>根据已经存在的表结构创建新表</p>
 <pre><code>CREATE TABLE dd LIKE cc;</code></pre>
-<p>复制其他表的数据<br>    INSERT INTO dd SELECT * FROM cc;</p>
+<p>复制其他表的数据    </p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO dd SELECT * FROM cc;</span><br></pre></td></tr></table></figure>
+
 <p>只复制批定字段</p>
 <pre><code>INSERT INTO dd (name) SELECT name FROM cc;</code></pre>
 <p>复制表时同时复制数据    </p>
@@ -405,11 +407,316 @@
 <pre><code>CREATE TABLE ac (id int PRIMARY KEY AUTO_INCREMENT , name varchar (30) ) SELECT id, cname AS name FROM aa;</code></pre>
 <p>删除数据表</p>
 <pre><code>DROP TEMPORARY TABLE IF EXISTS dd;</code></pre>
-<h3 id="临时表"><a href="#临时表" class="headerlink" title="临时表"></a>临时表</h3><p>临时表是用于储存临时数据表表，会在数据库连接中断时自动删除。</p>
+<p>临时表  (TEMPORARY)</p>
+<p>临时表是用于储存临时数据表表，会在数据库连接中断时自动删除。</p>
 <ul>
 <li>可以与普通表同名，优先级高于普通表</li>
 <li>连接终端时自动删除</li>
 </ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE TEMPORARY TABLE ac SELECT * FROM cc;</span><br><span class="line">SELECT * FROM ac;  -- 查看表格</span><br></pre></td></tr></table></figure>
+
+<p>删除临时表</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TEMPORARY TABLE IF EXISTS ac;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h2><h3 id="测试表"><a href="#测试表" class="headerlink" title="测试表"></a>测试表</h3><p>为了进行查询实例操作我们创建以下表</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE  TABLE stu (id int PRIMARY KEY AUTO_INCREMENT , name varchar(30) , age int DEFAULT NULL , xuehao int DEFAULT NULL );</span><br><span class="line">INSERT INTO stu (name,age,xuehao) VALUES (&#x27;xlt&#x27;,15,217),(&#x27;xkz&#x27;,16,218),(&#x27;xxx&#x27;,17,219);</span><br></pre></td></tr></table></figure>
+
+<h3 id="字段处理"><a href="#字段处理" class="headerlink" title="字段处理"></a>字段处理</h3><p>查询所有字估数据(看表格)</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu;</span><br></pre></td></tr></table></figure>
+
+<p>查询指定字段数据并排序字段</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name,age FROM stu;</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件筛选"><a href="#条件筛选" class="headerlink" title="条件筛选"></a>条件筛选</h3><p>根据条件查询</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE name = &quot;xkz&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>查询包含关键词的数据</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE name LIKE &quot;%l%&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>合并列返回查询结果</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT concat(name,age) AS &#x27;dd&#x27; FROM stu;  </span><br></pre></td></tr></table></figure>
+
+<p>指定多条件查询</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE id &gt;= 2 AND age = 17;</span><br></pre></td></tr></table></figure>
+
+<p>查找age为17或name含有“k”字的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE age &#x3D; 17 OR name LIKE &quot;%k%&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>寻找名字中不包含xkz的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE name NOT LIKE &quot;%xkz%&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>查看年龄中不重复的age</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT age FROM stu; </span><br></pre></td></tr></table></figure>
+
+<p>查看学号在127 - 129之间的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE xuehao  BETWEEN  127 AND 129; </span><br></pre></td></tr></table></figure>
+
+<p>查看学号不在127 - 129之间的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE xuehao NOT BETWEEN  127 AND 129; </span><br></pre></td></tr></table></figure>
+
+<p>查看id为1 4的所有同学</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM  stu WHERE id IN (1,4);</span><br></pre></td></tr></table></figure>
+
+<p> 查看id不为1 4的所有同学</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM  stu WHERE id  NOT IN (1,4);	</span><br></pre></td></tr></table></figure>
+
+<h3 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h3><p>查询为空的学生姓名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE name IS NULL ;</span><br></pre></td></tr></table></figure>
+
+<p>查询不为空的学生信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE name IS NOT NULL ;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果中对为空的学生显示为空</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT name ,IF (name IS NULL , &#39;空的&#39; , name ) AS name FROM stu ; </span><br><span class="line">SELECT name,ifnull( name , &#39;为空&#39;) AS name FROM stu;</span><br></pre></td></tr></table></figure>
+
+<h3 id="排序结果"><a href="#排序结果" class="headerlink" title="排序结果"></a>排序结果</h3><p>把学生的年龄按从大到小的排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY age DESC ;</span><br></pre></td></tr></table></figure>
+
+<p>把学生的年龄按从小到大的排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY age ASC ;</span><br></pre></td></tr></table></figure>
+
+<p>随机获取一名同学</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY rand() LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<p>获取年龄最大的一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY age DESC LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<p>选择id为1- 2 之间的数 (limit 参数1 ： 索引(以0开始) , 参数2 ：长度 )</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY id LIMIT 0,2;</span><br></pre></td></tr></table></figure>
+
+<p>查找id在1,2,3,4,5中, 并且年龄最小的且不为空</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE id IN (1,2,3,4,5) AND age IS NOT NULL ORDER BY age ASC LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<p>以上代码结果不准确，因为可能有同年龄的同学，所以可以使用子查询操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM  stu WHERE age &#x3D; (SELECT age FROM stu WHERE id IN (1,2,3,4,5) AND age IS NOT NULL ORDER BY age ASC LIMIT 1);</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><p>将name为xlt改为xll</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE stu SET name &#x3D; &#39;xll&#39; WHERE name &#x3D; &#39;xlt&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>将年龄小于16的age改为age = null</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE stu SET age  &#x3D; NULL  WHERE age &lt; 16;</span><br></pre></td></tr></table></figure>
+
+<p>将age = 17的 加上10岁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE stu SET age &#x3D; age + 10 WHERE age &#x3D; 17;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除记录"><a href="#删除记录" class="headerlink" title="删除记录"></a>删除记录</h3><p>删除所有年龄等于15的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM stu WHERE age &#x3D; 15;</span><br></pre></td></tr></table></figure>
+
+<p>删除名字等于’xdd’的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE  FROM stu WHERE name &#x3D; &#39;xdd&#39;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h3><p>添加一条记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO stu SET name &#x3D; &#39;xlt&#39; , age &#x3D; 18 , xuehao  &#x3D; 211;</span><br></pre></td></tr></table></figure>
+
+<p>添加多条记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO stu (name , age , xuehao) VALUES (&#39;xx&#39;,11,223),(&#39;aa&#39;,80,88);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day3"><a href="#Day3" class="headerlink" title="Day3"></a>Day3</h1><h2 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h2><p>修改表名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE cc RENAME ccc;</span><br></pre></td></tr></table></figure>
+
+<p>别一种操作方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RENAME TABLE ccc TO cc;</span><br></pre></td></tr></table></figure>
+
+<p>修改表字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE cc charset gbk;</span><br></pre></td></tr></table></figure>
+
+<p>删除表所有数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">truncate cc; </span><br></pre></td></tr></table></figure>
+
+<p>删除数据表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TABLE IF EXISTS cc;</span><br></pre></td></tr></table></figure>
+
+<h2 id="字段管理"><a href="#字段管理" class="headerlink" title="字段管理"></a>字段管理</h2><p>修改字段类型   (MODIFY)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu MODIFY name char(30) NOT NULL;	</span><br></pre></td></tr></table></figure>
+
+<p>修改字段时同时更改字段名  (CHANGE)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu CHANGE name cname varchar (31) NOT NULL ; </span><br></pre></td></tr></table></figure>
+
+<p>添加字段  (ADD   SMALLINT)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD sex SMALLINT DEFAULT NULL;</span><br></pre></td></tr></table></figure>
+
+<p>在学生名称后添加邮箱字段  (ADD      AFTER)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD email char(30) AFTER cname;</span><br></pre></td></tr></table></figure>
+
+<p>将字段添加到最前面  (FIRST)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD vx char (15) FIRST ;</span><br></pre></td></tr></table></figure>
+
+<p>删除微信字段  (DROP)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu DROP vx;</span><br></pre></td></tr></table></figure>
+
+<h2 id="主键操作"><a href="#主键操作" class="headerlink" title="主键操作"></a>主键操作</h2><p>一般主键为自增字段，需要删除自增属性后才可以删除主键</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu MODIFY id int NOT NULL;</span><br></pre></td></tr></table></figure>
+
+<p>删除主键</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu DROP PRIMARY KEY ;</span><br></pre></td></tr></table></figure>
+
+<p>添加表主键</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD PRIMARY KEY(id);</span><br></pre></td></tr></table></figure>
+
+<p>添加自增列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu MODIFY id int NOT NULL AUTO_INCREMENT ;</span><br></pre></td></tr></table></figure>
+
+<p>主键与自增列一起添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu MODIFY id int NOT NULL AUTO_INCREMENT , ADD PRIMARY KEY (id);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day4"><a href="#Day4" class="headerlink" title="Day4"></a>Day4</h1><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>下面是mysql支持的字符串类型</p>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">大小</th>
+<th align="left">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CHAR</td>
+<td align="left">0-255字节</td>
+<td align="left">定长字符串</td>
+</tr>
+<tr>
+<td align="left">VARCHAR</td>
+<td align="left">0-65535 字节</td>
+<td align="left">变长字符串</td>
+</tr>
+<tr>
+<td align="left">TINYBLOB</td>
+<td align="left">0-255字节</td>
+<td align="left">不超过 255 个字符的二进制字符串</td>
+</tr>
+<tr>
+<td align="left">TINYTEXT</td>
+<td align="left">0-255字节</td>
+<td align="left">短文本字符串</td>
+</tr>
+<tr>
+<td align="left">BLOB</td>
+<td align="left">0-65 535字节</td>
+<td align="left">二进制形式的长文本数据</td>
+</tr>
+<tr>
+<td align="left">TEXT</td>
+<td align="left">0-65 535字节</td>
+<td align="left">长文本数据</td>
+</tr>
+<tr>
+<td align="left">MEDIUMBLOB</td>
+<td align="left">0-16 777 215字节</td>
+<td align="left">二进制形式的中等长度文本数据</td>
+</tr>
+<tr>
+<td align="left">MEDIUMTEXT</td>
+<td align="left">0-16 777 215字节</td>
+<td align="left">中等长度文本数据</td>
+</tr>
+<tr>
+<td align="left">LONGBLOB</td>
+<td align="left">0-4 294 967 295字节</td>
+<td align="left">二进制形式的极大文本数据</td>
+</tr>
+<tr>
+<td align="left">LONGTEXT</td>
+<td align="left">0-4 294 967 295字节</td>
+<td align="left">极大文本数据</td>
+</tr>
+</tbody></table>
+<p>char类型是定长类型，比如定义了20长度的<code>char</code>类型，只存一个字符也点20个长度，好处是处理速度快，缺点是空间占用大，把手机号、邮箱、密码等设置为char类型是不错的选择。</p>
+<p>varchar类型与char相反，点用空间受内容影响，可以把文章标题、介绍等设置为 varchar类型更合适。</p>
+<h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p>字符串分二进制与非二进制类型，二进制用于储存图片、声音等文件，非二进制用于储存文本数据。</p>
+<p>非二进制文本受字符集和校对规则影响。</p>
+<h3 id="字符集-1"><a href="#字符集-1" class="headerlink" title="字符集"></a>字符集</h3><p>字符集(Character set)是多个字符的集合，字符集种类较多，每个字符集包含的字符个数不同。常用的字符集有GBK、BIG5、UTF8。</p>
+<p>UTF8字符包含文字内容更广，如韩文、日文、德文兼容度更高，也是推荐使用的字符集。</p>
+<p><strong>下面是查看服务器支持的字符集</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW CHARACTER SET;</span><br></pre></td></tr></table></figure>
+
+<p>表不设置字符集继承数据库，字段不设置字符集继承表的</p>
+<h3 id="校对规则"><a href="#校对规则" class="headerlink" title="校对规则"></a>校对规则</h3><p>是在字符集内用于字符比较和排序的一套规则，以_ci结束的为大小写不敏感、_bin结束的为不区分大小写。</p>
+<p><strong>下面是查看系统支持的校对规则</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show COLLATION;</span><br></pre></td></tr></table></figure>
+
+<p>当使用不区分大小写的校对规则时A与a是相同的，否则则不相同，这会影响到排序与比对。</p>
+<p>如果使用<code>utf8_bin</code> 校对规则时，下面的查询将匹配不到大写的<code>PHP</code></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from class WHERE cname = &#x27;php&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>修改表校对规则，对表的原字段将不影响，只对新增字段影响。</p>
+<h3 id="常用函数-索引从1开始"><a href="#常用函数-索引从1开始" class="headerlink" title="常用函数(索引从1开始)"></a>常用函数(索引从1开始)</h3><p><strong>大小写转换</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT upper(cname) AS cname FROM aa; </span><br><span class="line">SELECT lower(cname) AS cname FROM aa; </span><br></pre></td></tr></table></figure>
+
+<p><strong>Left&amp;right</strong></p>
+<p>left与right函数用于取左或右指定数量的字符，下面是取班级介绍前8个字符并用<code>…</code> 连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT LEFT (cname , 2) FROM aa;</span><br><span class="line">SELECT RIGHT (cname , 2) FROM aa;</span><br></pre></td></tr></table></figure>
+
+<p><strong>mid</strong></p>
+<p>从中间取字符串，参数二为起始，参数三为取的字符数量。下面是获取从第二个字符取两个字符值为<code>hp</code>的。```</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT mid(cname , 2 , 1) FROM aa;</span><br></pre></td></tr></table></figure>
+
+<p><strong>substring</strong></p>
+<p>从指定位置开始向右所有字符串，下面是获取从第二个位置开始的字符值为<code>hp</code>的记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT substring(cname , 3) AS cname FROM aa;</span><br></pre></td></tr></table></figure>
+
+<p><strong>char_length</strong></p>
+<p>获取字符串数量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT char_length(cname) AS cname FROM aa;</span><br></pre></td></tr></table></figure>
+
+<p><strong>concat</strong></p>
+<p>连接字符串使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT concat(&#39;姓名:&#39;, cname ) AS cname , concat (&#39;年龄:&#39; , age) AS age FROM aa ; </span><br></pre></td></tr></table></figure>
+
+<p>在所有姓名前面加上嘻嘻</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE aa SET cname &#x3D; concat (&#39;嘻嘻:&#39;, cname); </span><br></pre></td></tr></table></figure>
+
+<p>截取名字介绍，超过4个字符的后面连接<code>…</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT if(char_length(cname &gt; 4),concat(LEFT (cname , 4) , &#39;...&#39;) , cname) AS cname FROM aa;</span><br></pre></td></tr></table></figure>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>Mysql支持正则表达式操作，可用于处理复杂的匹配操作。</p>
+<p><strong>查找第二个字符为<code>k</code>的字符串</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE cname REGEXP &#39;^.k&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>查找名字中包含<code>xlt</code> 或 <code>xkz</code>的记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE cname REGEXP &#39;xlt|xkz&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>所有名字中包含<code>xlt</code>与<code>xkz</code>的名的最前加上<code>dd</code></p>
+<p>UPDATE aa SET cname = REPLACE (cname , cname , concat (‘dd’,cname )) WHERE cname REGEXP ‘xlt|xkz’;</p>
+<h3 id="LIKE"><a href="#LIKE" class="headerlink" title="LIKE"></a>LIKE</h3><p>在 <code>LIKE</code> 表达式中 <code>%</code> 用于匹配任意多个字符，<code>_</code> 用于匹配一个字符。</p>
+<p>匹配字符为<code>k</code>的名字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE cname LIKE &#39;%k%&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>查找第二个字符为 <code>k</code> 的名字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE cname LIKE &#39;%k_&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h2><p><strong>整型</strong></p>
+<table>
+<thead>
+<tr>
+<th>MySQL数据类型</th>
+<th>含义（有符号）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tinyint(m)</td>
+<td>1个字节 范围(-128~127)</td>
+</tr>
+<tr>
+<td>smallint(m)</td>
+<td>2个字节 范围(-32768~32767)</td>
+</tr>
+<tr>
+<td>mediumint(m)</td>
+<td>3个字节 范围(-8388608~8388607)</td>
+</tr>
+<tr>
+<td>int(m)</td>
+<td>4个字节 范围(-2147483648~2147483647)</td>
+</tr>
+<tr>
+<td>bigint(m)</td>
+<td>8个字节 范围(+-9.22*10的18次方)</td>
+</tr>
+</tbody></table>
+<ul>
+<li>取值范围如果加了unsigned，则最大值翻倍，如tinyint unsigned的取值范围为(0~256)。</li>
+<li>m的含义不是允许字段的长度，而是显示长度，在为字段设置 <code>zerofill</code> 时有效。</li>
+</ul>
+<p><strong>添加有前导零的字段</strong></p>
 
       
 
@@ -664,7 +971,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -672,19 +979,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -724,11 +1027,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
