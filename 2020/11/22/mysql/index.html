@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/11.png">
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/12.png">
 <meta property="article:published_time" content="2020-11-22T03:57:05.000Z">
-<meta property="article:modified_time" content="2020-11-24T11:58:31.942Z">
+<meta property="article:modified_time" content="2020-11-24T15:06:42.522Z">
 <meta property="article:author" content="XieKunZe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -713,11 +713,110 @@
 </tr>
 </tbody></table>
 <ul>
-<li>取值范围如果加了unsigned，则最大值翻倍，如tinyint unsigned的取值范围为(0~256)。</li>
+<li>取值范围如果加了unsigned(非负)，则最大值翻倍，如tinyint unsigned的取值范围为(0~256)。</li>
 <li>m的含义不是允许字段的长度，而是显示长度，在为字段设置 <code>zerofill</code> 时有效。</li>
 </ul>
 <p><strong>添加有前导零的字段</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE aa ADD stu_a int (1) ZEROFILL DEFAULT NULL ;</span><br></pre></td></tr></table></figure>
 
+<p><strong>在命令行查看（有些GUI软件不显示前导零)，结果如下：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select stu_a from aa;</span><br><span class="line">+-------+</span><br><span class="line">| stu_a |</span><br><span class="line">+-------+</span><br><span class="line">| 00001 |</span><br><span class="line">|  NULL |</span><br><span class="line">|  NULL |</span><br><span class="line">|  NULL |</span><br><span class="line">|  NULL |</span><br><span class="line">+-------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>浮点型</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">大小</th>
+<th align="left">范围（有符号）</th>
+<th align="left">范围（无符号）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">FLOAT</td>
+<td align="left">4 字节</td>
+<td align="left">(-3.402 823 466 E+38，-1.175 494 351 E-38)，0，(1.175 494 351 E-38，3.402 823 466 351 E+38)</td>
+<td align="left">0，(1.175 494 351 E-38，3.402 823 466 E+38)</td>
+</tr>
+<tr>
+<td align="left">DOUBLE</td>
+<td align="left">8 字节</td>
+<td align="left">(-1.797 693 134 862 315 7 E+308，-2.225 073 858 507 201 4 E-308)，0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308)</td>
+<td align="left">0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308)</td>
+</tr>
+<tr>
+<td align="left">DECIMAL</td>
+<td align="left">DECIMAL(M,D) ，m&lt;65 是总个数，d&lt;30</td>
+<td align="left">依赖于M和D的值</td>
+<td align="left">依赖于M和D的值</td>
+</tr>
+</tbody></table>
+<p>下面是检测浮点数精度的示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- FLOAT 会丢失精度</span><br><span class="line">ALTER TABLE aa ADD a float(10,2); </span><br><span class="line">UPDATE aa SET a &#x3D; 9999999.555 WHERE id &#x3D; 3;   -- 10000000</span><br><span class="line">-- 问题不大</span><br><span class="line">ALTER TABLE aa ADD b decimal(10,2); </span><br><span class="line">UPDATE aa SET b &#x3D; 9999999.555 WHERE id &#x3D; 3;    -- 9999999.56</span><br></pre></td></tr></table></figure>
+
+<p>查看结果时会发布浮点数结果不精确。</p>
+<ul>
+<li>float：2^23 = 8388608，一共七位，这意味着最多能有7位有效数字，但绝对能保证的为6位，即float的精度为6~7位有效数字</li>
+<li>double：2^52 = 4503599627370496，一共16位，double的精度为15~16位</li>
+<li>浮点型在数据库中存放的是近似值，而定点类型在数据库中存放的是精确值</li>
+<li>decimal(m,d) 参数m&lt;65 是总个数，d&lt;30且 d&lt;m 是小数位</li>
+<li>对货币等对精度敏感的数据，应该用定点数decimal存储</li>
+</ul>
+<h2 id="ENUM-SET"><a href="#ENUM-SET" class="headerlink" title="ENUM/SET"></a>ENUM/SET</h2><h3 id="ENUM"><a href="#ENUM" class="headerlink" title="ENUM"></a>ENUM</h3><p>ENUM 类型因为只允许在集合中取得一个值，有点类似于单选项。在处理相互排拆的数据时容易让人理解，比如人类的性别。换个枚举最大可以有 65535 个成员值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE aa MODIFY sex enum(&#39;男&#39;,&#39;女&#39;) DEFAULT NULL;  -- 可以选择男女（用modify的话）</span><br></pre></td></tr></table></figure>
+
+<p>可以使用索引或值添加enum数据 (根据前面提供的索引)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO aa (cname , age , xuehao , sex ) VALUES (&#39;xoo&#39; , 20 , 555 , &#39;男&#39;);</span><br><span class="line">INSERT INTO aa (cname , age , xuehao , sex ) VALUES (&#39;xcc&#39; , 20 , 555 , 2);</span><br></pre></td></tr></table></figure>
+
+<p>可以使用值与索引检索ENUM</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE sex &#x3D; &#39;男&#39;;</span><br><span class="line">SELECT * FROM aa WHERE sex &#x3D; 2;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SET"><a href="#SET" class="headerlink" title="SET"></a>SET</h3><p>SET 类型与 ENUM 类型相似但不相同。SET 类型可以从预定义的集合中取得任意数量的值。　一个 SET 类型最多可以包含 64 项元素。</p>
+<p>使用SET类型添加aa属性字段  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE aa ADD flag SET (&#39;dd&#39;,&#39;ff&#39;,&#39;gg&#39;,&#39;hh&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>添加数据 (set 里面的数据前后顺序不能颠倒)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO aa (cname , age , xuehao , sex , flag) VALUES (&#39;xxx&#39;,80,265,&#39;男&#39;,&#39;dd,ff&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>find_in_set</code> 查找数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT  * FROM aa WHERE find_in_set(&#39;dd&#39;,flag); </span><br></pre></td></tr></table></figure>
+
+<p>使用<code>like</code> 查找数据</p>
+<p>SELECT  * FROM aa WHERE flag LIKE ‘%ff%’;</p>
+<h4 id="二进制比较"><a href="#二进制比较" class="headerlink" title="二进制比较"></a>二进制比较</h4><p>可以使用二进制方式对SET类型进行模糊筛选。(用十进制去匹配)</p>
+<table>
+<thead>
+<tr>
+<th>SET成员</th>
+<th>十进制值</th>
+<th>二进制值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dd</td>
+<td>1</td>
+<td>0001</td>
+</tr>
+<tr>
+<td>ff</td>
+<td>2</td>
+<td>0010</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>4</td>
+<td>0100</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>8</td>
+<td>1000</td>
+</tr>
+</tbody></table>
+<p>获取hh = 8</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE flag &amp;8;  -- hh</span><br></pre></td></tr></table></figure>
+
+<h2 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h2><h2 id="DBeaver-1"><a href="#DBeaver-1" class="headerlink" title="DBeaver"></a>DBeaver</h2>
       
 
       
@@ -979,15 +1078,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1003,11 +1102,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1027,11 +1126,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
