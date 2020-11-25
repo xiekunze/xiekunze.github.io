@@ -632,7 +632,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT LEFT (cname , 2) FROM aa;</span><br><span class="line">SELECT RIGHT (cname , 2) FROM aa;</span><br></pre></td></tr></table></figure>
 
 <p><strong>mid</strong></p>
-<p>从中间取字符串，参数二为起始，参数三为取的字符数量。下面是获取从第二个字符取两个字符值为<code>hp</code>的。```</p>
+<p>从中间取字符串，参数二为起始，参数三为取的字符数量。下面是获取从第二个字符取两个字符值为<code>hp</code>的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT mid(cname , 2 , 1) FROM aa;</span><br></pre></td></tr></table></figure>
 
 <p><strong>substring</strong></p>
@@ -661,7 +661,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE cname REGEXP &#39;xlt|xkz&#39;;</span><br></pre></td></tr></table></figure>
 
 <p>所有名字中包含<code>xlt</code>与<code>xkz</code>的名的最前加上<code>dd</code></p>
-<p>UPDATE aa SET cname = REPLACE (cname , cname , concat (‘dd’,cname )) WHERE cname REGEXP ‘xlt|xkz’;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE aa SET cname &#x3D; REPLACE (cname , cname , concat (&#39;dd&#39;,cname )) WHERE cname REGEXP &#39;xlt|xkz&#39;;</span><br></pre></td></tr></table></figure>
+
 <h3 id="LIKE"><a href="#LIKE" class="headerlink" title="LIKE"></a>LIKE</h3><p>在 <code>LIKE</code> 表达式中 <code>%</code> 用于匹配任意多个字符，<code>_</code> 用于匹配一个字符。</p>
 <p>匹配字符为<code>k</code>的名字</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE cname LIKE &#39;%k%&#39;;</span><br></pre></td></tr></table></figure>
@@ -1240,6 +1241,8 @@
 
 <p>还有一个可能是电脑的mysql站了端口号</p>
 <img src="/xiekunze.github.io/2020/11/08/%E5%85%B3%E4%BA%8Ephp%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/29.png">
+
+<img src="/xiekunze.github.io/2020/11/08/%E5%85%B3%E4%BA%8Ephp%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/30.png">
 
 <p>要用mysql的时候,再去开启!</p>
 <p>3、我们将wamp server重新启动，就可以发现wamp server橙色变成绿色了，说明启动成功了。</p>
@@ -2304,11 +2307,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
