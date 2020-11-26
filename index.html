@@ -1312,6 +1312,30 @@
 
 <p>关于PHPStorm的一些快捷键</p>
 <p><strong>基本热键</strong><br><code>格式化代码：Ctrl + Alt + L</code><br><code>重命名：Shift + F6</code><br><code>查找内容 Ctrl + F esc 退出查找</code><br><code>替换内容 Ctrl + R esc 退出替换</code><br><code>快速检索文件 Ctrl + Shift + N</code><br><code>复制当前行 Ctrl + D</code><br><code>删除当前行 Ctrl + Y</code><br><code>跳转到指定行 Ctrl + G</code><br><code>注释一行 Ctrl + /</code><br><code>注释多行 Ctrl + Shift + /</code><br><code>大小写切换 Ctrl + Shift + U</code></p>
+<p><strong>session的一个问题</strong></p>
+<p>为什么传不了值!(session传不过去)</p>
+<p>每次同时打开两个页面 (比如下面同时打开 1.php 与 2.php)</p>
+<p>确定一下几点</p>
+<p>1之前的代码逻辑是否已经给session赋值，使用var_ dump($_ _SESSION)来查看</p>
+<p>2请求中是否回传了PHPSESSID,如果没有，则可能导致获取session失败</p>
+<p>3是否在操作时清除了浏览器的cookie?</p>
+<p><code>1.php</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line">$_SESSION[&#39;user1&#39;] &#x3D; &#39;dd&#39;;</span><br><span class="line">$_SESSION[&#39;pw1&#39;] &#x3D; &#39;xx&#39;;</span><br><span class="line">var_dump($_SESSION);  &#x2F;&#x2F;array(2) &#123; [&quot;user1&quot;]&#x3D;&gt; string(2) &quot;dd&quot; [&quot;pw1&quot;]&#x3D;&gt; string(2) &quot;xx&quot; &#125;</span><br><span class="line">echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">echo session_id();   &#x2F;&#x2F;查看每次获取的id值</span><br></pre></td></tr></table></figure>
+
+<p><code>2.php</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line">$dddddd &#x3D; $_SESSION[&#39;user1&#39;];</span><br><span class="line">$cc &#x3D; $_SESSION[&#39;pw1&#39;];</span><br><span class="line"></span><br><span class="line">echo session_id();  &#x2F;&#x2F;查看每次获取的id值与1.php的id是否一致</span><br></pre></td></tr></table></figure>
+
+<p>如果每次id值都不同的话！</p>
+<p>通过php查看 <code>echo phpinfo();</code></p>
+<img src="/xiekunze.github.io/2020/11/08/%E5%85%B3%E4%BA%8Ephp%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/31.png">
+
+<p>进去php.ini</p>
+<img src="/xiekunze.github.io/2020/11/08/%E5%85%B3%E4%BA%8Ephp%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/32.png">
+
+<p>去找到刚刚找到的路径下修改内容</p>
+<img src="/xiekunze.github.io/2020/11/08/%E5%85%B3%E4%BA%8Ephp%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/33.png">
+
+<p>最后重启wamp64(每次对配置项操作都得重新启动wamp64)</p>
 
       
 
@@ -2335,7 +2359,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2343,7 +2367,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
               </li>
              
               <li class="article-tag-list-item">
