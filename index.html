@@ -804,7 +804,436 @@
 <p>获取hh = 8</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM aa WHERE flag &amp;8;  -- hh</span><br></pre></td></tr></table></figure>
 
-<h2 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h2><h2 id="DBeaver-1"><a href="#DBeaver-1" class="headerlink" title="DBeaver"></a>DBeaver</h2>
+<h2 id="Day5"><a href="#Day5" class="headerlink" title="Day5"></a>Day5</h2><h2 id="DBeaver-1"><a href="#DBeaver-1" class="headerlink" title="DBeaver"></a>DBeaver</h2><p>如果使用DBeaver软件学习，需要在编辑连接设置正确时区。</p>
+<img src="/xiekunze.github.io/2020/11/22/mysql/13.png">
+
+<p><strong>使用命令设置时区</strong></p>
+<p>设置会话时区，每次连接会话需要重新设置</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set time_zone = &#x27;+8:00&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>全局时区设置</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set global time_zone = &#x27;+8:00&#x27;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据类型-1"><a href="#数据类型-1" class="headerlink" title="数据类型"></a>数据类型</h2><table>
+<thead>
+<tr>
+<th>日期时间类型</th>
+<th>占用空间</th>
+<th>日期格式</th>
+<th>最小值</th>
+<th>最大值</th>
+<th>零值表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DATETIME</td>
+<td>8 bytes</td>
+<td>YYYY-MM-DD HH:MM:SS</td>
+<td>1000-01-01 00:00:00</td>
+<td>9999-12-31 23:59:59</td>
+<td>0000-00-00 00:00:00</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>4 bytes</td>
+<td>YYYY-MM-DD HH:MM:SS</td>
+<td>1970-01-01 08:00:01</td>
+<td>2038-01-19 03:14:07</td>
+<td>00000000000000</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>4 bytes</td>
+<td>YYYY-MM-DD</td>
+<td>1000-01-01</td>
+<td>9999-12-31</td>
+<td>0000-00-00</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>3 bytes</td>
+<td>HH:MM:SS</td>
+<td>-838:59:59</td>
+<td>838:59:59</td>
+<td>00:00:00</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>1 bytes</td>
+<td>YYYY</td>
+<td>1901</td>
+<td>2155</td>
+<td>0000</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Mysql保存日期格式使用 YYYY-MM-DD HH:MM:SS的ISO 8601标准</li>
+<li>向数据表储存日期与时间必须使用ISO格式</li>
+</ul>
+<h2 id="创建字段"><a href="#创建字段" class="headerlink" title="创建字段"></a>创建字段</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD birthday datetime DEFAULT NULL ;</span><br><span class="line">//添加日期</span><br><span class="line">UPDATE stu SET birthday  = &quot;2020-11-12 08:55:33&quot; WHERE id = 1;</span><br></pre></td></tr></table></figure>
+
+<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><h3 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h3><table>
+<thead>
+<tr>
+<th align="left">格式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">%a</td>
+<td align="left">缩写星期名</td>
+</tr>
+<tr>
+<td align="left">%b</td>
+<td align="left">缩写月名</td>
+</tr>
+<tr>
+<td align="left">%c</td>
+<td align="left">月，数值</td>
+</tr>
+<tr>
+<td align="left">%D</td>
+<td align="left">带有英文前缀的月中的天</td>
+</tr>
+<tr>
+<td align="left">%d</td>
+<td align="left">月的天，数值(00-31)</td>
+</tr>
+<tr>
+<td align="left">%e</td>
+<td align="left">月的天，数值(0-31)</td>
+</tr>
+<tr>
+<td align="left">%f</td>
+<td align="left">微秒</td>
+</tr>
+<tr>
+<td align="left">%H</td>
+<td align="left">小时 (00-23)</td>
+</tr>
+<tr>
+<td align="left">%h</td>
+<td align="left">小时 (01-12)</td>
+</tr>
+<tr>
+<td align="left">%I</td>
+<td align="left">小时 (01-12)</td>
+</tr>
+<tr>
+<td align="left">%i</td>
+<td align="left">分钟，数值(00-59)</td>
+</tr>
+<tr>
+<td align="left">%j</td>
+<td align="left">年的天 (001-366)</td>
+</tr>
+<tr>
+<td align="left">%k</td>
+<td align="left">小时 (0-23)</td>
+</tr>
+<tr>
+<td align="left">%l</td>
+<td align="left">小时 (1-12)</td>
+</tr>
+<tr>
+<td align="left">%M</td>
+<td align="left">月名</td>
+</tr>
+<tr>
+<td align="left">%m</td>
+<td align="left">月，数值(00-12)</td>
+</tr>
+<tr>
+<td align="left">%p</td>
+<td align="left">AM 或 PM</td>
+</tr>
+<tr>
+<td align="left">%r</td>
+<td align="left">时间，12-小时（hh:mm:ss AM 或 PM）</td>
+</tr>
+<tr>
+<td align="left">%S</td>
+<td align="left">秒(00-59)</td>
+</tr>
+<tr>
+<td align="left">%s</td>
+<td align="left">秒(00-59)</td>
+</tr>
+<tr>
+<td align="left">%T</td>
+<td align="left">时间, 24-小时 (hh:mm:ss)</td>
+</tr>
+<tr>
+<td align="left">%U</td>
+<td align="left">周 (00-53) 星期日是一周的第一天</td>
+</tr>
+<tr>
+<td align="left">%u</td>
+<td align="left">周 (00-53) 星期一是一周的第一天</td>
+</tr>
+<tr>
+<td align="left">%V</td>
+<td align="left">周 (01-53) 星期日是一周的第一天，与 %X 使用</td>
+</tr>
+<tr>
+<td align="left">%v</td>
+<td align="left">周 (01-53) 星期一是一周的第一天，与 %x 使用</td>
+</tr>
+<tr>
+<td align="left">%W</td>
+<td align="left">星期名</td>
+</tr>
+<tr>
+<td align="left">%w</td>
+<td align="left">周的天 （0=星期日, 6=星期六）</td>
+</tr>
+<tr>
+<td align="left">%X</td>
+<td align="left">年，其中的星期日是周的第一天，4 位，与 %V 使用</td>
+</tr>
+<tr>
+<td align="left">%x</td>
+<td align="left">年，其中的星期一是周的第一天，4 位，与 %v 使用</td>
+</tr>
+<tr>
+<td align="left">%Y</td>
+<td align="left">年，4 位</td>
+</tr>
+<tr>
+<td align="left">%y</td>
+<td align="left">年，2 位</td>
+</tr>
+</tbody></table>
+<h3 id="实例操作-输出"><a href="#实例操作-输出" class="headerlink" title="实例操作  (输出)"></a>实例操作  (输出)</h3><p>使用<code>Date_format</code>格式化日期与时间显示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT id , date_format(birthday ,&#39;%Y年%m月%d日 %h时%i分%s秒&#39;) AS GG FROM stu ;  -- 2020年11月12日 08时55分33秒</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>time_format</code>格式化输出时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT id , time_format(birthday,&#39;%r&#39;) AS GG FROM stu;   -- 08:55:33 AM  </span><br></pre></td></tr></table></figure>
+
+<h2 id="时间戳-有min-与-max-操作方式并不重要-结果出来就好"><a href="#时间戳-有min-与-max-操作方式并不重要-结果出来就好" class="headerlink" title="时间戳(有min 与 max)    操作方式并不重要,结果出来就好"></a>时间戳(有min 与 max)    操作方式并不重要,结果出来就好</h2><p>以时间戳格式来记录日期与时间。</p>
+<p><strong>设置TIMESTAMP字段</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 自动更新时间</span><br><span class="line">ALTER TABLE stu ADD updated timestamp NOT NULL DEFAULT current_timestamp ;</span><br><span class="line">-- 强行更新时间</span><br><span class="line">INSERT INTO stu SET name &#x3D; &quot;kkk&quot; , updated &#x3D; &quot;2020-2-13 10:33:22&quot;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>添加数据时自动更新时间</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD updated timestamp NOT NULL DEFAULT CURRENT_timestamp ON UPDATE current_timestamp ;</span><br></pre></td></tr></table></figure>
+
+<p>当执行添加与更新时字段将自动为当前时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO stu SET id &#x3D; 2;</span><br><span class="line">UPDATE stu SET name &#x3D; &quot;hhh&quot; WHERE id &#x3D; &quot;3&quot;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行更新或添加都会改变timestamp字段</li>
+</ul>
+<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><p>下面是获取当前日期、时间的示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT now() , current_date() ,  current_time();  </span><br></pre></td></tr></table></figure>
+
+<p>获取时间部分值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT YEAR (updated) AS year , MONTH (updated) AS MONTH , DAY (updated) AS DAY , HOUR (updated) AS HOUR , MINUTE (updated) AS MINUTE , SECOND (updated) AS SECOND FROM stu;</span><br></pre></td></tr></table></figure>
+
+<p>其他可以使用的函数如下</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HOUR</td>
+<td>时（范围从0到23）</td>
+</tr>
+<tr>
+<td>MINUTE</td>
+<td>分（范围从0到59）</td>
+</tr>
+<tr>
+<td>SECOND</td>
+<td>秒（范围从0到59）</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>年（范围从1000 到 9999）</td>
+</tr>
+<tr>
+<td>MONTH</td>
+<td>月（范围从1到12）</td>
+</tr>
+<tr>
+<td>DAY</td>
+<td>日（范围从1开始）</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>获取时间</td>
+</tr>
+<tr>
+<td>WEEK</td>
+<td>一年中的第几周，从1开始计数</td>
+</tr>
+<tr>
+<td>QUARTER</td>
+<td>一年中的季度，从1开始计数</td>
+</tr>
+<tr>
+<td>CURRENT_DATE</td>
+<td>当前日期</td>
+</tr>
+<tr>
+<td>CURRENT_TIME</td>
+<td>当前时间</td>
+</tr>
+<tr>
+<td>NOW</td>
+<td>当前时间</td>
+</tr>
+<tr>
+<td>DAYOFYEAR</td>
+<td>一年中的第几天（从1开始）</td>
+</tr>
+<tr>
+<td>DAYOFMONTH</td>
+<td>月份中天数（从1开始）</td>
+</tr>
+<tr>
+<td>DAYOFWEEK</td>
+<td>星期天（1）到星期六（7）</td>
+</tr>
+<tr>
+<td>WEEKDAY</td>
+<td>星期一（0）到星期天（6）</td>
+</tr>
+<tr>
+<td>TO_DAYS</td>
+<td>从元年到现在的天数（忽略时间部分）</td>
+</tr>
+<tr>
+<td>FROM_DAYS</td>
+<td>根据天数得到日期（忽略时间部分）</td>
+</tr>
+<tr>
+<td>TIME_TO_SEC</td>
+<td>时间转为秒数（忽略日期部分）</td>
+</tr>
+<tr>
+<td>SEC_TO_TIME</td>
+<td>根据秒数转为时间（忽略日期部分）</td>
+</tr>
+<tr>
+<td>UNIX_TIMESTAMP</td>
+<td>根据日期返回秒数（包括日期与时间）</td>
+</tr>
+<tr>
+<td>FROM_UNIXTIME</td>
+<td>根据秒数返回日期与时间（包括日期与时间）</td>
+</tr>
+<tr>
+<td>DATEDIFF</td>
+<td>两个日期相差的天数（忽略时间部分，前面日期减后面日期）</td>
+</tr>
+<tr>
+<td>TIMEDIFF</td>
+<td>计算两个时间的间隔（忽略日期部分）</td>
+</tr>
+<tr>
+<td>TIMESTAMPDIFF</td>
+<td>根据指定单位计算两个日期时间的间隔（包括日期与时间）</td>
+</tr>
+<tr>
+<td>LAST_DAY</td>
+<td>该月的最后一天</td>
+</tr>
+</tbody></table>
+<h3 id="拆分日期时间"><a href="#拆分日期时间" class="headerlink" title="拆分日期时间"></a>拆分日期时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name , YEAR (birthday) , MONTH (birthday) , DAY (birthday) , HOUR (birthday) , MINUTE (birthday) , SECOND (birthday) FROM stu  ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="当前日期时间"><a href="#当前日期时间" class="headerlink" title="当前日期时间"></a>当前日期时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT now() AS now , current_date() AS 年月日 , CURRENT_time () AS 时分秒 , curdate() , curtime() ; </span><br><span class="line">-- 2020-11-28 16:08:58	2020-11-28	16:08:58	2020-11-28	16:08:58</span><br></pre></td></tr></table></figure>
+
+<h3 id="时间计算"><a href="#时间计算" class="headerlink" title="时间计算"></a>时间计算</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT dayofyear(now()) , dayofmonth(now()) , dayofweek(now())  , weekday(now());   </span><br><span class="line">-- 333	28	7  5</span><br></pre></td></tr></table></figure>
+
+<h3 id="秒转换"><a href="#秒转换" class="headerlink" title="秒转换"></a>秒转换</h3><p>不包含日期的秒转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET @time &#x3D; time(now());</span><br><span class="line">SELECT now() , time_to_sec(@time) , sec_to_time(time_to_sec(@time)) ;</span><br><span class="line">-- 2020-11-28 16:22:00	  58828       	16:20:28</span><br></pre></td></tr></table></figure>
+
+<p>日期时间与秒转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT now() , unix_timestamp(now()) , from_unixtime(unix_timestamp(now())) ;</span><br><span class="line">-- 2020-11-28 16:24:46	1606551886	2020-11-28 16:24:46</span><br></pre></td></tr></table></figure>
+
+<h3 id="天转换"><a href="#天转换" class="headerlink" title="天转换"></a>天转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT now() , to_days(now()) , from_days(to_days(now()));</span><br><span class="line">-- 2020-11-28 16:27:36	738122	2020-11-28</span><br></pre></td></tr></table></figure>
+
+<h3 id="差值计算"><a href="#差值计算" class="headerlink" title="差值计算"></a>差值计算</h3><p>计算天数差值，忽略时间部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT now() , datediff(now() , birthday) FROM stu;  -- 16 </span><br></pre></td></tr></table></figure>
+
+<p>计算时间差值，忽略天数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT now() , timediff(time(now()) , time(birthday)) FROM stu;  -- 07:38:09</span><br></pre></td></tr></table></figure>
+
+<h3 id="指定单位差值"><a href="#指定单位差值" class="headerlink" title="指定单位差值 (**)"></a>指定单位差值 (**)</h3><p>支持的单位有 YEAR/MONTH/WEEK/DAY/HOUR/MINUTE/SECOND等。下面是获取学生来到人生经历的天数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name , timestampdiff(day , birthday , now()) FROM stu; -- 16</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本查询-对字段进行一段一段的拆分"><a href="#基本查询-对字段进行一段一段的拆分" class="headerlink" title="基本查询 (对字段进行一段一段的拆分)"></a>基本查询 (对字段进行一段一段的拆分)</h2><p>创建一个表格进行操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1	xkz	1	1998-02-13 08:22:13	1	2020-11-28 18:01:03</span><br><span class="line">2	xxx	2	1995-02-13 08:22:13	2	2020-11-28 18:02:48</span><br><span class="line">3	xlt	2	1999-02-13 08:22:13	2	2020-11-28 18:02:48</span><br><span class="line">4	xdd	1	1989-02-13 08:22:13	1	2020-11-28 18:02:48</span><br></pre></td></tr></table></figure>
+
+<p>MYSQL内部将日期按数值进行处理，下面是查找’1990-02-22 09:00:00’ 日期可以写成数值形式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE birthday &#x3D; 19980213082213;  -- 1	xkz	1	1998-02-13 08:22:13	1	2020-11-28 18:01:03</span><br></pre></td></tr></table></figure>
+
+<p>查找在 1989~1995年出生的同学</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE birthday BETWEEN &#39;1989-01-01&#39; AND &#39;1995-12-31&#39;;</span><br><span class="line">-- 2	xxx	2	1995-02-13 08:22:13	2	2020-11-28 18:02:48</span><br><span class="line">-- 4	xdd	1	1989-02-13 08:22:13	1	2020-11-28 18:02:48</span><br></pre></td></tr></table></figure>
+
+<p>获取年龄最大的同学</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY birthday ASC LIMIT 1 ;  -- 4	xdd	1	1989-02-13 08:22:13	1	2020-11-28 18:02:48</span><br><span class="line"># 更准确的查询</span><br><span class="line">SELECT * FROM stu  WHERE birthday &#x3D; (SELECT birthday FROM stu ORDER BY birthday ASC LIMIT 1 );</span><br><span class="line">-- 4 xdd 1	1989-02-13 08:22:13	1	2020-11-28 18:02:48</span><br></pre></td></tr></table></figure>
+
+<p>查询在1班或2班1990年出生的同学</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE class_id IN (1,2) AND YEAR (birthday) &#x3D; &#39;1999&#39;;  -- 3	xlt	2	1999-02-13 08:22:13	2	2020-11-28 18:02:48</span><br></pre></td></tr></table></figure>
+
+<p>90后最喜欢上的班级</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(id) AS total , class_id FROM stu</span><br><span class="line">WHERE left(birthday , 4) &gt;&#x3D; 1990 AND YEAR (birthday) &lt;&#x3D; 2000</span><br><span class="line">GROUP BY class_id </span><br><span class="line">ORDER BY total DESC ;  -- 2</span><br></pre></td></tr></table></figure>
+
+<p>大于20岁的女生最多的班级</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(id) class_id FROM stu</span><br><span class="line">WHERE timestampdiff(YEAR,birthday,now()) &gt; 20 AND sex &#x3D; &#39;2&#39;</span><br><span class="line">GROUP BY class_id </span><br><span class="line">ORDER BY count(id) DESC LIMIT 1; -- 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="时间计算-1"><a href="#时间计算-1" class="headerlink" title="时间计算"></a>时间计算</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ADDTIME</td>
+<td>添加时间（负数为减少），只对时间有效</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>添加时间（负数为减少），只对时间有效</td>
+</tr>
+<tr>
+<td>DATE_ADD</td>
+<td>根据单位添加时间，支持单位有YEAR/MONTH/DAY/HOUR/MINUTE/SECOND/HOUR_MINUTE/DAY_HOUR/DAY_MINUTE/DAY_SECOND/HOUR_MINUTE/HOUR_SECOND（负数时等于DATE_SUB)</td>
+</tr>
+<tr>
+<td>DATE_SUB</td>
+<td>DATE_ADD的反函数</td>
+</tr>
+<tr>
+<td>LAST_DAY</td>
+<td>指定月最后一天日期</td>
+</tr>
+</tbody></table>
+<p>一小时的差距</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT addtime(now(),&#39;-1:00:00&#39;);  -- 2020-11-28 18:04:04</span><br><span class="line">SELECT ADDtime(now(),&#39;1:00:00&#39;); -- 2020-11-28 20:04:38</span><br></pre></td></tr></table></figure>
+
+<p>七天后的日期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_add(now(),INTERVAL &#39;7&#39; day);  -- 2020-12-05 19:06:56</span><br></pre></td></tr></table></figure>
+
+<p>1小时20分钟后的日期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_add(now(),INTERVAL &#39;1:20&#39; HOUR_MINUTE);  -- 2020-11-28 20:39:39</span><br></pre></td></tr></table></figure>
+
+<p>1天1小时后的日期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_add(now(),INTERVAL &#39;1 1&#39; DAY_HOUR);  -- 2020-11-29 20:21:43</span><br></pre></td></tr></table></figure>
+
+<p>获取本月最后一天日期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT last_day(now()); -- 2020-11-30</span><br></pre></td></tr></table></figure>
+
+<p>获取本月的第一天日期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_sub(now(),INTERVAL dayofmonth(now()) - 1 day); -- 2020-11-01 19:41:38</span><br></pre></td></tr></table></figure>
+
+<p>因为使用大量函数会造成性能下降，所以推荐在PHP中算出时间后比对</p>
+
       
 
       
@@ -2359,7 +2788,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2367,7 +2796,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2379,11 +2808,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
               </li>
              
               <li class="article-tag-list-item">

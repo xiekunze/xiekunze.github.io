@@ -3747,6 +3747,110 @@ echo $b; //integer</code></pre>
 <h1 id="Day12"><a href="#Day12" class="headerlink" title="Day12"></a>Day12</h1><h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><p>PHP操作数据库的方式有多种如 <code>mysql</code> 、<code>mysqli</code>、<code>PDO</code>，目前主要使用的是PDO处理。</p>
 <p>PDO 提供了一个数据访问抽象层，这意味着，不管使用哪种数据库，都可以用相同的函数（方法）来查询和获取数据。</p>
 <p>下面是使用 <code>PDO</code> 连接数据库的操作，当连接失败时将抛出异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&#39;Content-type:text&#x2F;html;charset&#x3D;utf8&#39;);</span><br><span class="line">$config &#x3D; [</span><br><span class="line">    &#39;host&#39; &#x3D;&gt; &#39;localhost&#39;,</span><br><span class="line">    &#39;user&#39; &#x3D;&gt; &#39;root&#39;,</span><br><span class="line">    &#39;password&#39; &#x3D;&gt; &#39;&#39;,</span><br><span class="line">    &#39;db&#39; &#x3D;&gt; &#39;xkz&#39;,</span><br><span class="line">    &#39;charset&#39;&#x3D;&gt;&#39;utf8&#39;</span><br><span class="line">];</span><br><span class="line">try &#123;</span><br><span class="line">    $dsn &#x3D; sprintf(&#39;mysql:host&#x3D;%s;dbname&#x3D;%s;charset&#x3D;utf8&#39;, $config[&#39;host&#39;], $config[&#39;db&#39;],$config[&#39;charset&#39;]);</span><br><span class="line">    $pdo &#x3D;  new PDO($dsn, $config[&#39;user&#39;], $config[&#39;password&#39;]);</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    die($e-&gt;getMessage());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="错误处理-1"><a href="#错误处理-1" class="headerlink" title="错误处理"></a>错误处理</h2><table>
+<thead>
+<tr>
+<th>错误类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PDO::ERRMODE_SILENT</td>
+<td>不显示错误</td>
+</tr>
+<tr>
+<td>PDO::ERRMODE_WARNING</td>
+<td>显示警告错误</td>
+</tr>
+<tr>
+<td>PDO::ERRMODE_EXCEPTION</td>
+<td>抛出异常</td>
+</tr>
+</tbody></table>
+<p>可以在连接时设置错误类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pdo &#x3D;  new PDO($dsn, $config[&#39;user&#39;], $config[&#39;password&#39;], [PDO::ATTR_ERRMODE &#x3D;&gt; PDO::ERRMODE_EXCEPTION]);</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用 <code>setAttribute</code> 方法设置错误处理方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$pdo &#x3D;  new PDO($dsn, $config[&#39;user&#39;], $config[&#39;password&#39;]);</span><br><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行语句"><a href="#执行语句" class="headerlink" title="执行语句"></a>执行语句</h2><p>使用 <code>exec</code> 方法可以发送执行语言</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;exec(&quot;INSERT INTO stu (name) VALUES(&#39;ddd&#39;)&quot;);</span><br><span class="line">echo &quot;自增主键:&quot;.$pdo-&gt;lastInsertId();</span><br></pre></td></tr></table></figure>
+
+<p>执行删除操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);</span><br><span class="line">$abc &#x3D; $pdo-&gt;exec(&quot;delete from stu where id &#x3D; 2&quot;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="发送查询"><a href="#发送查询" class="headerlink" title="发送查询"></a>发送查询</h2><p><strong>设置返回列名</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>PDO::CASE_LOWER</em></td>
+<td>强制列名小写</td>
+</tr>
+<tr>
+<td><em>PDO::CASE_NATURAL</em></td>
+<td>保留数据库驱动返回的列名</td>
+</tr>
+<tr>
+<td><em>PDO::CASE_UPPER</em></td>
+<td>强制列名大写</td>
+</tr>
+</tbody></table>
+<p><strong>返回结果</strong></p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$result-&gt;fetchAll(PDO::FETCH_ASSOC)</td>
+<td>获得关联数据</td>
+</tr>
+<tr>
+<td>$result-&gt;fetchAll(PDO::FETCH_NUM)</td>
+<td>获得索引数据</td>
+</tr>
+<tr>
+<td>$result-&gt;fetchAll(PDO::FETCH_BOTH)</td>
+<td>同时获取关联与索引数据</td>
+</tr>
+<tr>
+<td>$result-&gt;fetchAll(PDO::FETCH_OBJ)</td>
+<td>获取对象类型数据</td>
+</tr>
+</tbody></table>
+<h3 id="fetchAll"><a href="#fetchAll" class="headerlink" title="fetchAll"></a>fetchAll</h3><p>一次获取所有结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$query &#x3D; $pdo-&gt;query(&quot;select * from stu&quot;);</span><br><span class="line">$rows &#x3D; $query-&gt;fetchAll();</span><br><span class="line">print_r($rows);</span><br></pre></td></tr></table></figure>
+
+<h3 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a>fetch</h3><p>每次获取结果中的一条数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_CASE,PDO::CASE_LOWER);</span><br><span class="line">$query &#x3D; $pdo-&gt;query(&quot;select * from stu&quot;);</span><br><span class="line">while ($field &#x3D; $query-&gt;fetch(PDO::FETCH_ASSOC)) &#123;</span><br><span class="line">    if($field[&#39;id&#39;] &#x3D;&#x3D; 3)&#123;</span><br><span class="line">        echo sprintf(&quot;编号:%s\t名字:%s\t年龄:%d\t学号:%d\t&lt;br&#x2F;&gt;&quot;, $field[&#39;id&#39;], $field[&#39;name&#39;],$field[&#39;age&#39;],$field[&#39;xuehao&#39;]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="预准备"><a href="#预准备" class="headerlink" title="预准备"></a>预准备</h2><p>预准备是将SQL的解析阶段与参数绑定分开执行，从而可以有效的防止SQL注入。</p>
+<h3 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h3><p>下面来看一个SQL注入的例子(浏览器输入id)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_CASE,PDO::CASE_LOWER);</span><br><span class="line">$query &#x3D; $pdo-&gt;query(&quot;select * from stu where id &#x3D; &#123;$_GET[&#39;id&#39;]&#125;&quot;);</span><br><span class="line">$aa &#x3D; $query-&gt;fetch();</span><br><span class="line">print_r($aa);</span><br></pre></td></tr></table></figure>
+
+<p>如果GET参数如下将产生SQL注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">view-source:http:&#x2F;&#x2F;localhost:63342&#x2F;PHP&#x2F;day12.php?id&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用预准备-增删改查都可以预准备"><a href="#使用预准备-增删改查都可以预准备" class="headerlink" title="使用预准备(增删改查都可以预准备)"></a>使用预准备(增删改查都可以预准备)</h3><p>下面使用参数绑定来执行预准备的查询操作  ( : )</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_CASE,PDO::CASE_LOWER);</span><br><span class="line">$sql &#x3D; &quot;SELECT * FROM stu WHERE id&#x3D;:id&quot;;</span><br><span class="line">$sth &#x3D; $pdo-&gt;prepare($sql);</span><br><span class="line">$sth-&gt;execute([&#39;:id&#39; &#x3D;&gt; $_GET[&#39;id&#39;]]);</span><br><span class="line">$rows &#x3D; $sth-&gt;fetchAll(PDO::FETCH_ASSOC);</span><br><span class="line">print_r($rows);</span><br></pre></td></tr></table></figure>
+
+<p>下面使用参数绑定形式的预准备操作执行添加操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_CASE,PDO::CASE_LOWER);</span><br><span class="line">$sql &#x3D; &quot;INSERT INTO stu (name) VALUES(:name)&quot;;</span><br><span class="line">$sth &#x3D; $pdo-&gt;prepare($sql);</span><br><span class="line">$sth-&gt;execute([&#39;:name&#39;&#x3D;&gt;&#39;abcd&#39;]);</span><br><span class="line">echo $pdo-&gt;lastInsertId();</span><br></pre></td></tr></table></figure>
+
+<h3 id="占位符-（-）"><a href="#占位符-（-）" class="headerlink" title="占位符 （?）"></a>占位符 （?）</h3><p>使用问号占位符是另一种使用预准备的方式</p>
+<p>使用占位符来执行添加操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$pdo-&gt;setAttribute(PDO::ATTR_CASE,PDO::CASE_LOWER);</span><br><span class="line">$sql &#x3D; &quot;INSERT INTO stu (name) VALUES(?)&quot;;</span><br><span class="line">$sth &#x3D; $pdo-&gt;prepare($sql);</span><br><span class="line">$sth-&gt;execute([&#39;aaaa&#39;]);</span><br><span class="line">echo $pdo-&gt;lastInsertId();</span><br></pre></td></tr></table></figure>
+
+<h2 id="SQL生成器-利用系统提供的函数处理"><a href="#SQL生成器-利用系统提供的函数处理" class="headerlink" title="SQL生成器 (利用系统提供的函数处理)"></a>SQL生成器 (利用系统提供的函数处理)</h2><h3 id="处理类-1"><a href="#处理类-1" class="headerlink" title="处理类"></a>处理类</h3><p>下面构建一个SQL语句生成器，用于快速操作数据库。</p>
 
       
 
@@ -3937,7 +4041,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3945,7 +4049,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3957,11 +4061,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
               </li>
              
               <li class="article-tag-list-item">
