@@ -1233,6 +1233,161 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_sub(now(),INTERVAL dayofmonth(now()) - 1 day); -- 2020-11-01 19:41:38</span><br></pre></td></tr></table></figure>
 
 <p>因为使用大量函数会造成性能下降，所以推荐在PHP中算出时间后比对</p>
+<p>获取本月发表的文章</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM iii </span><br><span class="line">WHERE publish_time &lt;&#x3D; last_day(now())</span><br><span class="line">AND publish_time &gt;&#x3D; date_sub(now(),INTERVAL dayofmonth(now())-1 DAY);</span><br></pre></td></tr></table></figure>
+
+<p>获取三个月内发表的文章</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM iii</span><br><span class="line">WHERE publish_time &gt;&#x3D;date_sub(now(),INTERVAL 3 MONTH );</span><br><span class="line"></span><br><span class="line">SELECT * FROM iii </span><br><span class="line">WHERE publish_time &gt;&#x3D;date_format(date_sub(now(),INTERVAL 3 MONTH) , &#39;%Y-%m-01&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>获取上个月的最后一天</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT last_day(date_sub(now(),INTERVAL 1 MONTH)) ;</span><br></pre></td></tr></table></figure>
+
+<p>下个月的第一天</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_add(last_day(now()) , INTERVAL 1 DAY );</span><br></pre></td></tr></table></figure>
+
+<p>查看出生超过20年的同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE birthday &lt; DATE_SUB(NOW(),INTERVAL 20 YEAR);</span><br></pre></td></tr></table></figure>
+
+<p>本周二的日期，使用DAYOFWEEK时周二为3</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT now(),DATE_ADD(NOW(),INTERVAL 3-DAYOFWEEK(NOW()) DAY);</span><br></pre></td></tr></table></figure>
+
+<p>本周星期日</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_add(now(),INTERVAL 6-WEEKDAY(now()) DAY) </span><br><span class="line"></span><br><span class="line">SELECT date_add(now(),INTERVAL 1-DAYOFWEEK(now())+7 day) </span><br></pre></td></tr></table></figure>
+
+<p>上周的星期日</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT date_add(now(),INTERVAL 1-DAYOFWEEK(now()) day) </span><br></pre></td></tr></table></figure>
+
+<p>查看三周前的周二</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT now(),</span><br><span class="line">DATE_SUB(DATE_ADD(NOW(),INTERVAL 3-DAYOFWEEK(NOW()) DAY),INTERVAL 21 DAY);</span><br><span class="line"></span><br><span class="line"># 或</span><br><span class="line">SELECT date_add(now(),INTERVAL 3-DAYOFWEEK(now())-21 DAY )</span><br></pre></td></tr></table></figure>
+
+<p>上周一的日期</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SET @week = DATE_SUB(NOW(),interval 1 week);</span><br><span class="line">SELECT DATE_ADD(@week,INTERVAL 0-WEEKDAY(@week) day);</span><br><span class="line"></span><br><span class="line">#或</span><br><span class="line">SELECT date_add(now(),INTERVAL 2-DAYOFWEEK(now())-7 DAY )</span><br></pre></td></tr></table></figure>
+
+<p>获取本月迟到的同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from attendance </span><br><span class="line">WHERE created_at &gt;= date_sub(NOW(),INTERVAL DAYOFMONTH(now())-1 DAY)</span><br><span class="line">AND time(created_at)&gt;&#x27;08:30:00&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>本月迟到超过2次的同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select stu_id from attendance </span><br><span class="line">WHERE created_at &gt;= date_sub(NOW(),INTERVAL DAYOFMONTH(now())-1 DAY)</span><br><span class="line">AND time(created_at)&gt;&#x27;08:30:00&#x27;</span><br><span class="line">GROUP BY stu_id</span><br><span class="line">HAVING count(id)&gt;=2;</span><br></pre></td></tr></table></figure>
+
+<p>本周周一的日期</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_ADD(now(),INTERVAL 0-WEEKDAY(now()) day);</span><br></pre></td></tr></table></figure>
+
+<p>获取本周迟到的学生编号</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set @begin =DATE_FORMAT(date_add(now(),INTERVAL 0-WEEKDAY(now()) day),&#x27;%Y-%m-%d&#x27;);</span><br><span class="line">select stu_id from attendance </span><br><span class="line">WHERE created_at &gt;= @begin</span><br><span class="line">AND time(created_at)&gt;&#x27;08:00:00&#x27;</span><br><span class="line">GROUP BY stu_id;</span><br></pre></td></tr></table></figure>
+
+<p>获取上周打卡记录</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set @week = DATE_SUB(now(),INTERVAL 1 WEEK);</span><br><span class="line">SELECT stu_id FROM attendance</span><br><span class="line">WHERE created_at&gt;=DATE_ADD(@week,interval 0-WEEKDAY(@week) day)</span><br><span class="line">AND created_at&lt;=DATE_ADD(@week,interval 4-WEEKDAY(@week) day);</span><br></pre></td></tr></table></figure>
+
+<p>获取本周发表的文章</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM article WHERE created_at &gt;=DATE_ADD(now(),INTERVAL 0-WEEKDAY(now()) day);</span><br></pre></td></tr></table></figure>
+
+<p>周日来校学习的同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * from attendance</span><br><span class="line">WHERE date(created_at) = date(date_add(now(),INTERVAL 6 - WEEKDAY(now()) day));</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day6"><a href="#Day6" class="headerlink" title="Day6"></a>Day6</h1><h2 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h2><p>MYSQL运行时可以使用不同的模式，这是很多语言中都有的特性比如JS/PHP等。在MYSQL5.7前SQL运行在宽松模式，会以开放不严谨的方式运行。</p>
+<p>在5.7后默认运行模式较为严格，这会造成在升级数据库时，数据库的操作出现问题。所以有必要理解MYSQL的运行模式机制。</p>
+<h2 id="模式说明"><a href="#模式说明" class="headerlink" title="模式说明"></a>模式说明</h2><p>查看当前运行模式</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT @@sql_mode</span><br></pre></td></tr></table></figure>
+
+<h3 id="模式选项"><a href="#模式选项" class="headerlink" title="模式选项"></a>模式选项</h3><p>不同运行模式即对不同模式选项的配置，下面是常用的模式选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ONLY_FULL_GROUP_BY</td>
+<td>结果中的字段需要在 GROUP BY 中出现</td>
+</tr>
+<tr>
+<td>STRICT_TRANS_TABLES</td>
+<td>如果一个值不能插入到一个事务表中，则中断当前的操作</td>
+</tr>
+<tr>
+<td>NO_ZERO_IN_DATE</td>
+<td>不能插入为0的日期和月份</td>
+</tr>
+<tr>
+<td>NO_ZERO_DATE</td>
+<td>不能添加 0000-00-00 格式的日期</td>
+</tr>
+<tr>
+<td>ERROR_FOR_DIVISION_BY_ZERO</td>
+<td>除数不能为零，禁止该模式后插入的结果为NULL</td>
+</tr>
+</tbody></table>
+<h3 id="常用模式"><a href="#常用模式" class="headerlink" title="常用模式"></a>常用模式</h3><p>常用模式是系统将不同的模式选项过行的组合</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ANSI</td>
+<td>宽松模式：对长度超过字段定义等错误进行截取等操作。报WARNING警告错误</td>
+</tr>
+<tr>
+<td>TRADITIONAL</td>
+<td>严格模式：对数据进行严格校验。事务处理中会进行事务回滚操作。非事务时，发生错误时就立即报错终止，会造成有部分数据插入。</td>
+</tr>
+</tbody></table>
+<p>设置当前会话为宽松模式</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session sql_mode=ANSI;</span><br><span class="line"># 或</span><br><span class="line">SET sql_mode = ANSI</span><br></pre></td></tr></table></figure>
+
+<p>设置全局模式限制</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET GLOBAL sql_mode=&#x27;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>设置为严格模式</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set session sql_mode=TRADITIONAL;</span><br></pre></td></tr></table></figure>
+
+<h2 id="对比分析"><a href="#对比分析" class="headerlink" title="对比分析"></a>对比分析</h2><p>我们来看下在不同模式下的表现，首先宽松模式可以插入’0000-00-00’的日期格式</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET sql_mode = ansi;</span><br><span class="line">INSERT INTO iii SET publish_time = &#x27;0000-00-00&#x27;;</span><br><span class="line">SELECT * FROM iii;   -- 0000-00-00 00:00:00	</span><br></pre></td></tr></table></figure>
+
+<p>当使用严格模式时将不可以插入</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET sql_mode = traditional;</span><br><span class="line">INSERT INTO iii SET publish_time = &#x27;0000-00-00&#x27;;  -- Data truncation: Incorrect datetime value: &#x27;0000-00-00&#x27; for column &#x27;publish_time&#x27; at row 1</span><br></pre></td></tr></table></figure>
+
+<p>内容超过字段长度时宽松模式会过行截断并可以正常插入，下面的字段rank使用的是smallint</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET sql_mode = ANSI; </span><br><span class="line"></span><br><span class="line">INSERT INTO article SET rank =1000000; </span><br></pre></td></tr></table></figure>
+
+<p>当改为严格模式时不能插入数据会报错</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set sql_mode=TRADITIONAL;</span><br><span class="line"></span><br><span class="line">INSERT INTO article SET rank =1000000; </span><br></pre></td></tr></table></figure>
+
+<h2 id="ONLY-FULL-GROUP-BY"><a href="#ONLY-FULL-GROUP-BY" class="headerlink" title="ONLY_FULL_GROUP_BY"></a>ONLY_FULL_GROUP_BY</h2><p>ONLY_FULL_GROUP_BY要求SELECT中的字段是在与GROUP BY中使用的字段</p>
+<ul>
+<li>如果GROUP BY 是主键或UNIQUE NOT NULL时可以在SELECT中列出其他字段</li>
+</ul>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>下面获取男生和女生的人数</p>
+<ul>
+<li>下面的班级编号 class_id 是男/女两个组中的，这个值是不确定的也是无意义的</li>
+<li>使用ONLY_FULL_GROUP_BY模式后将报错</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT class_id,count(*) AS c FROM users u GROUP BY sex</span><br></pre></td></tr></table></figure>
+
+<p>去除ONLY_FULL_GROUP_BY模式后可以读到class_id ，但针对这个SQL是无意义的</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT @@sql_mode</span><br><span class="line"></span><br><span class="line">SELECT class_id,count(*) AS c FROM users u GROUP BY sex</span><br></pre></td></tr></table></figure>
+
+<h3 id="any-value"><a href="#any-value" class="headerlink" title="any_value"></a>any_value</h3><p>有些情况下确实要取到非GROUP BY中的字段，使用 any_value函数可以从组中读取第一个值，解决使用ONLY_FULL_GROUP_BY报错的问题</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET sql_mode = &#x27;ONLY_FULL_GROUP_BY,TRADITIONAL&#x27;</span><br><span class="line"></span><br><span class="line">SELECT class_id,count(*) AS c FROM users u GROUP BY sex</span><br></pre></td></tr></table></figure>
+
+<h3 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h3><p>在SELECT中使用max/min/avg/count 等聚合函数时不受ONLY_FULL_GROUP_BY模式影响</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET sql_mode = &#x27;ONLY_FULL_GROUP_BY,TRADITIONAL&#x27;</span><br><span class="line"></span><br><span class="line">SELECT max(class_id),count(*) AS c FROM users u GROUP BY sex</span><br></pre></td></tr></table></figure>
+
+<h3 id="primary-unique"><a href="#primary-unique" class="headerlink" title="primary/unique"></a>primary/unique</h3><p>GROUP BY使用主键或unique not null字段时，不受ONLY_FULL_GROUP_BY的约束。下面是获取每班的人数的示例</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.id,c.name,count(*) FROM users u</span><br><span class="line">INNER JOIN class c </span><br><span class="line">ON c.id = u.class_id </span><br><span class="line">GROUP BY c.id</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day7"><a href="#Day7" class="headerlink" title="Day7"></a>Day7</h1><h2 id="ORDER"><a href="#ORDER" class="headerlink" title="ORDER"></a>ORDER</h2><h3 id="排序介绍"><a href="#排序介绍" class="headerlink" title="排序介绍"></a>排序介绍</h3><p>mysql对查询结果使用<code>order by</code> 进行排序</p>
+<ul>
+<li>对任何字段进行排序</li>
+<li>desc降序 asc升序</li>
+<li>对别名字段可排序</li>
+<li>对函数结果可排序</li>
+<li>支持多列表排序</li>
+<li>排序受校对规则影响</li>
+</ul>
 
       
 
@@ -2760,11 +2915,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2796,11 +2951,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color3">手册</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">手册</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2808,11 +2963,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
