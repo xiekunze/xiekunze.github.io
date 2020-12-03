@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/12.png">
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/13.png">
 <meta property="article:published_time" content="2020-11-22T03:57:05.000Z">
-<meta property="article:modified_time" content="2020-11-28T17:23:11.245Z">
+<meta property="article:modified_time" content="2020-12-02T16:55:46.155Z">
 <meta property="article:author" content="XieKunZe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -1403,6 +1403,118 @@
 <li>支持多列表排序</li>
 <li>排序受校对规则影响</li>
 </ul>
+<h3 id="排序实例"><a href="#排序实例" class="headerlink" title="排序实例"></a>排序实例</h3><p><strong>按学号从大到小排序</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY xuehao DESC; </span><br></pre></td></tr></table></figure>
+
+<p><strong>随机获取一个人</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu ORDER BY rand() DESC LIMIT 1; </span><br></pre></td></tr></table></figure>
+
+<p><strong>按出生月份从大到小排序</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT name , birthday , YEAR (birthday) AS m FROM stu ORDER BY m DESC;</span><br><span class="line">SELECT name , birthday , mid(birthday , 1 ,4) AS m FROM stu ORDER BY m DESC ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义排序"><a href="#自定义排序" class="headerlink" title="自定义排序"></a>自定义排序</h3><p>field函数用于比较值在集合中的索引，利用这一特性可以自定义排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT field(&#39;a&#39;,&#39;d&#39;,&#39;c&#39;,&#39;b&#39;,&#39;a&#39;); -- 4 </span><br></pre></td></tr></table></figure>
+
+<p>使用 field 进行自定义排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT name , LEFT (name,1) AS n FROM stu ORDER BY field(n,&#39;k&#39;,&#39;d&#39;,&#39;x&#39;) DESC ; -- x d k</span><br></pre></td></tr></table></figure>
+
+<h2 id="COUNT"><a href="#COUNT" class="headerlink" title="COUNT"></a>COUNT</h2><p><strong>统计所有学生人数</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*) FROM stu; -- 10 </span><br></pre></td></tr></table></figure>
+
+<p><strong>所有女生人数</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT COUNT(*) FROM stu WHERE sex=2;</span><br></pre></td></tr></table></figure>
+
+<p>统计所有分配班级的学生（count(字段)不会统计null值，使用count(*)时会计算null），所以下面使用具体的字段</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT COUNT(class_id) FROM stu;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MIN-MAX"><a href="#MIN-MAX" class="headerlink" title="MIN/MAX"></a>MIN/MAX</h2><p><strong>获取最大的id</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT max(id) FROM stu; -- 10</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>获取最小的id</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT min(id) FROM stu; -- 1</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取最大的id整条信息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE id &#x3D; (SELECT max(id) FROM stu);-- 10	kkk			2018-05-07 00:00:00	2020-12-01 23:23:59</span><br></pre></td></tr></table></figure>
+
+<h2 id="SUM-AVG"><a href="#SUM-AVG" class="headerlink" title="SUM/AVG"></a>SUM/AVG</h2><p><strong>获取所有的id总和</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT sum(id) FROM stu; -- 55</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取平均的id</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT avg(id) FROM stu; -- 5.5&#96;</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取低于平均id的id</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT id FROM stu WHERE id &lt; (SELECT avg(id) FROM stu); -- 1 2 3 4 5</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取学生的平均年龄</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR,birthday,now())))  FROM stu ;</span><br></pre></td></tr></table></figure>
+
+<h2 id="DISTINCT"><a href="#DISTINCT" class="headerlink" title="DISTINCT"></a>DISTINCT</h2><p>distinct用于去除结果集中的重复记录</p>
+<p><strong>获取所有的不重复的名字</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT name AS name  FROM stu WHERE name IS NOT NULL ; </span><br></pre></td></tr></table></figure>
+
+<p><strong>获取学生数，同名的算一个</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(DISTINCT name) AS name FROM stu WHERE name IS NOT NULL ; -- 7</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取班级平均人数，去掉重复的数值</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT (count(id)) AS c FROM stu GROUP BY name ; -- 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="GROUP-相当于一个圈子"><a href="#GROUP-相当于一个圈子" class="headerlink" title="GROUP(相当于一个圈子)"></a>GROUP(相当于一个圈子)</h2><p>统计受ONLY_FULL_GROUP_BY模式影响，有关 ONLY_FULL_GROUP_BY 的详细讨论请查看 「运行模式」章节。</p>
+<p><strong>统计每个班级的人数</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT COUNT(*),class_id FROM stu WHERE class_id IS NOT NULL GROUP BY class_id ;</span><br></pre></td></tr></table></figure>
+
+<p><strong>每个班年龄最大的同学</strong></p>
+<p>结果中要求出现班级编号和学生姓名，如果GROUP BY中只有班级编号字段，默认运行模式下SELECT中不能出现学生姓名。</p>
+<p>MYSQL默认使用ONLY_FULL_GROUP_BY模式要求select中的列要在group中使用。有多种方式可以处理这个问题</p>
+<ul>
+<li>可以通过更改查询模式，允许select的列不在group中出现</li>
+<li>使用聚合函数</li>
+<li>使用any_value函数处理</li>
+<li>GROUP BY中使用PRIMAY KEY 或 UNIQUE NOT NULL字段</li>
+<li>有关ONLY_FULL_GROUP_BY模式已经在「运行模式」章节讨论过</li>
+</ul>
+<p>直接查询将产生错误，因为sname不是GROUP BY使用的字段</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT min(birthday),sname FROM stu GROUP BY class_id;</span><br></pre></td></tr></table></figure>
+
+<p>使用聚合函数解决这个问题</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT min(birthday),min(sname) FROM stu GROUP BY class_id;</span><br></pre></td></tr></table></figure>
+
+<p>使用any_value函数解决</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT min(birthday),any_value(sname) FROM stu GROUP BY class_id;</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用子查询</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu where birthday IN(</span><br><span class="line">SELECT min(birthday) FROM stu GROUP BY class_id);</span><br></pre></td></tr></table></figure>
+
+<p>或使用聚合函数</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT min(birthday),min(sname) FROM stu GROUP BY class_id;</span><br></pre></td></tr></table></figure>
+
+<p>也可以更改查询模式，去掉ONLY_FULL_GROUP_BY模式的方式解决。</p>
+<blockquote>
+<p>很多后台程序框架提供配置项用于禁止ONLY_FULL_GROUP_BY模式</p>
+</blockquote>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET sql_mode=&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">SELECT min(birthday),sname FROM stu GROUP BY class_id;</span><br></pre></td></tr></table></figure>
+
+<p><strong>统计每班的男、女人数</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT concat(class_id,&#x27;班&#x27;),if(sex=1,&#x27;男&#x27;,&#x27;女&#x27;) as sex,</span><br><span class="line">count(*) FROM stu</span><br><span class="line">WHERE class_id IS NOT NULL</span><br><span class="line">GROUP BY class_id,sex ORDER BY class_id;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查找超过两个同学的班级</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT class_id FROM stu GROUP BY class_id HAVING count(*)&gt;2;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查找本周迟到超过两次的同学</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT stu_id FROM attendance </span><br><span class="line">WHERE date(created_at)&gt;date(DATE_ADD(NOW(),INTERVAL 0-WEEKDAY(NOW()) day))</span><br><span class="line">AND time(created_at)&gt;&#x27;08:30:00&#x27;</span><br><span class="line">GROUP BY stu_id</span><br><span class="line">HAVING COUNT(*)&gt;2;</span><br></pre></td></tr></table></figure>
+
+<p><strong>本周哪个同学准时到校次数最多</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*) as c,stu_id FROM attendance</span><br><span class="line">WHERE date(created_at)&gt;=date(date_add(now(),interval 0-WEEKDAY(now()) day))</span><br><span class="line">AND time(created_at)&lt;=&#x27;08:30:00&#x27;</span><br><span class="line">GROUP BY stu_id</span><br><span class="line">ORDER by c desc</span><br><span class="line">limit 1;</span><br></pre></td></tr></table></figure>
+
+<p><strong>本周哪一天迟到的人数最少</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT date(created_at) FROM attendance </span><br><span class="line">WHERE date(created_at)&gt;date(DATE_ADD(NOW(),INTERVAL 0-WEEKDAY(NOW()) day))</span><br><span class="line">AND time(created_at)&lt;=&#x27;08:30:00&#x27;</span><br><span class="line">GROUP BY created_at</span><br><span class="line">ORDER BY COUNT(*) DESC</span><br><span class="line">LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查找哪个姓的同学最多</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT left(sname,1) as s,count(*) AS c FROM stu</span><br><span class="line">GROUP BY s</span><br><span class="line">ORDER BY c DESC</span><br><span class="line">LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查找超过两个同学的姓氏</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT left(sname,1) as s,count(*) AS c FROM stu</span><br><span class="line">GROUP BY s</span><br><span class="line">HAVING c&gt;=2;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day8"><a href="#Day8" class="headerlink" title="Day8"></a>Day8</h1><h2 id="多表攻略"><a href="#多表攻略" class="headerlink" title="多表攻略"></a>多表攻略</h2><p>前面我们学习了sql语句的操作，但是我们大部分都是操作的单张表，大部分问题只有一张表是不能解决的。我们需要从多张表中获得数据，或者通过其他表的数据删除某个表的记录等操作，这个时候就需要多表操作。</p>
 
       
 
@@ -1516,6 +1628,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/xiekunze.github.io/2020/12/03/php%E9%9D%A2%E8%AF%95%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          php面试题
+        
+      </div>
+    </a>
   
   
     <a href="/xiekunze.github.io/2020/11/16/%E5%85%B3%E4%BA%8E%E7%94%B5%E8%84%91%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BF%AB%E6%8D%B7%E9%94%AE/" id="article-nav-older" class="article-nav-link-wrap">
@@ -1685,7 +1806,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">痘痘</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1694,10 +1823,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">手册</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1713,11 +1838,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
