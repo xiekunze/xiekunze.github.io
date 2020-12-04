@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/12.png">
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/13.png">
 <meta property="article:published_time" content="2020-11-22T03:57:05.000Z">
-<meta property="article:modified_time" content="2020-12-02T16:55:46.155Z">
+<meta property="article:modified_time" content="2020-12-04T00:24:54.426Z">
 <meta property="article:author" content="XieKunZe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -1515,6 +1515,50 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT left(sname,1) as s,count(*) AS c FROM stu</span><br><span class="line">GROUP BY s</span><br><span class="line">HAVING c&gt;=2;</span><br></pre></td></tr></table></figure>
 
 <h1 id="Day8"><a href="#Day8" class="headerlink" title="Day8"></a>Day8</h1><h2 id="多表攻略"><a href="#多表攻略" class="headerlink" title="多表攻略"></a>多表攻略</h2><p>前面我们学习了sql语句的操作，但是我们大部分都是操作的单张表，大部分问题只有一张表是不能解决的。我们需要从多张表中获得数据，或者通过其他表的数据删除某个表的记录等操作，这个时候就需要多表操作。</p>
+<h2 id="表关联"><a href="#表关联" class="headerlink" title="表关联"></a>表关联</h2><p><strong>一对一</strong></p>
+<p>比如说会员表与个人资料（QQ，邮箱）表即为一对一关系。</p>
+<p><strong>一对多</strong></p>
+<p>比如学生与班级表间即为一对多关系，一个班级有多个学生，一个学生属于一个班级。</p>
+<p><strong>多对多</strong></p>
+<p>粉丝表与用户表关系，一个粉丝可以关注多个用户，一个用户也可以有多个粉丝，像这种关系我们会使用一张中间表来记录关系。</p>
+<h2 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h2><p>多个表的连接将会得到所有可能出现的行，即没有明确做两个表间的关联条件时，所有记录都将符合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM class , stu ;</span><br></pre></td></tr></table></figure>
+
+<p>下面是添加条件后的结果 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT *FROM stu , class WHERE stu.name &#x3D; class.name ;</span><br></pre></td></tr></table></figure>
+
+<h2 id="INNER"><a href="#INNER" class="headerlink" title="INNER"></a>INNER</h2><p>所有多表操作都可以简单理解为，把多个表联系成一个表，最终思想成面上当成一个表对待。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT s.id , c.id FROM stu AS s INNER JOIN class AS c </span><br><span class="line">ON s.name &#x3D; c.name ;</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>INNER JOIN</code> 使用多表关联的语义更清晰</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT stu.id , class.id FROM stu INNER JOIN class </span><br><span class="line">ON stu.name &#x3D; class.name ;</span><br></pre></td></tr></table></figure>
+
+<p>查询一班的所有同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu INNER JOIN class</span><br><span class="line">ON stu.class_id = class.id</span><br><span class="line">WHERE class.id = 1;</span><br></pre></td></tr></table></figure>
+
+<p>每个班级发表的文章数量，来操作多张表的关联操作</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.id ,count(*) FROM stu as s </span><br><span class="line">INNER JOIN class as c</span><br><span class="line">INNER JOIN article as a</span><br><span class="line">ON s.class_id = c.id AND s.id = a.stu_id</span><br><span class="line">GROUP BY c.id;</span><br></pre></td></tr></table></figure>
+
+<p>一班的所有女生发表的文章</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.id,a.title FROM stu as s </span><br><span class="line">INNER JOIN class as c</span><br><span class="line">INNER JOIN article as a</span><br><span class="line">ON s.class_id = c.id AND s.id = a.stu_id</span><br><span class="line">WHERE c.id=1 AND s.sex = &#x27;女&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>每个班级发表的文章总数</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(a.id) as article_sum,c.id FROM stu as s </span><br><span class="line">INNER JOIN class as c</span><br><span class="line">INNER JOIN article as a</span><br><span class="line">ON s.class_id = c.id AND s.id = a.stu_id</span><br><span class="line">GROUP BY c.id;</span><br></pre></td></tr></table></figure>
+
+<p>哪个班级发表的文章超过两篇</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.id,count(*) as total FROM stu as s</span><br><span class="line">INNER JOIN class as c</span><br><span class="line">INNER join article as a</span><br><span class="line">ON s.class_id = c.id AND s.id = a.stu_id</span><br><span class="line">GROUP BY c.id</span><br><span class="line">HAVING total &gt;=2;</span><br></pre></td></tr></table></figure>
+
+<p>每个班级文章的总点击数与平均点击数</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT sum(a.click) as class_sum,avg(a.click) ,c.id FROM stu as s </span><br><span class="line">INNER JOIN class as c</span><br><span class="line">INNER JOIN article as a</span><br><span class="line">ON s.class_id = c.id AND s.id = a.stu_id</span><br><span class="line">GROUP BY c.id</span><br><span class="line">ORDER BY class_sum DESC;</span><br></pre></td></tr></table></figure>
+
+<p>每个班级有多少同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*),c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id = c.id</span><br><span class="line">GROUP BY c.id;</span><br></pre></td></tr></table></figure>
+
+<p>学生人数大于两个的班级名称</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id = c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;=2;</span><br></pre></td></tr></table></figure>
+
+<h2 id="OUTER-JOIN"><a href="#OUTER-JOIN" class="headerlink" title="OUTER JOIN"></a>OUTER JOIN</h2><p>外链接包括<code>LEFT JOIN</code> 与 <code>RIGHT JOIN</code> ，可以简单理解为 <code>LEFT JOIN</code>会包含左侧所有表记录，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
+<p>获取没有设置QQ的用户</p>
 
       
 
@@ -1778,11 +1822,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1810,6 +1854,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
               </li>
              
@@ -1818,15 +1866,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">手册</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1834,15 +1874,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
               </li>
              
               <li class="article-tag-list-item">
