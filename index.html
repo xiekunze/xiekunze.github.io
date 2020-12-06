@@ -1992,7 +1992,7 @@
 <li><p>将隔离机制设置为 <code>repeatable-read</code> 就可以解决这类不可重复读的问题。</p>
 </li>
 </ol>
-<h2 id="程序控制"><a href="#程序控制" class="headerlink" title="程序控制"></a>程序控制</h2><p>程序语言基本上都支持事务的处理。如果对以下代码不清楚，请在<a target="_blank" rel="noopener" href="https://houdunren.com/">后盾人 (opens new window)</a>查看PHP的PDO章节。</p>
+<h2 id="程序控制"><a href="#程序控制" class="headerlink" title="程序控制"></a>程序控制</h2><p>程序语言基本上都支持事务的处理。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;Content-type:text/html;charset=utf8&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    $config = [</span><br><span class="line">        &#x27;host&#x27; =&gt; &#x27;127.0.0.1&#x27;,</span><br><span class="line">        &#x27;user&#x27; =&gt; &#x27;root&#x27;,</span><br><span class="line">        &#x27;password&#x27; =&gt; &#x27;root&#x27;,</span><br><span class="line">        &#x27;database&#x27; =&gt; &#x27;test&#x27;,</span><br><span class="line">        &#x27;charset&#x27; =&gt; &#x27;utf8&#x27;</span><br><span class="line">    ];</span><br><span class="line">    $dsn = sprintf(</span><br><span class="line">        &quot;mysql:host=%s;dbname=%s;charset=%s&quot;,</span><br><span class="line">        $config[&#x27;host&#x27;],</span><br><span class="line">        $config[&#x27;database&#x27;],</span><br><span class="line">        $config[&#x27;charset&#x27;]</span><br><span class="line">    );</span><br><span class="line">    $pdo = new PDO($dsn, $config[&#x27;user&#x27;], $config[&#x27;password&#x27;]);</span><br><span class="line">    $pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    die($e-&gt;getMessage());</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    # 开启事务</span><br><span class="line">    $pdo-&gt;beginTransaction();</span><br><span class="line">    $d = $pdo-&gt;exec(&quot;INSERT INTO stu (class_id,sname,sex)</span><br><span class="line">     VALUES(2,&#x27;后盾人&#x27;,&#x27;男&#x27;)&quot;);</span><br><span class="line"></span><br><span class="line">    $pdo-&gt;exec(&quot;UPDATE class SET </span><br><span class="line">     stu_count = (SELECT count(*) FROM stu WHERE class_id=2) WHERE id=2&quot;);</span><br><span class="line">    # 提交事务</span><br><span class="line">    $pdo-&gt;commit();</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    # 事务回滚</span><br><span class="line">    $pdo-&gt;rollBack();</span><br><span class="line">    die(&quot;Exception:&quot; . $e-&gt;getMessage());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="Day10"><a href="#Day10" class="headerlink" title="Day10"></a>Day10</h1><h2 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h2><p>因为Mysql支持多线程方式，所以可以同时处理多个客户端请求。有时为了防止客户端同时修改数据，我们使用锁操作完成。</p>
@@ -2057,6 +2057,23 @@
 </li>
 <li><p>事务A提交后，事务B会得到事务A操作后的结果</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">COMMIT;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p>在每次去拿数据的时候认为别人不会修改，不对数据上锁，但是在提交更新的时候会判断在此期间数据是否被更改，如果被更改则提交失败。</p>
+<p>下面使用版本字段来实现乐观锁操作，并实现更改商品库存的案例。</p>
+<ol>
+<li><p>事务A查询商品库存，获取了商品记录，记录中有VERSION字段用于记录版本号（目前为0）</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">SELECT * FROM goods WHERE id = 1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务B同时查询，也获取了版本号为0的记录</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">SELECT * FROM goods WHERE id = 1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务A更改库存，并增加版本号</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE goods SET num=num-10,VERSION =VERSION+1 WHERE VERSION=0;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务B更改数据，但使用的是事务B查询到的0号版本，因为事务A已经提交版本号为1，造成事务B修改失败，保证了数据的完整性。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE goods SET num=num-10,VERSION =VERSION+1 WHERE VERSION=0;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
