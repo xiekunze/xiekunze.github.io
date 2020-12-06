@@ -1995,7 +1995,189 @@
 <h2 id="程序控制"><a href="#程序控制" class="headerlink" title="程序控制"></a>程序控制</h2><p>程序语言基本上都支持事务的处理。如果对以下代码不清楚，请在<a target="_blank" rel="noopener" href="https://houdunren.com/">后盾人 (opens new window)</a>查看PHP的PDO章节。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;Content-type:text/html;charset=utf8&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    $config = [</span><br><span class="line">        &#x27;host&#x27; =&gt; &#x27;127.0.0.1&#x27;,</span><br><span class="line">        &#x27;user&#x27; =&gt; &#x27;root&#x27;,</span><br><span class="line">        &#x27;password&#x27; =&gt; &#x27;root&#x27;,</span><br><span class="line">        &#x27;database&#x27; =&gt; &#x27;test&#x27;,</span><br><span class="line">        &#x27;charset&#x27; =&gt; &#x27;utf8&#x27;</span><br><span class="line">    ];</span><br><span class="line">    $dsn = sprintf(</span><br><span class="line">        &quot;mysql:host=%s;dbname=%s;charset=%s&quot;,</span><br><span class="line">        $config[&#x27;host&#x27;],</span><br><span class="line">        $config[&#x27;database&#x27;],</span><br><span class="line">        $config[&#x27;charset&#x27;]</span><br><span class="line">    );</span><br><span class="line">    $pdo = new PDO($dsn, $config[&#x27;user&#x27;], $config[&#x27;password&#x27;]);</span><br><span class="line">    $pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    die($e-&gt;getMessage());</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    # 开启事务</span><br><span class="line">    $pdo-&gt;beginTransaction();</span><br><span class="line">    $d = $pdo-&gt;exec(&quot;INSERT INTO stu (class_id,sname,sex)</span><br><span class="line">     VALUES(2,&#x27;后盾人&#x27;,&#x27;男&#x27;)&quot;);</span><br><span class="line"></span><br><span class="line">    $pdo-&gt;exec(&quot;UPDATE class SET </span><br><span class="line">     stu_count = (SELECT count(*) FROM stu WHERE class_id=2) WHERE id=2&quot;);</span><br><span class="line">    # 提交事务</span><br><span class="line">    $pdo-&gt;commit();</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    # 事务回滚</span><br><span class="line">    $pdo-&gt;rollBack();</span><br><span class="line">    die(&quot;Exception:&quot; . $e-&gt;getMessage());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="Day10"><a href="#Day10" class="headerlink" title="Day10"></a>Day10</h1>
+<h1 id="Day10"><a href="#Day10" class="headerlink" title="Day10"></a>Day10</h1><h2 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h2><p>因为Mysql支持多线程方式，所以可以同时处理多个客户端请求。有时为了防止客户端同时修改数据，我们使用锁操作完成。</p>
+<p>比如一个用户在修改数据，另一个用户也要修改该条数据，我们可以让第一个用户独占这个表记录，等他操作完再让第二个用户操作。</p>
+<h2 id="储存引擎-1"><a href="#储存引擎-1" class="headerlink" title="储存引擎"></a>储存引擎</h2><p><code>InnoDB</code> 是主流储存引擎并支持行级锁的，有更高的并发处理性能，下面来演示行锁的运行过程。<code>MyIsam</code>引擎在最新版本的MYSQL中已经废弃所以不过多讨论了。</p>
+<ul>
+<li>行锁开销大，锁表慢</li>
+<li>行锁高并发下可并行处理，性能更高</li>
+<li>行锁是针对索引加的锁，在通过索引检索时才会应用行锁，否则使用表锁</li>
+<li>在事务执行过程中，随时都可以执行锁定，锁在执行 COMMIT或者ROLLBACK的时候释放</li>
+</ul>
+<h2 id="事务处理-有索引-重复才会阻塞"><a href="#事务处理-有索引-重复才会阻塞" class="headerlink" title="事务处理 (有索引,重复才会阻塞)"></a>事务处理 (有索引,重复才会阻塞)</h2><ol>
+<li><p>A事务执行以下代码但不提交</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">UPDATE stu SET sname = &#x27;hdcms&#x27; WHERE id=1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>B事务执行以下代码，可以正常执行</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">update stu set sname = &#x27;后盾人&#x27; where id=3</span><br><span class="line">COMMIT;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>但B事务更新与A事务相同的记录则无法操作，执行过程发生阻塞</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">UPDATE stu SET sname = &#x27;hdcms&#x27; WHERE id=1;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当A执行执行<code>COMMIT</code> 提交后，解锁记录行这时B事务继续执行</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">COMMIT;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="非索引阻塞-无索引-任何记录都会阻塞"><a href="#非索引阻塞-无索引-任何记录都会阻塞" class="headerlink" title="非索引阻塞 (无索引,任何记录都会阻塞)"></a>非索引阻塞 (无索引,任何记录都会阻塞)</h3><p>使用非索引字段筛选时，将造成全表锁定即表级锁，应该避免这种情况发生，提升数据库的并发性能。</p>
+<ol>
+<li><p>事务A执行以下代码，因为<code>sname</code>字段没有添加索引，造成锁定整个表    </p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">UPDATE stu SET sname = &#x27;hdcms&#x27; WHERE sname =&#x27;后盾人&#x27;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>现在事务B更新任何一条记录都会造成阻塞，因为现在是表锁状态</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">update stu set sname = &#x27;小明&#x27; where id=1</span><br><span class="line">-- 阻塞中...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将 <code>sname</code>字段添加索引后，行锁功能就又有效了</p>
+</li>
+</ol>
+<h3 id="范围锁-通过索引限制范围"><a href="#范围锁-通过索引限制范围" class="headerlink" title="范围锁 (通过索引限制范围)"></a>范围锁 (通过索引限制范围)</h3><p>查询没有指定明确范围时也会造成大量记录的锁定</p>
+<ol>
+<li><p>事务A筛选时使用了范围区间，将会造成表锁</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">UPDATE goods SET num=200 WHERE id&gt;1 AND id&lt;3; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务B将不能修改表中的ID大于2的记录</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">update goods set num =1 where id=2;</span><br><span class="line">-- 阻塞中...</span><br></pre></td></tr></table></figure>
+
+<p>但可以更改ID为1的记录</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update goods set num =1 where id=1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行添加时因为不在id为 1~3的范围内所以可以添加，但如果添加时指定ID为2将会阻塞。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into goods (name,num) values(&#x27;西瓜&#x27;,200);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="悲观锁-先到先得-一方买卖一方等待"><a href="#悲观锁-先到先得-一方买卖一方等待" class="headerlink" title="悲观锁 (先到先得)一方买卖一方等待"></a>悲观锁 (先到先得)一方买卖一方等待</h2><p>非观锁指对数据被外界修改持保守态度，在整个数据处理过程中，将数据处于锁定状态，可以很好地解决并发事务的更新丢失问题。</p>
+<p>下面演示商城下单情况，要用户购买商品后我们要减少库存，如果在高并发情况下多个用户同时修改库存表，会造成库存数据异常，使用悲观锁可以解决这个问题。</p>
+<ol>
+<li><p>事务A执行悲观锁操作后，其他事务执行同一代码时将阻塞</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">SELECT * FROM goods WHERE id=1 FOR UPDATE;</span><br><span class="line">UPDATE goods SET num=num-2 WHERE id=1; </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务B执行以下代码将不能查询库存，必须等事务A提交或回滚事务</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">SELECT * FROM goods WHERE id=1 FOR UPDATE;</span><br><span class="line">-- 阻塞中...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务A提交后，事务B会得到事务A操作后的结果</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">COMMIT;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="表锁机制"><a href="#表锁机制" class="headerlink" title="表锁机制"></a>表锁机制</h2><p>针对一些不支持事务的处理引擎可以使用锁表的方式控制业务。</p>
+<h3 id="读锁"><a href="#读锁" class="headerlink" title="读锁"></a>读锁</h3><p>为表设置读锁后，当前会话和其他会话都不可以修改数据，但可以读取表数据。</p>
+<ol>
+<li><p>会话A对表goods设置了读锁，将不能修改该表，也不能操作其他表</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LOCK TABLE goods READ;</span><br><span class="line">UPDATE goods SET num=300 WHERE id=1;</span><br><span class="line">SELECT * FROM stu;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>因为会话A对表<code>goods</code>设置了读锁，所以会话B也不能修改</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update goods set num=200 where id=1;</span><br><span class="line">-- 阻塞</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>会话A解锁表后，其他会话又可以继续操作表了</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UNLOCK TABLES;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="写锁"><a href="#写锁" class="headerlink" title="写锁"></a>写锁</h3><p>为表设置了写锁后，当前会话可以修改，查询表，其他会话将无法操作。</p>
+<ol>
+<li><p>会话A对表goods设置写锁，本会话可以正常操作表， 并不能操作其他表</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LOCK TABLE goods WRITE;</span><br><span class="line">INSERT INTO goods (name,num )VALUES(&#x27;后盾人教程&#x27;,300);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>会话B读取/写入/写入表数据都将阻塞</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from goods</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>会话A解锁表数据后，其他会话都可以正常操作了</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UNLOCK TABLES;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="Day11"><a href="#Day11" class="headerlink" title="Day11"></a>Day11</h1><h2 id="外键约束-子键约束"><a href="#外键约束-子键约束" class="headerlink" title="外键约束 (子键约束)"></a>外键约束 (子键约束)</h2><p>外键表示一个表中的字段被另一个表中的一个字段引用。外键对相关表中的数据造成了限制，使MySQL能够保持参照完整性。</p>
+<p>比如学生和班级表，学生表完全依赖班级表，我们可以通过外键约束让学生表与班级表产生关联，当班级表数据变化时影响学生表，下面大叔带你详细掌握外键约束。</p>
+<ul>
+<li>父表和子表储存引擎要一致</li>
+<li>使用InnoDB引擎支持外键约束</li>
+<li>外键要与主表列类型一致</li>
+<li>外键列使用索引（数据库会自动添加索引)</li>
+</ul>
+<h2 id="创建外键"><a href="#创建外键" class="headerlink" title="创建外键"></a>创建外键</h2><p>下面我们先创建表关联后，再详细解释里面的参数选项。</p>
+<h3 id="新建表"><a href="#新建表" class="headerlink" title="新建表"></a>新建表</h3><p>下面创建班级表与学生表，并定义学生表与班级表建立外键约束。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-- 班级表</span><br><span class="line">CREATE TABLE class (id int PRIMARY KEY AUTO_INCREMENT,name varchar(50));</span><br><span class="line"></span><br><span class="line">-- 学生表</span><br><span class="line">CREATE TABLE stu (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,</span><br><span class="line">  `sname` varchar(30) DEFAULT NULL,</span><br><span class="line">  `class_id` int(11) DEFAULT NULL,</span><br><span class="line">  CONSTRAINT `stu_class`</span><br><span class="line">  FOREIGN KEY (`class_id`) </span><br><span class="line">  REFERENCES `class` (`id`) </span><br><span class="line">  ON DELETE CASCADE </span><br><span class="line">  ON UPDATE CASCADE</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改表-1"><a href="#修改表-1" class="headerlink" title="修改表"></a>修改表</h3><p>下面是对学生表添加班级表的外键约束。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ADD </span><br><span class="line">CONSTRAINT stu_class</span><br><span class="line">FOREIGN KEY (class_id) </span><br><span class="line">REFERENCES class(id) </span><br><span class="line">ON DELETE SET NULL</span><br><span class="line">ON UPDATE CASCADE;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu DROP FOREIGN KEY stu_class;</span><br></pre></td></tr></table></figure>
+
+<h2 id="选项说明"><a href="#选项说明" class="headerlink" title="选项说明"></a>选项说明</h2><p>下面列出外键关联用到的关键词。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONSTRAINT</td>
+<td>为外键约束定义名称</td>
+</tr>
+<tr>
+<td>FOREIGN KEY</td>
+<td>子表与父表关联的列</td>
+</tr>
+<tr>
+<td>REFERENCES</td>
+<td>子表关联的父表字段</td>
+</tr>
+<tr>
+<td>ON DELETE</td>
+<td>父表删除时的处理方式</td>
+</tr>
+<tr>
+<td>ON UPDATE</td>
+<td>父表更新时的处理方式</td>
+</tr>
+</tbody></table>
+<h2 id="处理动作"><a href="#处理动作" class="headerlink" title="处理动作"></a>处理动作</h2><h3 id="ON-DELETE"><a href="#ON-DELETE" class="headerlink" title="ON DELETE"></a>ON DELETE</h3><p>ON DELETE指在删除时的处理方式，常用的处理方式包括以下几种。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ON DELETE CASCADE</td>
+<td>删除父表记录时，子表记录同时删除</td>
+</tr>
+<tr>
+<td>ON DELETE SET NULL</td>
+<td>删除父表记录时，子表记录设置为NULL（子表字段要允许NULL）</td>
+</tr>
+<tr>
+<td>ON DELETE NO ACTION ON DELETE RESTRICT</td>
+<td>删除父表记录时，子表不做任何处理，必须把子表处理完才可以删除主表</td>
+</tr>
+</tbody></table>
+<h3 id="ON-UPDATE"><a href="#ON-UPDATE" class="headerlink" title="ON UPDATE"></a>ON UPDATE</h3><p>ON UPDATE 指在更新时的处理方式，常用的处理方式包括以下几种。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ON UPDATE CASCADE</td>
+<td>更新父表记录时，比如更改主表的主键时，子表记录同时更新</td>
+</tr>
+<tr>
+<td>ON UPDATE SET NULL</td>
+<td>更新父表记录时，比如更改主表的主键时，子表记录设置为NULL</td>
+</tr>
+<tr>
+<td>ON UPDATE NO ACTION ON UPDATE RESTRICT</td>
+<td>更新父表记录时，子表不做任何处理，必须把子表处理完才可以更新主表</td>
+</tr>
+</tbody></table>
+<h1 id="Day12"><a href="#Day12" class="headerlink" title="Day12"></a>Day12</h1><h1 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h1><h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>合理设置索引会对数据库性能带来很大提升。</p>
+<h3 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h3><p>为了演示索引需要添加些测试数据，下面是添加学生数据的储存过程代码。如果你已经有测试数据可以省掉这一步。</p>
+
       
 
       
@@ -3183,11 +3365,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
