@@ -28,8 +28,10 @@
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/11.png">
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/12.png">
 <meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/13.png">
+<meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/14.png">
+<meta property="og:image" content="https://xiekunze.github.io/xiekunze.github.io/2020/11/22/mysql/15.png">
 <meta property="article:published_time" content="2020-11-22T03:57:05.000Z">
-<meta property="article:modified_time" content="2020-12-04T00:24:54.426Z">
+<meta property="article:modified_time" content="2020-12-06T03:38:06.928Z">
 <meta property="article:author" content="XieKunZe">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -1514,7 +1516,7 @@
 <p><strong>查找超过两个同学的姓氏</strong></p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT left(sname,1) as s,count(*) AS c FROM stu</span><br><span class="line">GROUP BY s</span><br><span class="line">HAVING c&gt;=2;</span><br></pre></td></tr></table></figure>
 
-<h1 id="Day8"><a href="#Day8" class="headerlink" title="Day8"></a>Day8</h1><h2 id="多表攻略"><a href="#多表攻略" class="headerlink" title="多表攻略"></a>多表攻略</h2><p>前面我们学习了sql语句的操作，但是我们大部分都是操作的单张表，大部分问题只有一张表是不能解决的。我们需要从多张表中获得数据，或者通过其他表的数据删除某个表的记录等操作，这个时候就需要多表操作。</p>
+<h1 id="Day8"><a href="#Day8" class="headerlink" title="Day8"></a>Day8</h1><h2 id="多表攻略"><a href="#多表攻略" class="headerlink" title="多表攻略 (**)"></a>多表攻略 (**)</h2><p>前面我们学习了sql语句的操作，但是我们大部分都是操作的单张表，大部分问题只有一张表是不能解决的。我们需要从多张表中获得数据，或者通过其他表的数据删除某个表的记录等操作，这个时候就需要多表操作。</p>
 <h2 id="表关联"><a href="#表关联" class="headerlink" title="表关联"></a>表关联</h2><p><strong>一对一</strong></p>
 <p>比如说会员表与个人资料（QQ，邮箱）表即为一对一关系。</p>
 <p><strong>一对多</strong></p>
@@ -1558,8 +1560,185 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id = c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;=2;</span><br></pre></td></tr></table></figure>
 
 <h2 id="OUTER-JOIN"><a href="#OUTER-JOIN" class="headerlink" title="OUTER JOIN"></a>OUTER JOIN</h2><p>外链接包括<code>LEFT JOIN</code> 与 <code>RIGHT JOIN</code> ，可以简单理解为 <code>LEFT JOIN</code>会包含左侧所有表记录，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
-<p>获取没有设置QQ的用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例: ...    left join   ...  左边的...全部显示   </span><br></pre></td></tr></table></figure>
 
+<p>获取没有设置QQ的用户</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN user_info as i</span><br><span class="line">ON s.id = i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+
+<p>查找所有没有发表文章的同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT s.id,s.sname FROM stu as s LEFT JOIN article as a </span><br><span class="line">ON s.id = a.stu_id</span><br><span class="line">WHERE a.id IS NULL;</span><br></pre></td></tr></table></figure>
+
+<p>哪个班级没有学生</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT sname,c.id,c.cname FROM stu AS s RIGHT JOIN class as c</span><br><span class="line">ON s.class_id = c.id</span><br><span class="line">WHERE s.id IS NULL;</span><br></pre></td></tr></table></figure>
+
+<p>每个班级的平均年龄</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.cname,avg(timestampdiff(year,s.birthday,now())) as t </span><br><span class="line">FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id = c.id</span><br><span class="line">GROUP BY c.cname;</span><br></pre></td></tr></table></figure>
+
+<p>查找学生所在班级，没有班级的学生显示无</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT sname,ifnull(s.class_id,&#x27;无&#x27;) FROM stu AS s LEFT JOIN class AS c</span><br><span class="line">ON s.class_id = c.id;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SELF-JOIN"><a href="#SELF-JOIN" class="headerlink" title="SELF JOIN"></a>SELF JOIN</h2><p><code>SELF JOIN</code>为自连接即表与自身进行关联。虽然自连接的两张表都是同一张表，但也把它按两张表对待，这样理解就会容易些。</p>
+<p><strong>查找后盾人的同班同学</strong></p>
+<p>使用子查询操作</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM stu WHERE class_id = </span><br><span class="line">(SELECT class_id FROM stu WHERE sname = &#x27;后盾人&#x27;)</span><br><span class="line">AND stu.sname !=&#x27;后盾人&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>使用自连接查询</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT s1.sname,s2.sname FROM stu as s1 </span><br><span class="line">INNER JOIN stu as s2</span><br><span class="line">ON s1.class_id = s2.class_id</span><br><span class="line">WHERE s1.sname = &#x27;后盾人&#x27; AND s2.sname !=&#x27;后盾人&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查找与后盾人同年出生的同学</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT s2.* FROM stu as s1 INNER JOIN stu AS s2</span><br><span class="line">ON year(s1.birthday) = year(s2.birthday)</span><br><span class="line">WHERE s1.sname =&#x27;后盾人&#x27; AND s2.sname !=&#x27;后盾人&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查找比后盾人大的同学</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT s2.sname,s2.birthday FROM stu AS s1</span><br><span class="line">INNER JOIN stu AS s2</span><br><span class="line">ON year(s1.birthday)&gt;year(s2.birthday)</span><br><span class="line">WHERE s1.sname = &#x27;后盾人&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h2><p>比如学生可以学习多个课程，一个课程也可以被多个学生学习，这种情况就是多对多的关系。需要创建一张中间表来把这种关系联系起来。</p>
+<p><strong>查找后盾人学习的课程</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT sname,l.name FROM stu AS s</span><br><span class="line">INNER JOIN user_lesson AS ul</span><br><span class="line">ON s.id = ul.stu_id</span><br><span class="line">INNER JOIN lesson AS l</span><br><span class="line">ON ul.lesson_id = l.id</span><br><span class="line">WHERE s.sname = &#x27;后盾人&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>哪个班级的同学最爱学习PHP</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT c.cname,count(*) AS total FROM stu AS s</span><br><span class="line">INNER JOIN user_lesson AS ul</span><br><span class="line">INNER JOIN lesson AS l</span><br><span class="line">ON s.id = ul.stu_id AND ul.lesson_id = l.id</span><br><span class="line">INNER JOIN class AS c</span><br><span class="line">ON c.id = s.class_id</span><br><span class="line">WHERE l.name=&#x27;php&#x27;</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">ORDER by total </span><br><span class="line">LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UNION（相当于合并成数组）"><a href="#UNION（相当于合并成数组）" class="headerlink" title="UNION（相当于合并成数组）"></a>UNION（相当于合并成数组）</h2><p><code>UNION</code> 用于连接多个查询结果，要保证每个查询返回的列的数量与顺序要一样。</p>
+<ul>
+<li>UNION会过滤重复的结果</li>
+<li>UNION ALL 不过滤重复结果</li>
+<li>列表字段由是第一个查询的字段</li>
+</ul>
+<p><strong>查询年龄最大与最小的同学</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(SELECT sname,birthday FROM stu ORDER BY birthday DESC LIMIT 1)</span><br><span class="line">UNION</span><br><span class="line">(SELECT sname,birthday from stu ORDER BY birthday ASC LIMIT 1)</span><br><span class="line">ORDER BY birthday DESC;</span><br></pre></td></tr></table></figure>
+
+<p><strong>最新发表的文章和学习的课程组成动态数据</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(SELECT CONCAT(s.sname,&#x27;发表了文章：&#x27;,a.title) from article as a</span><br><span class="line">INNER JOIN stu as s</span><br><span class="line">ON s.id = a.stu_id</span><br><span class="line">LIMIT 2)</span><br><span class="line">UNION</span><br><span class="line">(SELECT CONCAT(s.sname,&#x27;正在学习：&#x27;,l.name) FROM stu AS s </span><br><span class="line">INNER JOIN user_lesson as ul</span><br><span class="line">INNER JOIN lesson as l</span><br><span class="line">ON s.id = ul.stu_id AND ul.lesson_id = l.id </span><br><span class="line">LIMIT 2);</span><br></pre></td></tr></table></figure>
+
+<h2 id="多表删除"><a href="#多表删除" class="headerlink" title="多表删除"></a>多表删除</h2><p>删除所有没有学习任何课程的同学</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DELETE s FROM stu as s </span><br><span class="line">LEFT JOIN user_lesson as ul</span><br><span class="line">ON s.id = ul.stu_id</span><br><span class="line">WHERE ul.lesson_id IS NULL;</span><br></pre></td></tr></table></figure>
+
+<p>使用子查询操作</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM stu WHERE id IN(</span><br><span class="line">  SELECT id FROM</span><br><span class="line">    (SELECT s.id FROM stu as s</span><br><span class="line">    LEFT JOIN user_lesson as ul</span><br><span class="line">    ON s.id = ul.stu_id</span><br><span class="line">    WHERE ul.lesson_id IS NULL) </span><br><span class="line">  AS s</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day9"><a href="#Day9" class="headerlink" title="Day9"></a>Day9</h1><h2 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h2><p>事务是保证多个SQL操作的一致性，如果一条失败全部SQL也将失效。</p>
+<blockquote>
+<p>学习事务时建议开启两个客户端（或GUI软件）来体验</p>
+</blockquote>
+<h3 id="业务分析"><a href="#业务分析" class="headerlink" title="业务分析"></a>业务分析</h3><ul>
+<li>事务是保证多个SQL操作的一致性，如果一条失败全部SQL也将失效。</li>
+<li>实际业务中大多数是对多个表操作，比如当发表文章时需要将文章的基本信息发到文章基础表和文章内容添加到文章内容表，这种情况不使用事务也没有关系，如果出现数据异常重新添加就可以了</li>
+<li>但牵涉到货币的情况就必须使用事务了，必须保证货币处理是准确的</li>
+<li>当然有些公司要求所有查询都使用事务，这就遵照公司要求完成就可以了</li>
+</ul>
+<h2 id="储存引擎"><a href="#储存引擎" class="headerlink" title="储存引擎"></a>储存引擎</h2><p>查看引擎</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW ENGINES;</span><br></pre></td></tr></table></figure>
+
+<p>最新版本的Mysql中已经不建议使用 <code>MyISAM</code>引擎了</p>
+<h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h3><p>支持事务的引擎建议使用 <code>InnoDB</code>。如果旧表是其他引擎，使用下面语句更改为<code>InnoDB</code>引擎。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE stu ENGINE=InnoDB;</span><br></pre></td></tr></table></figure>
+
+<h2 id="提交模式"><a href="#提交模式" class="headerlink" title="提交模式"></a>提交模式</h2><h3 id="自动提交"><a href="#自动提交" class="headerlink" title="自动提交"></a>自动提交</h3><p>Mysql的提交默认是自动提交，即发送一条执行一条。</p>
+<p>在 <code>DBeaver</code> 执行以下SQL后，在别一个 <code>Sequel Pro</code> 会立刻看到结果。</p>
+<img src="/xiekunze.github.io/2020/11/22/mysql/14.png">
+
+<h3 id="事务提交"><a href="#事务提交" class="headerlink" title="事务提交"></a>事务提交</h3><h4 id="事务单独开启"><a href="#事务单独开启" class="headerlink" title="事务单独开启"></a>事务单独开启</h4><p>执行 <code>START TRANSACTION</code> 或 <code>BEGIN</code> 语句后，表示要开启一项事务处理。</p>
+<ul>
+<li>COMMIT 提交事务</li>
+<li>ROLLBACK 回滚事务</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN;</span><br><span class="line">INSERT INTO class (name,descript,sex) VALUES (&#39;xdd&#39;,&#39;aaaa&#39;,&#39;男&#39;);</span><br><span class="line">COMMIT;</span><br></pre></td></tr></table></figure>
+
+<h4 id="全局开启事务"><a href="#全局开启事务" class="headerlink" title="全局开启事务"></a>全局开启事务</h4><p>如果所有SQL都使用事务操作，我们可以通过 <code>SET AUTOCOMMIT=0</code> 关闭自动提交来开启事务机制，这样所有语句都是事务类型。</p>
+<h4 id="全局开启事务-1"><a href="#全局开启事务-1" class="headerlink" title="全局开启事务"></a>全局开启事务</h4><p>如果所有SQL都使用事务操作，我们可以通过 <code>SET AUTOCOMMIT=0</code> 关闭自动提交来开启事务机制，这样所有语句都是事务类型。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-- 关闭自动提交</span><br><span class="line">SET AUTOCOMMIT = 0;</span><br><span class="line"></span><br><span class="line">INSERT INTO stu (class_id,sname,sex)VALUES(2,&#x27;李清&#x27;,&#x27;女&#x27;);</span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">-- 开启自动提交</span><br><span class="line">SET AUTOCOMMIT = 1;</span><br></pre></td></tr></table></figure>
+
+<img src="/xiekunze.github.io/2020/11/22/mysql/15.png">
+
+<h2 id="事务隔离-A事务-与-B事务"><a href="#事务隔离-A事务-与-B事务" class="headerlink" title="事务隔离(A事务 与 B事务)"></a>事务隔离(A事务 与 B事务)</h2><h3 id="并发问题"><a href="#并发问题" class="headerlink" title="并发问题"></a>并发问题</h3><p>当高并发访问会遇到多个事务的隔离问题，可能会出现以下：</p>
+<ol>
+<li>脏读：事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据</li>
+<li>不可重复读：事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果不一致。</li>
+<li>幻读：系统管理员A将数据库中所有学生的成绩从具体分数改为ABCDE等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，当系统管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。</li>
+</ol>
+<blockquote>
+<p>不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表</p>
+</blockquote>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>读未提交（read-uncommitted）</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>最低的事务隔离级别，一个事务还没提交时，它做的变更就能被别的事务看到</td>
+</tr>
+<tr>
+<td>不可重复读（read-committed）</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>保证一个事物提交后才能被另外一个事务读取。另外一个事务不能读取该事物未提交的数据。</td>
+</tr>
+<tr>
+<td>可重复读（repeatable-read）</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>多次读取同一范围的数据会返回第一次查询的快照，即使其他事务对该数据做了更新修改。事务在执行期间看到的数据前后必须是一致的。</td>
+</tr>
+<tr>
+<td>串行化（serializable）</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>事务 100% 隔离，可避免脏读、不可重复读、幻读的发生。花费最高代价但最可靠的事务隔离级别。</td>
+</tr>
+</tbody></table>
+<h3 id="查询与设置"><a href="#查询与设置" class="headerlink" title="查询与设置"></a>查询与设置</h3><p>查询隔离级别</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@tx_isolation;</span><br></pre></td></tr></table></figure>
+
+<p>设置隔离级别</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level read uncommitted;</span><br></pre></td></tr></table></figure>
+
+<h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>为了演示效果将隔离级别设置为最低级 <code>read uncommitted</code>。脏读是一个事务没有提交时可被其他事务读取到。</p>
+<ol>
+<li><p>事务A执行更新操作</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level read UNCOMMITTED;</span><br><span class="line">BEGIN;</span><br><span class="line">UPDATE stu SET sname = &#x27;后盾人&#x27; WHERE id=1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>因为使用了最低级别<code>read uncommitted</code>，事务B在事务A没有提交时就可以看到更新的数据，如果事务A执行<code>ROLLBACK</code> 事务B的读到的数据就为脏数据。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</span><br><span class="line">BEGIN;</span><br><span class="line">SELECT * FROM `stu`;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将隔离级别设置为除 <code>read uncommitted</code>以外的，再重复上面的例子，都可以有效避免脏读的问题。</p>
+</li>
+</ol>
+<h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>不可重复读指在事务中读取的数据出现不一致的情况，我们希望读取的数据在本事务中是一致的。</p>
+<p>为了演示效果将隔离级别设置为低级别 <code>read committed</code>。</p>
+<p>事务A在执行过程中更新数据，事务B同时读取的数据没有脏数据。但当事务A提交了事务后，事务B再读取时得到了最新的数据，这种情况为不可重复读， 要保证事务过程中的数据重复操作是一致的，不受其他事务影响。</p>
+<ol>
+<li>事务A执行以下代码，但没有提交</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level REPEATABLE READ;</span><br><span class="line">BEGIN;</span><br><span class="line">UPDATE stu SET sname = &#x27;后盾人9&#x27; WHERE id=1;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>因为使用了 <code>read committed</code>级别，所以事务B不会读到脏数据</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</span><br><span class="line">BEGIN;</span><br><span class="line">SELECT * FROM stu;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事务A提交事务</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>此时事务B可以读取到事务A提交的数据，这就是不能重复读取到同一个数据，即事务B读取结果受事务A影响。</p>
+</li>
+<li><p>将隔离机制设置为 <code>repeatable-read</code> 就可以解决这类不可重复读的问题。</p>
+</li>
+</ol>
+<h2 id="程序控制"><a href="#程序控制" class="headerlink" title="程序控制"></a>程序控制</h2><p>程序语言基本上都支持事务的处理。如果对以下代码不清楚，请在<a target="_blank" rel="noopener" href="https://houdunren.com/">后盾人 (opens new window)</a>查看PHP的PDO章节。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;Content-type:text/html;charset=utf8&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    $config = [</span><br><span class="line">        &#x27;host&#x27; =&gt; &#x27;127.0.0.1&#x27;,</span><br><span class="line">        &#x27;user&#x27; =&gt; &#x27;root&#x27;,</span><br><span class="line">        &#x27;password&#x27; =&gt; &#x27;root&#x27;,</span><br><span class="line">        &#x27;database&#x27; =&gt; &#x27;test&#x27;,</span><br><span class="line">        &#x27;charset&#x27; =&gt; &#x27;utf8&#x27;</span><br><span class="line">    ];</span><br><span class="line">    $dsn = sprintf(</span><br><span class="line">        &quot;mysql:host=%s;dbname=%s;charset=%s&quot;,</span><br><span class="line">        $config[&#x27;host&#x27;],</span><br><span class="line">        $config[&#x27;database&#x27;],</span><br><span class="line">        $config[&#x27;charset&#x27;]</span><br><span class="line">    );</span><br><span class="line">    $pdo = new PDO($dsn, $config[&#x27;user&#x27;], $config[&#x27;password&#x27;]);</span><br><span class="line">    $pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    die($e-&gt;getMessage());</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    # 开启事务</span><br><span class="line">    $pdo-&gt;beginTransaction();</span><br><span class="line">    $d = $pdo-&gt;exec(&quot;INSERT INTO stu (class_id,sname,sex)</span><br><span class="line">     VALUES(2,&#x27;后盾人&#x27;,&#x27;男&#x27;)&quot;);</span><br><span class="line"></span><br><span class="line">    $pdo-&gt;exec(&quot;UPDATE class SET </span><br><span class="line">     stu_count = (SELECT count(*) FROM stu WHERE class_id=2) WHERE id=2&quot;);</span><br><span class="line">    # 提交事务</span><br><span class="line">    $pdo-&gt;commit();</span><br><span class="line">&#125; catch (PDOException $e) &#123;</span><br><span class="line">    # 事务回滚</span><br><span class="line">    $pdo-&gt;rollBack();</span><br><span class="line">    die(&quot;Exception:&quot; . $e-&gt;getMessage());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Day10"><a href="#Day10" class="headerlink" title="Day10"></a>Day10</h1>
       
 
       
@@ -1826,11 +2005,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1850,7 +2029,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1858,7 +2037,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">个人博客的搭建</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1870,11 +2049,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
+                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">理财篇</a>
+                <a href="javascript:void(0)" class="js-tag color1">js小游戏</a>
               </li>
              
               <li class="article-tag-list-item">
