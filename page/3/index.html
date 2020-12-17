@@ -148,6 +148,91 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-排序算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/xiekunze.github.io/2020/10/27/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    </h1>
+  
+
+        
+        <a href="/xiekunze.github.io/2020/10/27/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2020-10-26T16:02:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="十大排序"><a href="#十大排序" class="headerlink" title="十大排序"></a>十大排序</h1><h2 id="1-冒泡排序-最后插"><a href="#1-冒泡排序-最后插" class="headerlink" title="1.冒泡排序 (最后插)"></a>1.冒泡排序 (最后插)</h2><h3 id="c-模式"><a href="#c-模式" class="headerlink" title="c++模式"></a>c++模式</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    int t;   </span><br><span class="line">    int n;  //要放多少个数</span><br><span class="line">    cin &gt;&gt; n; </span><br><span class="line">    int a[100];  //定义一个最少放100个数 </span><br><span class="line">    for(int i = 0; i &lt; n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">    &#125; </span><br><span class="line">    //int a [5] = &#123;88,66,5,3,7&#125;;</span><br><span class="line">    for(int i = 0; i &lt; 4; i++)&#123;  //影响你的趟数(五个数其实是四趟,五趟其实也可以,但多此一举) </span><br><span class="line">        for(int j = 0; j &lt; 4 - i; j++ )&#123;  //影响你的比较次数(五个数最多比4次,每次会去固定最后一个数)</span><br><span class="line">            if(a[j] &gt; a[j+1])&#123;  //具体的比较(影响你的排序(从小到大还是从大到小)) </span><br><span class="line">                t = a[j];</span><br><span class="line">                a[j] = a[j+1];</span><br><span class="line">                a[j+1] = t;		</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for(int i = 0; i &lt; 5; i++)&#123;</span><br><span class="line">        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h3 id="js模式"><a href="#js模式" class="headerlink" title="js模式"></a>js模式</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">		let a = [2,3,1,88,92,11];</span><br><span class="line">		let t;</span><br><span class="line">		for(let i = 0 ; i &lt; a.length -1 ; i++)&#123;  //确定比较的趟数</span><br><span class="line">			for(let j = 0 ; j &lt; a.length - 1 - i ;j++ )&#123;  //确定比较的次数</span><br><span class="line">				if(a[j] &gt; a[j+1])&#123;  //具体的比较</span><br><span class="line">					t = a[j+1];</span><br><span class="line">					a[j+1] = a[j];</span><br><span class="line">					a[j] = t;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		for(let i = 0; i &lt; a.length ; i++)&#123;</span><br><span class="line">			document.write(a[i] + &quot; &quot;);  //1 2 3 11 88 92</span><br><span class="line">		&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-选择排序-最前插"><a href="#2-选择排序-最前插" class="headerlink" title="2.选择排序(最前插)"></a>2.选择排序(最前插)</h2><h3 id="c-模式-1"><a href="#c-模式-1" class="headerlink" title="c++模式"></a>c++模式</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    int t;</span><br><span class="line">    int minindex;   </span><br><span class="line">    int n;  //要放多少个数</span><br><span class="line">    cin &gt;&gt; n; </span><br><span class="line">    int a[100];  //定义一个最少放100个数 </span><br><span class="line">    for(int i = 0; i &lt; n; i++)&#123;   //输入多少个数 </span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">    &#125; </span><br><span class="line">    for(int i = 0; i &lt; n - 1; i++)&#123; //找 n-1 趟 </span><br><span class="line">        minindex = i;  //作为标识,固定好位置!(永远去替换一趟中的首位)</span><br><span class="line">        for(int j = i + 1; j &lt; n; j++)&#123;  //从第二个数开始!</span><br><span class="line">            if(a[minindex] &gt; a[j])&#123;  //去找当前位置外的min </span><br><span class="line">                minindex = j;  //记录当前min的索引 </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;    //替换最前的位置! </span><br><span class="line">        t = a[minindex];  </span><br><span class="line">        a[minindex] = a[i];</span><br><span class="line">        a[i] = t;</span><br><span class="line">    &#125;</span><br><span class="line">    for(int i = 0; i &lt; n; i++)&#123;  //输出个数 </span><br><span class="line">        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h3 id="js模式-1"><a href="#js模式-1" class="headerlink" title="js模式"></a>js模式</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">		let a = [2,3,1,88,92,11];</span><br><span class="line">		let t;</span><br><span class="line">		let minindex;</span><br><span class="line">		for(let i = 0; i &lt; a.length - 1 ; i++)&#123;  //找 a.length-1 趟</span><br><span class="line">			minindex = i;  ////作为标识,固定好位置!(永远去替换一趟中的首位)</span><br><span class="line">			for(let j = i + 1; j &lt; a.length ; j++)&#123;   //从第二个数开始!</span><br><span class="line">					if(a[minindex] &gt; a[j])&#123;   //去找当前位置外的min</span><br><span class="line">						minindex = j;  //记录当前min的索引</span><br><span class="line">					&#125;</span><br><span class="line">			&#125;    //替换最前的位置! </span><br><span class="line">			t = a[minindex];</span><br><span class="line">			a[minindex] = a[i];</span><br><span class="line">			a[i] = t;</span><br><span class="line">		&#125;</span><br><span class="line">		for( let i = 0; i &lt; a.length ; i++)&#123;  //输出个数</span><br><span class="line">			document.write(a[i] + &quot; &quot;); //1 2 3 11 88 92</span><br><span class="line">		&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3.插入排序"></a>3.插入排序</h2><h3 id="c"><a href="#c" class="headerlink" title="c++"></a>c++</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    int t;</span><br><span class="line">    int pre,current;   </span><br><span class="line">    int n;  //要放多少个数</span><br><span class="line">    cin &gt;&gt; n; </span><br><span class="line">    int a[100];  //定义一个最少放100个数 </span><br><span class="line">    for(int i = 0; i &lt; n; i++)&#123;   //输入多少个数 </span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">    &#125; </span><br><span class="line">    for(int i = 1;i &lt; n;i++)&#123;</span><br><span class="line">        pre = i - 1;  //每一次第一个位置</span><br><span class="line">        current = a[i]; //数组后移后面的一串数</span><br><span class="line">        //插入的元素比前一个元素小,则将元素右移,然后和前面的一个元素相比较</span><br><span class="line">        while(pre &gt;= 0 &amp;&amp; a[pre] &gt; current)&#123;   //两个边界</span><br><span class="line">            a[pre + 1] = a[pre];  //数组后移</span><br><span class="line">            pre--; //从后往前移</span><br><span class="line">        &#125;</span><br><span class="line">        //插入的元素比前一个元素大,则直接插入</span><br><span class="line">        a[pre + 1] = current;  //不用移,直接赋值(找到a[pre]&gt;current)</span><br><span class="line">    &#125; </span><br><span class="line">    for(int i = 0; i &lt; n; i++)&#123;  //输出个数 </span><br><span class="line">        cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h3 id="js模式-2"><a href="#js模式-2" class="headerlink" title="js模式"></a>js模式</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">			let a = [3,5,2];</span><br><span class="line">			let pre;  //每一次第一个位置</span><br><span class="line">			let current;  //数组后移后面的一串数</span><br><span class="line">			for(let i = 1;i&lt; a.length;i++)&#123;</span><br><span class="line">				pre = i - 1;  </span><br><span class="line">				current = a[i];</span><br><span class="line">				//插入的元素比前一个元素小,则将元素右移,然后和前面的一个元素相比较</span><br><span class="line">				while(pre &gt;= 0 &amp;&amp; current &lt; a[pre])&#123;  //两个边界</span><br><span class="line">					a[pre + 1] = a[pre]; //数组后移</span><br><span class="line">					pre--;  //从后往前移</span><br><span class="line">				&#125;</span><br><span class="line">				//插入的元素比前一个元素大,则直接插入</span><br><span class="line">				a[pre+1] = current; //不用移,直接赋值(找到a[pre]&gt;current)</span><br><span class="line">			&#125;</span><br><span class="line">			for( let i = 0; i &lt; a.length ; i++)&#123;  //输出个数</span><br><span class="line">				document.write(a[i] + &quot; &quot;); //1 2 3 5 6 88</span><br><span class="line">			&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-希尔算法"><a href="#4-希尔算法" class="headerlink" title="4.希尔算法"></a>4.希尔算法</h2><h3 id="c-1"><a href="#c-1" class="headerlink" title="c++"></a>c++</h3>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/xiekunze.github.io/2020/10/27/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-网络基础" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -8416,252 +8501,6 @@ ondrop();&lt;br /&gt;
 
 
   
-    <article id="post-轮播图" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/xiekunze.github.io/2020/10/21/%E8%BD%AE%E6%92%AD%E5%9B%BE/">js实现轮播图</a>
-    </h1>
-  
-
-        
-        <a href="/xiekunze.github.io/2020/10/21/%E8%BD%AE%E6%92%AD%E5%9B%BE/" class="archive-article-date">
-  	<time datetime="2020-10-21T13:04:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="body下"><a href="#body下" class="headerlink" title="body下"></a>body下</h2><pre><code>&lt;div id=&quot;outer&quot;&gt;
-        &lt;ul id=&quot;imglist&quot;&gt;
-            &lt;li&gt;
-                &lt;img src=&quot;../img/1.jpg&quot; /&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;img src=&quot;../img/2.jpg&quot; /&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;img src=&quot;../img/3.jpg&quot; /&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;img src=&quot;../img/4.png&quot; /&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;img src=&quot;../img/1.jpg&quot; /&gt;
-            &lt;/li&gt;
-        &lt;/ul&gt;
-            &lt;div id=&quot;navdiv&quot;&gt;
-                &lt;a href=&quot;javascript:;&quot;&gt;&lt;/a&gt;
-                &lt;a href=&quot;javascript:;&quot;&gt;&lt;/a&gt;
-                &lt;a href=&quot;javascript:;&quot;&gt;&lt;/a&gt;
-                &lt;a href=&quot;javascript:;&quot;&gt;&lt;/a&gt;
-            &lt;/div&gt;
-&lt;/div&gt;    </code></pre>
-<h2 id="style下"><a href="#style下" class="headerlink" title="style下"></a>style下</h2><pre><code>        *&#123; /*设置默认样式为0*/
-            margin: 0px;
-            padding: 0px;
-        &#125;
-        #outer&#123;
-            /*设置背景颜色宽高*/
-            width: 220px;
-            height: 200px;
-            margin: 50px auto;/*设置图片居中*/
-            background-color: lightgreen;
-            padding: 5px 0px; /*设置内边距上下为5px*/
-            position: relative; /*开启相对定位*/
-            overflow: hidden; /*隐藏溢出的内容*/
-        &#125;
-        #imglist&#123;  /*全部图片*/
-            width: 0px; /*总长*/
-            list-style: none; /*去除项目符号*/
-            position: absolute; /*开启绝对定位*/
-            /*设置偏移量left  js里面动态设置*/
-            left: 0px;
-        &#125;
-        #imglist li &#123;  /*图片位置*/
-            margin: 0px 10px;  /*图片左右边距为10px*/
-            float: left;  /*左浮动*/
-        &#125;
-        #navdiv&#123;  /*整体按钮的位置*/
-            position: absolute; /*开启绝对定位*/
-            bottom: 5px;
-            /*left: 70px;  js里面动态设置*/
-        &#125;
-        #navdiv a&#123;  /*单个按钮的位置*/
-            float: left; /*左浮动*/
-            display: block;  /*块元素*/
-            text-decoration: none;  /*去掉下划线*/
-            width: 10px;
-            height: 10px;
-            background-color: red;
-            margin: 0px 5px;  /*上下不变，左右为5px*/
-            opacity: 0.5;  /*半透明*/
-            filter: alpha(opacity=50); /*兼容IE8*/
-            border-radius: 50%;  /*设置圆形按钮*/
-        &#125;
-        #navdiv a:hover&#123;
-            background-color: #000000; /*鼠标移动出现背景颜色效果*/
-        &#125;</code></pre>
-<h2 id="script下"><a href="#script下" class="headerlink" title="script下"></a>script下</h2><pre><code>window.onload = function()&#123;
-            /*收集图片*/
-            var imglist = document.getElementById(&quot;imglist&quot;);
-            var imgarr = document.getElementsByTagName(&quot;img&quot;);
-            imglist.style.width = 220 * imgarr.length + &quot;px&quot;; 
-            /*获取按钮的偏移量,并让按钮居中*/  
-            var imgdiv = document.getElementById(&quot;navdiv&quot;);
-            var outer = document.getElementById(&quot;outer&quot;);
-            imgdiv.style.left = (outer.offsetWidth - imgdiv.offsetWidth)/2 + &quot;px&quot;;
-            /*对第一个按钮设置黑色背景颜色*/
-            var diyi = document.getElementsByTagName(&quot;a&quot;);
-            diyi[0].style.backgroundColor = &quot;#000000&quot;;
-
-            var index = 0;
-            var num;
-            var timer;  
-            for(var i = 0; i&lt; diyi.length; i++)&#123;
-                diyi[i].num = i;  //用这种形式去获取索引值，不然得不到这种的索引
-                diyi[i].onclick = function()&#123;
-                    clearInterval(timer);
-                     index = this.num;
-                    //alert(num);   经常可以使用alert()来测试数据
-                    //imglist.style.left = -220 * num+ &quot;px&quot;;//改变位置
-                    //利用move函数来切换图片
-                    seta();
-                    move(imglist,50,-220*index ,&quot;left&quot;,function()&#123;
-                        //动画执行完毕后切换图片
-                        autochange();
-                    &#125;);    
-                &#125;
-            &#125;
-
-            autochange(); //开启一个自动切换图片的函数
-
-            //创建一个函数用来遍历所有的a  (选中的状态将其背景颜色改为黑色)
-            function seta()&#123;
-                //判断当前索引值是不是最后一个
-                if(index &gt;= imgarr.length-1 )&#123; //到达最后一个
-                    index = 0;  //按钮从0开始
-                    imglist.style.left = 0; //图片切换从0开始
-                &#125;
-                for( var i = 0; i&lt;diyi.length; i++)&#123;
-                    //alert(i);
-                    diyi[i].style.backgroundColor = &quot;&quot;;
-                &#125;
-                diyi[index].style.backgroundColor = &quot;black&quot;;//按钮颜色被点击后
-            &#125;
-
-            //设置一个自动切换图片的函数
-            function autochange()&#123;
-                //开启一个定时器，用来定时去切换图片
-                timer = setInterval(function()&#123;
-                    index++;
-                    index %= imgarr.length; //到达最后一张往前切换
-                    move(imglist,50,-220*index ,&quot;left&quot;,function()&#123;
-                        //修改按钮
-                        seta();
-                    &#125;);
-                &#125;,1000);
-            &#125;    
-        &#125;</code></pre>
-<h2 id="在此导入一个tool-js工具类-也可自行去创建-–-gt-两个函数！"><a href="#在此导入一个tool-js工具类-也可自行去创建-–-gt-两个函数！" class="headerlink" title="在此导入一个tool.js工具类(也可自行去创建)–&gt;两个函数！"></a>在此导入一个tool.js工具类(也可自行去创建)–&gt;两个函数！</h2><pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;tool.js&quot; &gt;&lt;/script&gt;</code></pre>
-<h2 id="tool-js"><a href="#tool-js" class="headerlink" title="tool.js"></a>tool.js</h2><pre><code>//自定义一个获取元素的style属性
-            function getStyle(obj,name)&#123;
-                if(window.getComputedStyle)&#123; //正常浏览器
-                    return getComputedStyle(obj,null)[name];
-                &#125;else&#123; //IE8这里
-                    return obj.currentStyle[name];
-                &#125;
-            &#125;
-
-//创建一个可以执行简单动画效果的函数
-            //obj 对象
-            //speed 移动的速度(正数向右，负数向左) (只需要数字)
-            //target 指向那个目标移动   （只需要数字）
-            //attr 要执行obj的样式(动画样式)
-            ///callback 回调函数，这个函数将会在动画执行完毕以后执行
-            //var timer;
-            function move(obj,speed,target, attr, callback)&#123;
-                var oldv = parseInt(getStyle(obj,attr));//取出合法数字
-                if(oldv &gt; target)&#123;  //判断元素的正负值
-                    speed = -speed;  //这样做可以方便speed直接传正值(对速度的调整有好处)
-                &#125;
-                clearInterval(obj.timer);  //解决上一个定时器，避免点一次加速一次！
-            obj.timer = setInterval(function()&#123;  //只认自己的obj
-                    var oldv = parseInt(getStyle(obj,attr));//取出合法数字
-                    var newv = oldv + speed;  //调整定时器的移动速度(新数)
-                    /* 向左移动时，需要判断newValue是否小于target
-                     * 向右移动时，需要判断newValue是否大于target
-                     */
-                    if( speed &lt; 0 &amp;&amp; newv &lt; target ||speed &gt; 0 &amp;&amp; newv &gt; target)&#123;
-                        newv = target; //边界问题(让其最高数达到边界就行)
-                    &#125;
-                    // []的用法:这样可以当一个数组用！style.left == style[&quot;left&quot;]
-                    obj.style[attr] = newv + &quot;px&quot;;
-                    if(newv == target)&#123;
-                        clearInterval(obj.timer);
-                        //动画执行完毕后调用回调函数(只会执行一次)
-                        callback &amp;&amp; callback(); //如果有就搞！没有也不会报错(兼容性问题)
-                    &#125;
-                &#125;,30);
-            &#125;</code></pre>
-<h3 id="总结-遇到重复性的代码-想想能不能进行封装成一个函数！"><a href="#总结-遇到重复性的代码-想想能不能进行封装成一个函数！" class="headerlink" title="总结 : 遇到重复性的代码,想想能不能进行封装成一个函数！"></a>总结 : 遇到重复性的代码,想想能不能进行封装成一个函数！</h3><h3 id="效果如下"><a href="#效果如下" class="headerlink" title="效果如下"></a>效果如下</h3><p><img src><img src="/xiekunze.github.io/2020/10/21/%E8%BD%AE%E6%92%AD%E5%9B%BE/lbt.png" alt="lbt" style="zoom:67%;"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">js小项目</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/xiekunze.github.io/2020/10/21/%E8%BD%AE%E6%92%AD%E5%9B%BE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/xiekunze.github.io/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/xiekunze.github.io/">1</a><a class="page-number" href="/xiekunze.github.io/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/xiekunze.github.io/page/4/">4</a><a class="extend next" rel="next" href="/xiekunze.github.io/page/4/">Next &amp;raquo;</a>
@@ -8816,6 +8655,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">手册</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">小程序</a>
               </li>
              
               <li class="article-tag-list-item">
