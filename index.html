@@ -313,7 +313,292 @@
 <p>4.可以对空格  回车进行编译      </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;text decode&#x3D;&quot;true&quot;&gt;&amp;ensp;&lt;&#x2F;text&gt;</span><br></pre></td></tr></table></figure>
 
-<h5 id="22"><a href="#22" class="headerlink" title="22."></a>22.</h5>
+<h5 id="22-image-图片标签"><a href="#22-image-图片标签" class="headerlink" title="22.image 图片标签"></a>22.image 图片标签</h5><ol>
+<li><p>src   图片路径</p>
+</li>
+<li><p>mode   改变图片的形状 (图片内容如何 与 图片标签 宽高 做适配)</p>
+<ol>
+<li>scaleToFill : 缩放模式，不保持纵横比缩放图片，使图片的宽高完全拉伸至填满 image 元素    </li>
+<li>aspectFit : 缩放模式，保持纵横比缩放图片，使图片的长边能完全显示出来。也就是说，可以完整地将图片显示出来。(轮播图常用) </li>
+<li>aspectFill : 缩放模式，保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会发生截取。(少用)</li>
+<li>widthFix : 缩放模式，宽度不变，高度自动变化，保持原图宽高比不变 （常用）</li>
+<li>heightFix : 缩放模式，高度不变，宽度自动变化，保持原图宽高比不变</li>
+</ol>
+<p>3.lazy-load    会自己判断,当 图片出现在  视口 上下  三屏的高度 之内的时候 自己开始加载图片</p>
+<h5 id="23-swiper-轮播图组件"><a href="#23-swiper-轮播图组件" class="headerlink" title="23.swiper 轮播图组件"></a>23.swiper 轮播图组件</h5><p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/swiper.html">swiper</a></p>
+<h5 id="1-为图片适应不同页面"><a href="#1-为图片适应不同页面" class="headerlink" title="1.为图片适应不同页面"></a>1.为图片适应不同页面</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">  场景使用:改变默认样式   image ： 320 * 240 </span><br><span class="line">  原图片大小: 570 * 273  100vw ?  </span><br><span class="line">    公式:原图片宽&#x2F;原图片高 &#x3D; swiper宽度100vw&#x2F;swiper高度</span><br><span class="line">        swiper高度 &#x3D; 原图片高&#x2F;原图片宽 * swiper宽度100vw</span><br><span class="line">    高度: 100vw * 273 &#x2F; 570  </span><br><span class="line">    wxss中:</span><br><span class="line">    swiper&#123;</span><br><span class="line">       width: 100%;</span><br><span class="line">       height: calc(100vw*273&#x2F;570);</span><br><span class="line">    &#125;</span><br><span class="line">    image&#123;</span><br><span class="line">      width: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">--&gt;</span><br><span class="line">&lt;swiper autoplay&#x3D;&quot;true&quot; indicator-dots&#x3D;&quot;true&quot; interval&#x3D;&quot;1000&quot; circular &#x3D; &#39;true&#39;&gt;</span><br><span class="line">  &lt;swiper-item&gt;&lt;image src&#x3D;&quot;&#x2F;pages&#x2F;image&#x2F;01.jpg&quot; mode&#x3D;&quot;widthFix &quot;&gt;&lt;&#x2F;image&gt;&lt;&#x2F;swiper-item&gt;</span><br><span class="line">  &lt;swiper-item&gt;&lt;image src&#x3D;&quot;&#x2F;pages&#x2F;image&#x2F;02.jpg&quot; mode&#x3D;&quot;widthFix &quot;&gt;&lt;&#x2F;image&gt;&lt;&#x2F;swiper-item&gt;</span><br><span class="line">  &lt;swiper-item&gt;&lt;image src&#x3D;&quot;&#x2F;pages&#x2F;image&#x2F;03.jpg&quot; mode&#x3D;&quot;widthFix &quot;&gt;&lt;&#x2F;image&gt;&lt;&#x2F;swiper-item&gt; </span><br><span class="line">&lt;&#x2F;swiper&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-swiper标签中的属性"><a href="#2-swiper标签中的属性" class="headerlink" title="2.swiper标签中的属性:"></a>2.swiper标签中的属性:</h5><p>1.autoplay:是否自动切换</p>
+<p>2.interval : 自动切换时间间隔</p>
+<p>3.circular : 是否采用衔接滑动</p>
+<p>4.indicator-dots : 是否显示面板指示点</p>
+<p>5.indicator-color : 指示点颜色</p>
+<p>6.indicator-active-color : 当前选中的指示点颜色</p>
+<h5 id="24-navigator-相当于以前的a标签-页面链接"><a href="#24-navigator-相当于以前的a标签-页面链接" class="headerlink" title="24.navigator  相当于以前的a标签 (页面链接)"></a>24.navigator  相当于以前的a标签 (页面链接)</h5><p>0.块级元素 , 默认会换行 , 可以直接增加宽高 </p>
+<p>1.url : 跳转的页面 : 可以是相对路径,也可以是绝对路径!</p>
+<p>2.target : 在哪个目标上发生跳转，默认当前小程序   , 可跳转到其他的小程序</p>
+<p>self ：自己页面</p>
+<p>miniProgram ：其它小程序 </p>
+<p>3.open-type : 跳转方式</p>
+<p>​    1.navigate :  默认值 ， 保留当前页面 ， 跳转到应用中的某个页面 ， 但是不能跳转到 tabbar页面  (相当于有返回效果)</p>
+<p>​    2.redirect :  关闭当前页面 ， 跳转到应用中的某个页面 ， 但是不能跳转到 tabbar页面   (相当于没有返回效果)<br>​    3.switchTab :  跳转到tabbar 页面 ，关闭其他没有tabbar页面</p>
+<p>​    4.reLaunch: 关闭其他页面 , 所有页面都可以随便跳</p>
+<p>​    5.navigateBack : 返回上一个页面</p>
+<p>​    6.exit : 退出小程序，<code>target=&quot;miniProgram&quot;</code>时生效</p>
+<h5 id="25-rich-text-富文本标签-解析一些小程序没有的标签"><a href="#25-rich-text-富文本标签-解析一些小程序没有的标签" class="headerlink" title="25.rich-text   富文本标签  (解析一些小程序没有的标签)"></a>25.rich-text   富文本标签  (解析一些小程序没有的标签)</h5><p>1.nodes属性  : 节点列表/HTML String</p>
+<p>2.space属性   : 显示连续空格 </p>
+<h2 id="nodes"><a href="#nodes" class="headerlink" title="nodes"></a>nodes</h2><p>现支持两种节点，通过type来区分，分别是元素节点和文本节点，默认是元素节点，在富文本区域里显示的HTML节点 *元素节点：type = node**</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">说明</th>
+<th align="left">类型</th>
+<th align="left">必填</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">name</td>
+<td align="left">标签名</td>
+<td align="left">string</td>
+<td align="left">是</td>
+<td align="left">支持部分受信任的 HTML 节点</td>
+</tr>
+<tr>
+<td align="left">attrs</td>
+<td align="left">属性</td>
+<td align="left">object</td>
+<td align="left">否</td>
+<td align="left">支持部分受信任的属性，遵循 Pascal 命名法</td>
+</tr>
+<tr>
+<td align="left">children</td>
+<td align="left">子节点列表</td>
+<td align="left">array</td>
+<td align="left">否</td>
+<td align="left">结构和 nodes 一致</td>
+</tr>
+</tbody></table>
+<p>*文本节点：type = text**</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">说明</th>
+<th align="left">类型</th>
+<th align="left">必填</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">text</td>
+<td align="left">文本</td>
+<td align="left">string</td>
+<td align="left">是</td>
+<td align="left">支持entities</td>
+</tr>
+</tbody></table>
+<img src="/xiekunze.github.io/2020/12/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/18.png">
+
+<img src="/xiekunze.github.io/2020/12/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/19.png">
+
+</li>
+</ol>
+<h5 id="26-button-标签"><a href="#26-button-标签" class="headerlink" title="26.button 标签"></a>26.button 标签</h5><p>1.外观的属性</p>
+<p>​    1.size 控制按钮的大小</p>
+<p>​        1.default        默认大小</p>
+<p>​        2.mini              小尺寸</p>
+<p>​    2.type 用来控制按钮的颜色</p>
+<p>​        1.primary       绿色</p>
+<p>​        2.default        白色</p>
+<p>​        3.warn            红色</p>
+<p>​    3.plain   按钮是否镂空，背景色透明</p>
+<p>​    4.disabled    是否禁用</p>
+<p>2.button  开发能力</p>
+<p><strong>open-type 的合法值</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">值</th>
+<th align="left">说明</th>
+<th align="left">最低版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">contact</td>
+<td align="left">打开客服会话，如果用户在会话中点击消息卡片后返回小程序，可以从 bindcontact 回调中获得具体信息，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/customer-message/customer-message.html">具体说明</a> <em>小程序插件中不能使用。</em></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.1.0</a></td>
+</tr>
+<tr>
+<td align="left">share</td>
+<td align="left">触发用户转发，使用前建议先阅读<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/share.html#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%BC%95">使用指引</a>不能把小程序分享到朋友圈</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.2.0</a></td>
+</tr>
+<tr>
+<td align="left">getPhoneNumber</td>
+<td align="left">获取用户手机号，可以从bindgetphonenumber回调中获取到用户信息，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/getPhoneNumber.html">具体说明</a> <em>小程序插件中不能使用。</em>必须是企业的小程序才有权限获取,会加密</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.2.0</a></td>
+</tr>
+<tr>
+<td align="left">getUserInfo</td>
+<td align="left">获取用户信息，可以从bindgetuserinfo回调中获取到用户信息 <em>小程序插件中不能使用。</em>不加密</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.3.0</a></td>
+</tr>
+<tr>
+<td align="left">launchApp</td>
+<td align="left">打开APP，可以通过app-parameter属性设定向APP传的参数<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/launchApp.html">具体说明</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.9.5</a></td>
+</tr>
+<tr>
+<td align="left">openSetting</td>
+<td align="left">打开授权设置页</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">2.0.7</a></td>
+</tr>
+<tr>
+<td align="left">feedback</td>
+<td align="left">打开“意见反馈”页面，用户可提交反馈内容并上传<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/base/debug/wx.getLogManager.html">日志</a>，开发者可以登录<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/">小程序管理后台</a>后进入左侧菜单“客服反馈”页面获取到反馈内容</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">2.1.0</a></td>
+</tr>
+</tbody></table>
+<p>getPhoneNumber   通过回调函数绑定获取信息 (bindgetPhoneNumber )</p>
+<p>getUserInfo  通过回调函数绑定获取信息 (bindgetUserInfo  )</p>
+<h5 id="27-icon-（图标标签）"><a href="#27-icon-（图标标签）" class="headerlink" title="27.icon   （图标标签）"></a>27.icon   （图标标签）</h5><p>图标。组件属性的长度单位默认为px，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">2.4.0</a>起支持传入单位(rpx/px)。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">类型</th>
+<th align="left">默认值</th>
+<th align="left">必填</th>
+<th align="left">说明</th>
+<th align="left">最低版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">type</td>
+<td align="left">string</td>
+<td align="left"></td>
+<td align="left">是</td>
+<td align="left">icon的类型，有效值：success, success_no_circle, info, warn, waiting, cancel, download, search, clear</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">size</td>
+<td align="left">number/string</td>
+<td align="left">23</td>
+<td align="left">否</td>
+<td align="left">icon的大小</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">color</td>
+<td align="left">string</td>
+<td align="left"></td>
+<td align="left">否</td>
+<td align="left">icon的颜色，同css的color</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+</tbody></table>
+<h5 id="28-radio-单选框"><a href="#28-radio-单选框" class="headerlink" title="28.radio 单选框"></a>28.radio 单选框</h5><p>1.radio标签   必须要和 父元素  radio-group 来使用</p>
+<p>2.value  选中的单选框的值</p>
+<p>3.需要给 radio-group  绑定 bindchange  事件</p>
+<p>4.需要在页面中显示  选中的值</p>
+<p>单选项目。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">类型</th>
+<th align="left">默认值</th>
+<th align="left">必填</th>
+<th align="left">说明</th>
+<th align="left">最低版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">value</td>
+<td align="left">string</td>
+<td align="left"></td>
+<td align="left">否</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/radio.html">radio</a> 标识。当该<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/radio.html">radio</a> 选中时，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/radio-group.html">radio-group</a> 的 change 事件会携带<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/radio.html">radio</a>的value</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">checked</td>
+<td align="left">boolean</td>
+<td align="left">false</td>
+<td align="left">否</td>
+<td align="left">当前是否选中</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">disabled</td>
+<td align="left">boolean</td>
+<td align="left">false</td>
+<td align="left">否</td>
+<td align="left">是否禁用</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">color</td>
+<td align="left">string</td>
+<td align="left">#09BB07</td>
+<td align="left">否</td>
+<td align="left">radio的颜色，同css的color</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+</tbody></table>
+<img src="/xiekunze.github.io/2020/12/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/20.png">
+
+<img src="/xiekunze.github.io/2020/12/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/21.png">
+
+<h5 id="29-checkbox-和radio基本一样-但是值是以数组的形式存在-所以获取需要去遍历"><a href="#29-checkbox-和radio基本一样-但是值是以数组的形式存在-所以获取需要去遍历" class="headerlink" title="29.checkbox (和radio基本一样,但是值是以数组的形式存在,所以获取需要去遍历)"></a>29.checkbox (和radio基本一样,但是值是以数组的形式存在,所以获取需要去遍历)</h5><p>多选项目。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">类型</th>
+<th align="left">默认值</th>
+<th align="left">必填</th>
+<th align="left">说明</th>
+<th align="left">最低版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">value</td>
+<td align="left">string</td>
+<td align="left"></td>
+<td align="left">否</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/checkbox.html">checkbox</a>标识，选中时触发<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/checkbox-group.html">checkbox-group</a>的 change 事件，并携带 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/checkbox.html">checkbox</a> 的 value</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">disabled</td>
+<td align="left">boolean</td>
+<td align="left">false</td>
+<td align="left">否</td>
+<td align="left">是否禁用</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">checked</td>
+<td align="left">boolean</td>
+<td align="left">false</td>
+<td align="left">否</td>
+<td align="left">当前是否选中，可用来设置默认选中</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+<tr>
+<td align="left">color</td>
+<td align="left">string</td>
+<td align="left">#09BB07</td>
+<td align="left">否</td>
+<td align="left">checkbox的颜色，同css的color</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html">1.0.0</a></td>
+</tr>
+</tbody></table>
+<h5 id="30"><a href="#30" class="headerlink" title="30."></a>30.</h5>
       
 
       
@@ -3314,15 +3599,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">js小项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3346,7 +3631,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color3">手册</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3354,15 +3639,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">手册</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">痘痘</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">小程序</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -3378,11 +3659,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">网络基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">蓝桥杯</a>
+                <a href="javascript:void(0)" class="js-tag color4">小程序</a>
               </li>
              
               <li class="article-tag-list-item">
